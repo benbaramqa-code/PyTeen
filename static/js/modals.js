@@ -70,14 +70,21 @@
     // FEATURE: Certificate of Completion
     // ================================================================
 
-    const totalLessons = 42;
-
     function openCertModal() {
       const overlay = document.getElementById('cert-overlay');
       if (overlay) {
         overlay.classList.add('active');
-        const dateEl = document.getElementById('cert-preview-date');
-        if (dateEl) dateEl.innerText = 'תאריך השלמה: ' + getFormattedDate();
+        const totalCount = (typeof allLessons !== 'undefined' && allLessons.length) ? allLessons.length : 68;
+        const chCount = (typeof allLessons !== 'undefined' && allLessons.length) ? new Set(allLessons.map(l => l.chapter)).size : 20;
+
+        const sub = document.getElementById('cert-subheading');
+        if (sub) sub.innerText = `השלמת את כל ${totalCount} השלבים בקורס פייתון בקלות! 🐍`;
+
+        const meta = document.getElementById('cert-preview-meta');
+        if (meta) {
+          meta.innerHTML = `${totalCount} שלבים ב-${chCount} פרקים<br><span id="cert-preview-date">תאריך השלמה: ${getFormattedDate()}</span>`;
+        }
+
         updateCertPreview();
         const nameInput = document.getElementById('cert-name-input');
         if (nameInput) setTimeout(() => nameInput.focus(), 300);
@@ -164,10 +171,13 @@
       if (ctx.roundRect) ctx.roundRect(bx, 360, bw, 80, 12); else ctx.rect(bx, 360, bw, 80);
       ctx.fill(); ctx.strokeStyle = 'rgba(56,189,248,0.2)'; ctx.lineWidth = 1; ctx.stroke();
 
+      const totalCount = (typeof allLessons !== 'undefined' && allLessons.length) ? allLessons.length : 68;
+      const chCount = (typeof allLessons !== 'undefined' && allLessons.length) ? new Set(allLessons.map(l => l.chapter)).size : 20;
+
       ctx.font = 'bold 22px Arial, sans-serif'; ctx.fillStyle = '#38bdf8';
-      ctx.fillText('42 שלבים ב-14 פרקים', W / 2, 396);
+      ctx.fillText(`${totalCount} שלבים ב-${chCount} פרקים`, W / 2, 396);
       ctx.font = '16px Arial, sans-serif'; ctx.fillStyle = '#94a3b8';
-      ctx.fillText('Python — מהתחלה ועד תכנות מתקדם', W / 2, 424);
+      ctx.fillText('פייתון, מדעי הנתונים, למידה עמוקה ובינה מלאכותית', W / 2, 424);
 
       ctx.font = 'bold 18px Arial, sans-serif'; ctx.fillStyle = '#22c55e';
       ctx.fillText('🏆 כל הכבוד! ההתמדה, הסקרנות והעבודה הקשה שלך הניבו פרי.', W / 2, 490);

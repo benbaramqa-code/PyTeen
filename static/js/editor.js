@@ -124,6 +124,15 @@ async function runCode() {
   try {
     const py = await getPyodideRuntime();
     if (py) {
+      const packagesToLoad = [];
+      if (code.includes('numpy') || code.includes('np.')) packagesToLoad.push('numpy');
+      if (code.includes('pandas') || code.includes('pd.')) packagesToLoad.push('pandas');
+      if (code.includes('sklearn') || code.includes('scikit-learn')) packagesToLoad.push('scikit-learn');
+      if (packagesToLoad.length > 0) {
+        status.innerText = 'טוען חבילות דאטה...';
+        await py.loadPackage(packagesToLoad);
+        status.innerText = 'מריץ...';
+      }
       py.globals.set("py_user_code", code);
       const runnerCode = `
 import sys, io, traceback
@@ -162,7 +171,7 @@ _out = _buffer.getvalue()
           saveProgress();
 
           banner.className = 'feedback-banner feedback-success';
-          const nextBtnHtml = (currentLesson.id < allLessons.length) ? '<button class="btn-next-step" onclick="nextLesson()">לשלב הבא ⬅️</button>' : '<span>🏆 סיימת את כל הקורס!</span>';
+          const nextBtnHtml = (currentLesson.id < allLessons.length) ? '<button class="btn-next-step" onclick="nextLesson()">לשלב הבא ⬅️</button>' : '<button class="btn-next-step" onclick="openCertModal()">🎓 קבל את תעודת הסיום שלך! 🎉</button>';
           banner.innerHTML = '<span>' + (currentLesson.success_message + ' 🎉') + '</span>' + nextBtnHtml;
           banner.style.display = 'flex';
         } else {
@@ -208,7 +217,7 @@ _out = _buffer.getvalue()
         saveProgress();
 
         banner.className = 'feedback-banner feedback-success';
-        const nextBtnHtml = (currentLesson.id < allLessons.length) ? '<button class="btn-next-step" onclick="nextLesson()">לשלב הבא ⬅️</button>' : '<span>🏆 סיימת את כל הקורס!</span>';
+        const nextBtnHtml = (currentLesson.id < allLessons.length) ? '<button class="btn-next-step" onclick="nextLesson()">לשלב הבא ⬅️</button>' : '<button class="btn-next-step" onclick="openCertModal()">🎓 קבל את תעודת הסיום שלך! 🎉</button>';
         banner.innerHTML = '<span>' + (data.message || 'כל הכבוד! עברת את השלב בהצלחה!') + '</span>' + nextBtnHtml;
         banner.style.display = 'flex';
       } else {

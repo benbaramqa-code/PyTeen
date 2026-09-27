@@ -964,11 +964,928 @@ print(f"Player: {parsed['name']}, Score: {parsed['score']}")''',
    - מתודת add_task(title): מחשבת new_id = len(self.tasks) + 1, יוצרת אובייקט Task ומוסיפה לרשימה.
    - מתודת complete_task(task_id): סורקת את self.tasks, וברגע שמזהה משימה עם task.task_id == task_id קוראת ל-mark_done().
    - מתודת list_all(): מדפיסה עבור כל משימה ברשימה את תוצאת print(task.get_status()).""",
-        success_message="👑 אלוף אלופים! השלמת בהצלחה יוצאת מן הכלל את כל 42 השלבים של קורס 'פייתון בקלות'! אתה כעת מתכנת פייתון אמיתי עם ארגז כלים מקיף ומקצועי!",
+        success_message="👑 אלוף אלופים! השלמת בהצלחה יוצאת מן הכלל את פרויקט ניהול המשימות! כעת אתה מוכן להמשיך למסלול הדאטה והבינה המלאכותית!",
         common_mistakes="""❌ שימוש במזהי משימות כפולים (task_id): חובה להבטיח שלכל משימה יש מזהה ייחודי.
 ❌ ניסיון לסמן משימה כהושלמה מבלי לבדוק אם היא בכלל קיימת ברשימה.
 ❌ חוסר שימוש במתודות ייעודיות באובייקט Task (כמו mark_done) ושינוי ישיר של שדות מבחוץ."""
+    ),
+    Lesson(
+        id=43,
+        chapter="פרק 15: עיבוד נתונים מהיר עם ספריית NumPy",
+        title="שלב 43: מבוא למערכים חד-ממדיים (NumPy Arrays)",
+        recap="למדנו להשתמש ברשימות פייתון רגילות, אך במדעי הנתונים ובינה מלאכותית אנו זקוקים למבני נתונים מהירים ויעילים בהרבה.",
+        why_learn="ספריית NumPy היא אבן היסוד של כל עולם הבינה המלאכותית ומדעי הנתונים בפייתון. מערכי NumPy מהירים פי עשרות מרשימות רגילות ומאפשרים חישובים מתמטיים מורכבים במקביל.",
+        when_to_use="בכל פרויקט של ניתוח נתונים, עיבוד תמונות, למידת מכונה או חישובים הנדסיים וסטטיסטיים.",
+        explanation="מייבאים את הספרייה בכינוי המקובל np. יוצרים מערך חד-ממדי בעזרת np.array() ובודקים את צורת המערך (shape) ואת סוגו:",
+        tip="💡 המוסכמה העולמית בפייתון היא לייבא את NumPy תחת השם np: import numpy as np.",
+        default_code='''import numpy as np
+
+scores = [85, 92, 78, 95, 88]
+arr = np.array(scores)
+
+print(f"Array: {arr}")
+print(f"Shape: {arr.shape}")
+print(f"Type: {type(arr).__name__}")''',
+        expected_output="Array: [85 92 78 95 88]\nShape: (5,)\nType: ndarray",
+        hint="""1. ייבא את המודול: import numpy as np
+2. צור רשימה scores והמר אותה למערך בעזרת np.array(scores)
+3. הדפס את המערך arr, את arr.shape ואת type(arr).__name__""",
+        success_message="מצוין! יצרת את מערך ה-NumPy הראשון שלך והבנת את מאפייניו הבסיסיים.",
+        common_mistakes="""❌ ניסיון להעביר מספר ארגומנטים נפרדים ל-np.array במקום רשימה אחת, למשל np.array(1, 2, 3) במקום np.array([1, 2, 3]).
+❌ בלבול בין רשימת פייתון [1, 2, 3] שמופרדת בפסיקים לבין הדפסת מערך NumPy [1 2 3] שמופרד ברווחים ללא פסיקים.
+❌ שימוש בשם משתנה לא מוגדר עקב שכחת import numpy as np בתחילת הקוד."""
+    ),
+    Lesson(
+        id=44,
+        chapter="פרק 15: עיבוד נתונים מהיר עם ספריית NumPy",
+        title="שלב 44: וקטוריזציה ופעולות חשבון ישירות על מערכים",
+        recap="למדנו ליצור מערך NumPy. כעת נגלה את כוח העל האמיתי שלו – פעולות וקטוריות.",
+        why_learn="ברשימת פייתון רגילה, חיבור של שני משתנים משרשר אותם ולא מחבר את המספרים! ב-NumPy, כל פעולה מתמטית מופעלת מיד על כל האיברים בבת אחת ללא צורך בלולאות for איטיות.",
+        when_to_use="המרת יחידות (צלזיוס לפרנהייט), מתן בונוס לציונים, נרמול נתונים, וחישוב מחירים עם הנחה או מע\"מ.",
+        explanation="בצע פעולות חשבון ישירות: הוספת בונוס קבוע לכל הציונים וכפל במקדם:",
+        tip="💡 פעולות וקטוריות ב-NumPy ממומשות בשפת C ברמת המעבד, ולכן הן מהירות פי 50 עד 100 מלולאת for בפייתון!",
+        default_code='''import numpy as np
+
+grades = np.array([70, 80, 90])
+bonus_grades = grades + 5
+scaled_grades = grades * 1.1
+
+print(f"Original: {grades}")
+print(f"Bonus: {bonus_grades}")
+print(f"Scaled: {np.round(scaled_grades, 1)}")''',
+        expected_output="Original: [70 80 90]\nBonus: [75 85 95]\nScaled: [77. 88. 99.]",
+        hint="""1. הגדר מערך grades עם הערכים 70, 80, 90 בעזרת np.array.
+2. חבר 5 ישירות למערך: bonus_grades = grades + 5.
+3. כפול ב-1.1 ועגל באמצעות np.round(scaled_grades, 1).""",
+        success_message="כל הכבוד! למדת איך וקטוריזציה חוסכת לולאות ומבצעת חישובים מתמטיים מהירים.",
+        common_mistakes="""❌ ניסיון לבצע grades + 5 על רשימת פייתון רגילה במקום מערך NumPy – יגרור TypeError: can only concatenate list (not "int") to list.
+❌ שכחת השימוש ב-np.round לקבלת תוצאות מעוגלות, מה שעלול להוביל לסטיות עשרוניות זעירות בחישובים צפים."""
+    ),
+    Lesson(
+        id=45,
+        chapter="פרק 15: עיבוד נתונים מהיר עם ספריית NumPy",
+        title="שלב 45: מערכים דו-ממדיים ומטריצות (2D Arrays)",
+        recap="עד כה עבדנו עם וקטור חד-ממדי. כעת נתקדם למבנה של טבלה או מטריצה.",
+        why_learn="תמונות דיגיטליות, טבלאות נתונים ומשקולות של מודלי AI מיוצגים כולם כמטריצות דו-ממדיות (שורות ועמודות) או רב-ממדיות.",
+        when_to_use="עיבוד תמונות (פיקסלים של גובה ורוחב), מודלים מתמטיים של אלגברה ליניארית, וניתוח טבלאות ציונים עבור מספר תלמידים במספר מקצועות.",
+        explanation="יוצרים מטריצה דו-ממדית מרשימה מקוננת של רשימות, ובודקים את מספר השורות והעמודות בעזרת shape ו-ndim:",
+        tip="💡 המאפיין shape מחזיר tuple של (מספר שורות, מספר עמודות).",
+        default_code='''import numpy as np
+
+matrix = np.array([
+    [10, 20, 30],
+    [40, 50, 60]
+])
+
+print(f"Dimensions: {matrix.ndim}")
+print(f"Shape: {matrix.shape}")
+print(f"First row: {matrix[0]}")
+print(f"Specific cell: {matrix[1, 2]}")''',
+        expected_output="Dimensions: 2\nShape: (2, 3)\nFirst row: [10 20 30]\nSpecific cell: 60",
+        hint="""1. צור מערך דו-ממדי עם שתי שורות ושלוש עמודות.
+2. הדפס את matrix.ndim (מספר הממדים).
+3. הדפס את matrix.shape (שורות ועמודות).
+4. גש לשורה הראשונה matrix[0] ולתא matrix[1, 2] (שורה 1, עמודה 2).""",
+        success_message="יופי! הבנת את המבנה של מטריצה דו-ממדית וכיצד לגשת לתאים ספציפיים.",
+        common_mistakes="""❌ שימוש באורכי שורות שונים בתוך המטריצה, הגורם לשגיאה או ליצירת מערך אובייקטים פגום.
+❌ בלבול בסדר האינדקסים: [row, col] כאשר row מייצג את השורה ו-col את העמודה.
+❌ שכחה שאינדקסים בפייתון מתחילים תמיד מ-0 (השורה הראשונה היא אינדקס 0)."""
+    ),
+    Lesson(
+        id=46,
+        chapter="פרק 15: עיבוד נתונים מהיר עם ספריית NumPy",
+        title="שלב 46: פריסה, חיתוך ושינוי צורה (Slicing & Reshape)",
+        recap="אנו יודעים לגשת לתא בודד במטריצה. כעת נלמד לחתוך מקטעים ולשנות את מבנה המערך.",
+        why_learn="בהכנת נתונים לבינה מלאכותית, נצטרך לעיתים קרובות לקחת רק עמודה מסוימת (למשל עמודת התוויות) או להפוך וקטור שטוח למטריצה מרובעת.",
+        when_to_use="חילוץ תכונות (Features) מתוך טבלה, עיבוד תמונות ושינוי רזולוציה, ועיצוב קלטים לרשתות נוירונים.",
+        explanation="השתמש ב-reshape כדי להפוך מערך של 6 איברים למטריצה של 2 על 3, ובצע חיתוך (slicing) לחילוץ עמודה:",
+        tip="💡 ב-NumPy הסימון : פירושו 'כל האיברים בציר זה'. למשל arr[:, 0] פירושו כל השורות, עמודה 0.",
+        default_code='''import numpy as np
+
+flat = np.arange(1, 7)
+reshaped = flat.reshape(2, 3)
+second_column = reshaped[:, 1]
+
+print(f"Original: {flat}")
+print("Reshaped:")
+print(reshaped)
+print(f"Second column: {second_column}")''',
+        expected_output="Original: [1 2 3 4 5 6]\nReshaped:\n[[1 2 3]\n [4 5 6]]\nSecond column: [2 5]",
+        hint="""1. השתמש ב-np.arange(1, 7) לקבלת מערך של 1 עד 6.
+2. שנה את צורתו בעזרת flat.reshape(2, 3).
+3. חלץ את העמודה השנייה (אינדקס 1) בכל השורות בעזרת reshaped[:, 1].""",
+        success_message="מדהים! למדת לשנות צורות של מערכים ולחתוך עמודות בצורה מקצועית.",
+        common_mistakes="""❌ ניסיון לעשות reshape לממדים שמכפלתם אינה שווה למספר האיברים הכולל (למשל 6 איברים ל-4x2 יגרור ValueError).
+❌ בלבול בין חיתוך שורות reshaped[0, :] לבין חיתוך עמודות reshaped[:, 0]."""
+    ),
+    Lesson(
+        id=47,
+        chapter="פרק 15: עיבוד נתונים מהיר עם ספריית NumPy",
+        title="שלב 47: סטטיסטיקה וסינון תנאים מהיר (Boolean Masking)",
+        recap="למדנו לשנות צורות ולחתוך מערכים. כעת נשתמש בפונקציות סטטיסטיות ובמסכות בוליאניות.",
+        why_learn="ניתוח נתונים דורש חישוב ממוצעים, חציון, סטיות תקן וסינון נתונים חריגים במהירות שיא בלי לכתוב לולאות ופקודות if.",
+        when_to_use="איתור תלמידים מצטיינים או נכשלים, סינון עסקאות חשודות, וניתוח מדדים סטטיסטיים של ניסויים.",
+        explanation="חשב ממוצע וערך מקסימלי, וסנן איברים העומדים בתנאי (Boolean Masking):",
+        tip="💡 התנאי arr >= 70 יוצר מערך של True/False. כשמעבירים אותו לתוך arr[...] מקבלים רק את האיברים שבהם התנאי התקיים!",
+        default_code='''import numpy as np
+
+scores = np.array([55, 72, 88, 94, 60, 85, 91])
+mean_val = np.mean(scores)
+max_val = np.max(scores)
+passing = scores[scores >= 70]
+
+print(f"Mean: {round(mean_val, 1)}")
+print(f"Max: {max_val}")
+print(f"Passing scores: {passing}")''',
+        expected_output="Mean: 77.9\nMax: 94\nPassing scores: [72 88 94 85 91]",
+        hint="""1. השתמש ב-np.mean(scores) לחישוב ממוצע וב-np.max(scores) לערך מרבי.
+2. עגל את הממוצע לספרה אחת בעזרת round(mean_val, 1).
+3. סנן ציונים העוברים 70 בעזרת המסכה scores[scores >= 70].""",
+        success_message="ברכות! השלמת את פרק NumPy ואתה שולט בעיבוד וסינון נתונים מתמטי!",
+        common_mistakes="""❌ שימוש באופרטור and הרגיל של פייתון בסינון מערך במקום אופרטור הביטים & (למשל (a > 50) & (a < 90)).
+❌ שכחת סוגריים מרובעים בביצוע הסינון: scores[scores >= 70] ולא scores(scores >= 70)."""
+    ),
+    Lesson(
+        id=48,
+        chapter="פרק 16: ניתוח וארגון נתונים טבלאיים עם Pandas",
+        title="שלב 48: מבוא ל-Pandas: מבני נתונים Series ו-DataFrame",
+        recap="NumPy נתן לנו מערכים מתמטיים מהירים. כעת נכיר את Pandas שמאפשרת עבודה עם טבלאות נתונים מובנות עם שמות עמודות ואינדקסים.",
+        why_learn="ספריית Pandas היא הכלי המוביל בעולם לעיבוד טבלאי (בדומה ל-Excel אך בעל עוצמה אדירה ואוטומציה מלאה).",
+        when_to_use="טעינת קובצי אקסל ו-CSV, ניתוח נתוני משתמשים, ניהול מאגרי לקוחות והכנת נתונים לבינה מלאכותית.",
+        explanation="מייבאים את pandas בכינוי pd. יוצרים עמודה בודדת (Series) וטבלה מלאה (DataFrame) ממילון פייתון:",
+        tip="💡 המוסכמה המקובלת היא import pandas as pd. סדרה (Series) היא עמודה בודדת, וטבלה (DataFrame) מורכבת מכמה סדרות.",
+        default_code='''import pandas as pd
+
+data = {
+    "Name": ["Alice", "Bob", "Charlie"],
+    "Age": [25, 30, 22],
+    "Score": [88, 92, 79]
+}
+
+df = pd.DataFrame(data)
+print(f"Columns: {list(df.columns)}")
+print(f"Shape: {df.shape}")
+print("Names:")
+print(df['Name'].tolist())''',
+        expected_output="Columns: ['Name', 'Age', 'Score']\nShape: (3, 3)\nNames:\n['Alice', 'Bob', 'Charlie']",
+        hint="""1. ייבא את pandas: import pandas as pd
+2. הגדר מילון data עם המפתחות Name, Age, Score והמר ל-DataFrame עם pd.DataFrame(data)
+3. הדפס את שמות העמודות כרשימה בעזרת list(df.columns) ואת df.shape
+4. הדפס את עמודת השמות כרשימה בעזרת df['Name'].tolist()""",
+        success_message="מצוין! יצרת את טבלת ה-DataFrame הראשונה שלך ב-Pandas!",
+        common_mistakes="""❌ אי התאמה בין אורכי הרשימות בעמודות השונות של המילון (כל העמודות ב-DataFrame חייבות להיות באותו אורך בדיוק).
+❌ בלבול בין Series (עמודה אחת) לבין DataFrame (טבלה שלמה)."""
+    ),
+    Lesson(
+        id=49,
+        chapter="פרק 16: ניתוח וארגון נתונים טבלאיים עם Pandas",
+        title="שלב 49: תצוגה מקדימה, מידע וחקירת נתונים (head, info, describe)",
+        recap="למדנו ליצור DataFrame. כעת נלמד את הכלים הראשונים שכל מדען נתונים מפעיל על טבלה חדשה.",
+        why_learn="כשמקבלים מאגר נתונים חדש (לפעמים עם מיליוני שורות), אי אפשר להדפיס את הכל למסך. צריך לסקור שורות ראשונות, לבדוק טיפוסי עמודות ולקבל סיכום סטטיסטי.",
+        when_to_use="בכל פעם שטוענים קובץ נתונים חדש לחקירה (Exploratory Data Analysis - EDA).",
+        explanation="השתמש במתודות head(n) להצגת n השורות הראשונות, ובחישוב ממוצעים וערכים של עמודות ספציפיות:",
+        tip="💡 המתודה head() מציגה כברירת מחדל 5 שורות ראשונות, ו-tail() מציגה שורות אחרונות.",
+        default_code='''import pandas as pd
+
+data = {
+    "City": ["Tel Aviv", "Haifa", "Jerusalem", "Eilat"],
+    "Temp": [28, 25, 23, 34],
+    "Humidity": [65, 70, 45, 25]
+}
+
+df = pd.DataFrame(data)
+first_two = df.head(2)
+avg_temp = df["Temp"].mean()
+
+print(f"First 2 rows cities: {first_two['City'].tolist()}")
+print(f"Average Temp: {avg_temp}")
+print(f"Max Humidity: {df['Humidity'].max()}")''',
+        expected_output="First 2 rows cities: ['Tel Aviv', 'Haifa']\nAverage Temp: 27.5\nMax Humidity: 70",
+        hint="""1. צור את ה-DataFrame מהנתונים.
+2. קרא ל-df.head(2) כדי לשלוף את שתי השורות הראשונות.
+3. חשב ממוצע עמודת Temp בעזרת df["Temp"].mean() ומקסימום עם df["Humidity"].max().""",
+        success_message="מעולה! עכשיו יש לך את כלי החקירה המרכזיים של מדעני נתונים.",
+        common_mistakes="""❌ גישה לעמודה שלא קיימת או שגיאת כתיב בשם העמודה (KeyError).
+❌ שכחת סוגריים בקריאה למתודות סטטיסטיות (למשל df['Temp'].mean ולא .mean())."""
+    ),
+    Lesson(
+        id=50,
+        chapter="פרק 16: ניתוח וארגון נתונים טבלאיים עם Pandas",
+        title="שלב 50: סינון שורות ובחירת עמודות (Filtering & Selection)",
+        recap="אנו יודעים לחקור מאגר נתונים. כעת נלמד לסנן שורות לפי קריטריונים מורכבים.",
+        why_learn="מתוך מאגר נתונים ענק אנו מעוניינים לעיתים רק בנתונים העונים על תנאים מסוימים – למשל לקוחות פעילים מעל גיל 18 או עסקאות מעל סכום מוגדר.",
+        when_to_use="סינון נתוני חיפוש, יצירת פלחי שוק (Segmentation), והסרת רשומות לא רלוונטיות לפני אימון מודל.",
+        explanation="בצע סינון שורות באמצעות תנאי בוליאני על עמודות והצג את העמודות המבוקשות:",
+        tip="💡 כדי לשלב מספר תנאים ב-Pandas משתמשים ב-& (וגם) או ב-| (או), כאשר כל תנאי עטוף בסוגריים עגולים: (df['A'] > 1) & (df['B'] < 5).",
+        default_code='''import pandas as pd
+
+data = {
+    "Product": ["Laptop", "Mouse", "Keyboard", "Monitor"],
+    "Price": [1200, 25, 75, 300],
+    "InStock": [True, True, False, True]
+}
+
+df = pd.DataFrame(data)
+budget_items = df[(df["Price"] < 500) & (df["InStock"] == True)]
+
+print(f"Affordable in-stock: {budget_items['Product'].tolist()}")
+print(f"Count: {len(budget_items)}")''',
+        expected_output="Affordable in-stock: ['Mouse', 'Monitor']\nCount: 2",
+        hint="""1. בנה תנאי משולב: (df["Price"] < 500) & (df["InStock"] == True)
+2. העבר את התנאי לתוך ה-DataFrame לקבלת השורות המסוננות: budget_items = df[...]
+3. הדפס את רשימת המוצרים עם budget_items['Product'].tolist() ואת אורכו len(budget_items)""",
+        success_message="יופי! למדת לסנן נתונים מורכבים בדיוק לפי התנאים הדרושים.",
+        common_mistakes="""❌ שימוש ב-and במקום ב-&, שגורם לשגיאת ValueError: The truth value of a Series is ambiguous.
+❌ שכחת סוגריים מסביב לכל תנאי בביטוי בוליאני משולב."""
+    ),
+    Lesson(
+        id=51,
+        chapter="פרק 16: ניתוח וארגון נתונים טבלאיים עם Pandas",
+        title="שלב 51: טיפול בערכים חסרים (Missing Values - dropna, fillna)",
+        recap="בנתונים אמיתיים מהעולם תמיד יש שגיאות, נתונים חסרים (NaN) או תאים ריקים.",
+        why_learn="אלגוריתמים של למידת מכונה לא יכולים לעבוד עם ערכים חסרים! לכן ניקוי נתונים (Data Cleaning) הוא כ-80% מעבודתו של מדען נתונים.",
+        when_to_use="הכנת נתוני סקרים, טיפול בחיישנים שלא דיווחו, והשלמת נתונים חסרים בעזרת ממוצע.",
+        explanation="זהה ערכים חסרים עם isna(), והשלם אותם בממוצע בעזרת fillna():",
+        tip="💡 ערך חסר בפייתון/Pandas מסומן בדרך כלל כ-None או np.nan.",
+        default_code='''import pandas as pd
+import numpy as np
+
+data = {
+    "Item": ["Apples", "Bananas", "Cherries", "Dates"],
+    "Price": [10.0, np.nan, 25.0, np.nan]
+}
+
+df = pd.DataFrame(data)
+print(f"Missing count: {df['Price'].isna().sum()}")
+
+# Fill missing prices with average of existing prices
+avg_price = df["Price"].mean()
+df_filled = df.copy()
+df_filled["Price"] = df_filled["Price"].fillna(avg_price)
+
+print(f"Filled prices: {df_filled['Price'].tolist()}")''',
+        expected_output="Missing count: 2\nFilled prices: [10.0, 17.5, 25.0, 17.5]",
+        hint="""1. חשב את כמות הערכים החסרים עם df['Price'].isna().sum().
+2. חשב את ממוצע המחירים הקיים: avg_price = df["Price"].mean() (יוצא 17.5).
+3. מלא את החסרים בעזרת df_filled["Price"].fillna(avg_price).""",
+        success_message="מעולה! רכשת את מיומנות ניקוי הנתונים הקריטית ביותר במדעי הנתונים.",
+        common_mistakes="""❌ ניסיון לבצע פעולות חשבון על עמודה שמכילה NaN מבלי לנקות או להשלים אותה.
+❌ שכחה ש-fillna מחזירה סדרה חדשה אלא אם שומרים את התוצאה או מגדירים inplace=True."""
+    ),
+    Lesson(
+        id=52,
+        chapter="פרק 16: ניתוח וארגון נתונים טבלאיים עם Pandas",
+        title="שלב 52: קיבוץ וצבירת נתונים (GroupBy & Aggregation)",
+        recap="למדנו לנקות ולסנן נתונים. כעת נלמד להפיק תובנות עסקיות על ידי קיבוץ לפי קטגוריות.",
+        why_learn="מנהלים ומדעני נתונים רוצים לדעת מה סך המכירות לפי אזור, מה הציון הממוצע לפי כיתה, או מה משך השימוש לפי סוג מכשיר.",
+        when_to_use="דוחות פיננסיים, ניתוח משתמשים לפי מדינות, השוואת ביצועים בין מחלקות.",
+        explanation="השתמש ב-groupby() כדי לקבץ שורות לפי קטגוריה, ובצע פעולת אגרגציה כגון sum() או mean():",
+        tip="💡 פעולת groupby מחלקת את הטבלה לקבוצות, מפעילה פונקציה על כל קבוצה ומאחדת את התוצאות (Split-Apply-Combine).",
+        default_code='''import pandas as pd
+
+sales = {
+    "Category": ["Fruit", "Fruit", "Vegetable", "Fruit", "Vegetable"],
+    "Item": ["Apple", "Banana", "Carrot", "Orange", "Tomato"],
+    "Amount": [100, 150, 80, 200, 120]
+}
+
+df = pd.DataFrame(sales)
+grouped = df.groupby("Category")["Amount"].sum()
+
+print("Category totals:")
+for cat, total in grouped.items():
+    print(f"{cat}: {total}")''',
+        expected_output="Category totals:\nFruit: 450\nVegetable: 200",
+        hint="""1. צור את ה-DataFrame מהמילון sales.
+2. קבץ לפי עמודת Category ובחר את עמודת Amount: df.groupby("Category")["Amount"].sum().
+3. הדפס בלולאה את כל זוגות (cat, total) מתוך grouped.items().""",
+        success_message="ברכות! השלמת את פרק Pandas בהצלחה! אתה מוכן להיכנס לעולם למידת המכונה וה-AI!",
+        common_mistakes="""❌ שכחת בחירת העמודה המספרית לפני פעולת החישוב, מה שמנסה לסכום גם עמודות טקסטואליות.
+❌ בלבול בין groupby (קיבוץ לפי קטגוריה) לבין sort_values (מיון פשוט)."""
+    ),
+    Lesson(
+        id=53,
+        chapter="פרק 17: יסודות למידת מכונה וסיווג נתונים עם Scikit-learn",
+        title="שלב 53: מהי למידת מכונה? תכונות (X) ותוויות מטרה (y)",
+        recap="הבנו כיצד לעבד נתונים בעזרת NumPy ו-Pandas. כעת ניכנס לעולם המרתק של למידת מכונה (Machine Learning).",
+        why_learn="בתכנות רגיל אנו כותבים כללים מפורשים. בלמידת מכונה, המחשב לומד בעצמו את החוקיות מתוך נתוני העבר כדי לחזות תוצאות עתידיות!",
+        when_to_use="זיהוי ספאם במייל, חיזוי מחלות, המלצות צפייה בנטפליקס, נהיגה אוטונומית וזיהוי תווים וקול.",
+        explanation="בלמידה מונחית (Supervised Learning) מחלקים תמיד את הנתונים לשני רכיבים:\n1. מטריצת התכונות X (Features) – המידע שלפיו חוזים.\n2. וקטור המטרה y (Labels/Targets) – מה שרוצים לחזות:",
+        tip="💡 נהוג לסמן את התכונות באות X גדולה (כי זו מטריצה דו-ממדית) ואת התוויות באות y קטנה (כי זה וקטור חד-ממדי).",
+        default_code='''import numpy as np
+
+# Height (cm), Weight (kg) -> Label (0: Child, 1: Adult)
+X = np.array([
+    [120, 25],
+    [130, 30],
+    [175, 75],
+    [180, 82]
+])
+y = np.array([0, 0, 1, 1])
+
+print(f"Features shape (X): {X.shape}")
+print(f"Labels shape (y): {y.shape}")
+print(f"Samples count: {len(X)}")
+print(f"Features per sample: {X.shape[1]}")''',
+        expected_output="Features shape (X): (4, 2)\nLabels shape (y): (4,)\nSamples count: 4\nFeatures per sample: 2",
+        hint="""1. הגדר את מטריצת המאפיינים X (גובה ומשקל) כמערך דו-ממדי.
+2. הגדר את וקטור התוויות y כמערך חד-ממדי.
+3. הדפס את X.shape, y.shape, len(X) ואת X.shape[1] (כמות התכונות).""",
+        success_message="מעולה! הבנת את העיקרון היסודי ביותר בלמידת מכונה: הפרדה בין תכונות X לתוויות y!",
+        common_mistakes="""❌ אי התאמה בין מספר הדגימות ב-X למספר התוויות ב-y (אם ב-X יש 4 דוגמאות, גם ב-y חייבות להיות 4 תוויות).
+❌ בלבול בין תכונה (Feature) שהיא משתנה מסביר לבין תווית (Label) שהיא התוצאה שנלמדת."""
+    ),
+    Lesson(
+        id=54,
+        chapter="פרק 17: יסודות למידת מכונה וסיווג נתונים עם Scikit-learn",
+        title="שלב 54: חלוקת נתונים לאימון ומבחן (train_test_split)",
+        recap="למדנו על X ו-y. כעת נלמד כלל זהב בלמידת מכונה: אף פעם לא בוחנים מודל על הנתונים שהוא התאמן עליהם!",
+        why_learn="אם נבחן את המודל על אותן שאלות שהוא שינן, נקבל תוצאה מטעה ולא נדע אם הוא באמת למד לחשוב ולהכליל למקרים חדשים.",
+        when_to_use="בכל פרויקט AI בעולם, תמיד מחלקים את המאגר לנתוני אימון (Train) ונתוני מבחן (Test).",
+        explanation="השתמש בפונקציה train_test_split של scikit-learn לחלוקת המאגר (למשל 75% לאימון ו-25% למבחן):",
+        tip="💡 הפרמטר random_state מבטיח שהחלוקה תהיה עקבית וניתנת לשחזור בכל פעם שמריצים את הקוד.",
+        default_code='''from sklearn.model_selection import train_test_split
+import numpy as np
+
+X = np.array([[1], [2], [3], [4], [5], [6], [7], [8]])
+y = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+print(f"Total samples: {len(X)}")
+print(f"Train samples: {len(X_train)}")
+print(f"Test samples: {len(X_test)}")''',
+        expected_output="Total samples: 8\nTrain samples: 6\nTest samples: 2",
+        hint="""1. ייבא את הפונקציה: from sklearn.model_selection import train_test_split
+2. קרא לה עם X, y, test_size=0.25 ו-random_state=42.
+3. הדפס את גודלי המערכים: len(X), len(X_train), len(X_test).""",
+        success_message="מצוין! למדת את מתודולוגיית ההערכה המדעית הבסיסית ביותר של מדעני נתונים.",
+        common_mistakes="""❌ ערבוב בסדר המשתנים המוחזרים: הסדר הקבוע הוא תמיד X_train, X_test, y_train, y_test.
+❌ שכחת random_state מה שגורם לחלוקה אקראית שונה בכל הרצה."""
+    ),
+    Lesson(
+        id=55,
+        chapter="פרק 17: יסודות למידת מכונה וסיווג נתונים עם Scikit-learn",
+        title="שלב 55: אימון מסווג הסתברותי ראשון (Gaussian Naive Bayes)",
+        recap="למדנו לחלק נתונים ל-train ול-test. כעת נאמן את מודל ה-Machine Learning הראשון שלנו!",
+        why_learn="האלגוריתם Naive Bayes (הנלמד בספר של DigitalOcean) מתבסס על הסתברות ומשפט בייס. הוא נחשב למודל סיווג מהיר ויעיל במיוחד (למשל לסינון דואר זבל וזיהוי מחלות).",
+        when_to_use="סיווג טקסטים, זיהוי ספאם, אבחון רפואי מהיר וניתוח סנטימנט.",
+        explanation="ב-scikit-learn לכל המודלים יש ממשק אחיד פשוט: 1. יצירת האובייקט, 2. fit(X_train, y_train) לאימון, 3. predict(X_test) לחיזוי:",
+        tip="💡 מתודת fit היא השלב שבו המודל 'לומד' את התבניות מתוך נתוני האימון.",
+        default_code='''from sklearn.naive_bayes import GaussianNB
+import numpy as np
+
+# Training data: [Hours Studied, Sleep Hours] -> [0: Fail, 1: Pass]
+X_train = np.array([
+    [1.0, 4.0],
+    [2.0, 5.0],
+    [7.0, 8.0],
+    [8.0, 7.0]
+])
+y_train = np.array([0, 0, 1, 1])
+
+# Initialize and train the model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predict for new students
+new_students = np.array([
+    [1.5, 4.5],
+    [7.5, 8.5]
+])
+predictions = model.predict(new_students)
+
+print(f"Predictions for new students: {predictions.tolist()}")''',
+        expected_output="Predictions for new students: [0, 1]",
+        hint="""1. ייבא את המודל: from sklearn.naive_bayes import GaussianNB
+2. צור מופע model = GaussianNB() ואמן אותו בעזרת model.fit(X_train, y_train).
+3. בצע חיזוי על new_students בעזרת model.predict(new_students).
+4. הדפס את החיזוי כרשימה: predictions.tolist().""",
+        success_message="וואו! אימנת בהצלחה את מודל הבינה המלאכותית הראשון שלך וקיבלת תחזיות מדויקות!",
+        common_mistakes="""❌ ניסיון לקרוא ל-predict לפני שבוצע fit (יגרור NotFittedError).
+❌ העברת קלט חד-ממדי ל-predict במקום מערך דו-ממדי של דגימות (כל קלט חייב להיות בצורת [n_samples, n_features])."""
+    ),
+    Lesson(
+        id=56,
+        chapter="פרק 17: יסודות למידת מכונה וסיווג נתונים עם Scikit-learn",
+        title="שלב 56: הערכת ביצועי מודל ומדד דיוק (accuracy_score)",
+        recap="אימנו מודל וביצענו תחזיות. כעת נלמד למדוד באופן כמותי כמה המודל שלנו מוצלח.",
+        why_learn="בעולם האמיתי אי אפשר להסתפק ב'נראה לי שהמודל עובד טוב'. אנו זקוקים למדדי דיוק מדויקים באחוזים (Accuracy, Confusion Matrix) כדי להשוות בין מודלים שונים.",
+        when_to_use="הערכת מערכות זיהוי פנים, בדיקת דיוק של מודל חיזוי פיננסי, והחלטה האם מודל מוכן לעלות לסביבת ייצור (Production).",
+        explanation="נשווה בין התחזיות (y_pred) לבין התוצאות האמיתיות (y_true) בעזרת accuracy_score:",
+        tip="💡 מדד Accuracy הוא היחס בין מספר התחזיות הנכונות לבין סך כל הדגימות שנבדקו.",
+        default_code='''from sklearn.metrics import accuracy_score
+import numpy as np
+
+# True labels vs Model predictions
+y_true = np.array([0, 1, 1, 0, 1, 0, 1, 1])
+y_pred = np.array([0, 1, 1, 0, 1, 0, 0, 1])
+
+acc = accuracy_score(y_true, y_pred)
+correct_count = np.sum(y_true == y_pred)
+
+print(f"Correct: {correct_count}/{len(y_true)}")
+print(f"Accuracy: {acc * 100:.1f}%")''',
+        expected_output="Correct: 7/8\nAccuracy: 87.5%",
+        hint="""1. ייבא את המדד: from sklearn.metrics import accuracy_score
+2. חשב את הדיוק בעזרת accuracy_score(y_true, y_pred).
+3. חשב כמה תוצאות נכונות היו: np.sum(y_true == y_pred).
+4. הדפס את היחס ואת האחוזים בפורמט: Accuracy: 87.5%""",
+        success_message="נהדר! למדת למדוד ביצועי מודל במדויק ולהבין את אחוזי ההצלחה שלו.",
+        common_mistakes="""❌ העברת סדר פרמטרים שגוי: המוסכמה היא accuracy_score(y_true, y_pred).
+❌ הסתמכות עיוורת על accuracy במקרים של נתונים לא מאוזנים (למשל 99% דוגמאות שליליות)."""
+    ),
+    Lesson(
+        id=57,
+        chapter="פרק 18: מודלים קלאסיים ופרויקט בינה מלאכותית מסכם",
+        title="שלב 57: עצי החלטה (Decision Tree Classifier)",
+        recap="ראינו מודל הסתברותי. כעת נכיר את אחד המודלים הפופולריים, הברורים והאינטואיטיביים ביותר: עץ החלטה.",
+        why_learn="עץ החלטה לומד שרשרת שאלות של 'כן/לא' (כמו תרשים זרימה). היתרון העצום שלו הוא שניתן להבין בדיוק מדוע המודל קיבל כל החלטה (White Box Model).",
+        when_to_use="אישור הלוואות בבנקים, תעדוף מטופלים ברפואה, ומשחקים בהם נדרשת שקיפות בקבלת החלטות.",
+        explanation="צור ואמן עץ החלטה בעזרת DecisionTreeClassifier והגדר עומק מקסימלי (max_depth) למניעת התאמת יתר (Overfitting):",
+        tip="💡 הגבלת עומק העץ (max_depth) שומרת על המודל פשוט ומונעת ממנו לזכור רעשים בנתונים במקום ללמוד חוקים כלליים.",
+        default_code='''from sklearn.tree import DecisionTreeClassifier
+import numpy as np
+
+# [Age, Has Credit Card (0/1)] -> Approved Loan (0: No, 1: Yes)
+X_train = np.array([
+    [19, 0],
+    [22, 1],
+    [35, 1],
+    [45, 1],
+    [18, 0]
+])
+y_train = np.array([0, 1, 1, 1, 0])
+
+tree = DecisionTreeClassifier(max_depth=2, random_state=42)
+tree.fit(X_train, y_train)
+
+test_client = np.array([[30, 1]])
+result = tree.predict(test_client)[0]
+
+print(f"Tree Max Depth: {tree.max_depth}")
+print(f"Test Client Approval: {'Approved' if result == 1 else 'Denied'}")''',
+        expected_output="Tree Max Depth: 2\nTest Client Approval: Approved",
+        hint="""1. ייבא את DecisionTreeClassifier מ-sklearn.tree.
+2. אתחל עם max_depth=2 ו-random_state=42.
+3. אמן עם fit(X_train, y_train) ובצע חיזוי עם tree.predict(test_client).""",
+        success_message="מעולה! למדת להשתמש בעץ החלטה ולהבין את יתרונותיו בהסבריות וקבלת החלטות.",
+        common_mistakes="""❌ אי הגבלת עומק העץ (max_depth) במאגרי ענק, מה שעלול לגרום להתאמת יתר חמורה (Overfitting).
+❌ העברת נתונים לא מספריים ישירות לעץ (עץ דורש קידוד מספרי של כל התכונות)."""
+    ),
+    Lesson(
+        id=58,
+        chapter="פרק 18: מודלים קלאסיים ופרויקט בינה מלאכותית מסכם",
+        title="שלב 58: אלגוריתם השכנים הקרובים (K-Nearest Neighbors - KNN)",
+        recap="למדנו על עצי החלטה. כעת נכיר אלגוריתם גיאומטרי אלגנטי המבוסס על קרבה במרחב.",
+        why_learn="אלגוריתם KNN אומר: 'אמור לי מי חבריך ואומר לך מי אתה'. כדי לסווג נקודה חדשה, הוא מוצא את K הדוגמאות הקרובות ביותר אליה ומכריע לפי הרוב.",
+        when_to_use="מערכות המלצה (זיהוי משתמשים בעלי טעם דומה), זיהוי תבניות בסיסי וסיווג לפי מרחק גאוגרפי.",
+        explanation="השתמש ב-KNeighborsClassifier עם מספר שכנים k=3 כדי לסווג נקודות חדשות במישור:",
+        tip="💡 נהוג לבחור מספר k אי-זוגי (כמו 3 או 5) במשימות של שני סוגים, כדי למנוע מצב של שוויון בהצבעה.",
+        default_code='''from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
+
+# Coordinates (X, Y) -> Group (0: Red, 1: Blue)
+X = np.array([
+    [1.0, 1.0],
+    [1.5, 2.0],
+    [2.0, 1.5],
+    [8.0, 8.0],
+    [9.0, 8.5],
+    [8.5, 9.0]
+])
+y = np.array([0, 0, 0, 1, 1, 1])
+
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X, y)
+
+new_point = np.array([[2.0, 2.0]])
+predicted_group = knn.predict(new_point)[0]
+
+print(f"Neighbors count: {knn.n_neighbors}")
+print(f"Point [2.0, 2.0] belongs to Group: {predicted_group}")''',
+        expected_output="Neighbors count: 3\nPoint [2.0, 2.0] belongs to Group: 0",
+        hint="""1. ייבא את KNeighborsClassifier מ-sklearn.neighbors.
+2. הגדר knn = KNeighborsClassifier(n_neighbors=3) ואמן בעזרת knn.fit(X, y).
+3. בצע חיזוי לנקודה [2.0, 2.0] והדפס את הקבוצה שנבחרה.""",
+        success_message="נהדר! הבנת את עיקרון הקרבה הגיאומטרית של אלגוריתם KNN.",
+        common_mistakes="""❌ בחירת k גדול מדי הגורם למודל לחזות תמיד את המחלקה השכיחה ביותר.
+❌ שכחת נרמול נתונים (Scaling) כשמשתמשים ב-KNN על תכונות בסקלות שונות (למשל משכורת מול גיל)."""
+    ),
+    Lesson(
+        id=59,
+        chapter="פרק 18: מודלים קלאסיים ופרויקט בינה מלאכותית מסכם",
+        title="שלב 59: חיזוי ערך רציף עם רגרסיה ליניארית (Linear Regression)",
+        recap="עד כה עסקנו בסיווג (סיווג לקטגוריות בדידות 0 או 1). כעת נלמד לחזות מספר רציף (רגרסיה).",
+        why_learn="חיזוי מחיר דירה, חיזוי טמפרטורה, או הערכת רווח עתידי הם משימות רגרסיה שבהן התוצאה היא מספר רציף ולא קטגוריה.",
+        when_to_use="חיזוי מגמות פיננסיות, מחירי נדל\"ן, הערכת צריכת דלק של רכב, ומדדי מכירות עתידיים.",
+        explanation="רגרסיה ליניארית מוצאת את קו המגמה הטוב ביותר (y = mx + b). נשתמש ב-LinearRegression ונבדוק את המקדם (slope) והמחיר החזוי:",
+        tip="💡 המקדם coef_ מייצג כמה ה-y צפוי לעלות עבור כל עלייה של יחידה אחת ב-X.",
+        default_code='''from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# Square meters -> House price (in thousands of dollars)
+X = np.array([[50], [70], [100], [120]])
+y = np.array([150, 210, 300, 360])
+
+reg = LinearRegression()
+reg.fit(X, y)
+
+new_house = np.array([[85]])
+predicted_price = reg.predict(new_house)[0]
+
+print(f"Slope (coef): {round(float(reg.coef_[0]), 2)}")
+print(f"Predicted price for 85 sqm: ${round(float(predicted_price), 1)}k")''',
+        expected_output="Slope (coef): 3.0\nPredicted price for 85 sqm: $255.0k",
+        hint="""1. ייבא את LinearRegression מ-sklearn.linear_model.
+2. אמן את המודל בעזרת reg.fit(X, y).
+3. חזה מחיר לדירה של 85 מ"ר בעזרת reg.predict([[85]]).
+4. הדפס את reg.coef_[0] ואת המחיר החזוי המעוגל.""",
+        success_message="מצוין! למדת את ההבדל החשוב בין סיווג לרגרסיה וכיצד לחזות ערכים מספריים רציפים.",
+        common_mistakes="""❌ שימוש במדד accuracy_score על מודל רגרסיה (ברגרסיה משתמשים במדדי שגיאה כמו MSE או R^2).
+❌ העברת וקטור חד-ממדי כקלט ל-X (הקלט ל-fit חייב להיות מטריצה דו-ממדית בצורת [N, 1])."""
+    ),
+    Lesson(
+        id=60,
+        chapter="פרק 18: מודלים קלאסיים ופרויקט בינה מלאכותית מסכם",
+        title="שלב 60: פרויקט מסכם: צינור למידת מכונה שלם (End-to-End ML Pipeline)",
+        recap="הגענו לשלב השיא המסכם של כל הקורס המורחב! שילוב של כל הידע: NumPy, Pandas, Scikit-learn ו-AI!",
+        why_learn="מדען נתונים אמיתי מחבר את כל השלבים יחד לצינור עבודה שלם: טעינת נתונים, עיבוד ובדיקה, חלוקה ל-train/test, אימון מודל, הערכת ביצועים והפקת תחזית לייצור.",
+        when_to_use="זהו התהליך המלא המתרחש בכל חברת הייטק, סטארטאפ ומעבדת מחקר בינה מלאכותית בעולם.",
+        explanation="בנה צינור עבודה מלא המבוסס על הפרויקט בספר Machine Learning Projects in Python:\n1. ארגון נתונים ב-DataFrame\n2. חלוקה ל-train/test בעזרת train_test_split\n3. אימון מודל GaussianNB\n4. מדידת דיוק (accuracy_score) והפקת תחזית סופית:",
+        tip="💡 שים לב כיצד כל החלקים שלמדת בפרקים 15-18 משתלבים יחד בהרמוניה מושלמת!",
+        default_code='''import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# 1. Dataset: Clinical metrics -> Diagnosis (0: Benign, 1: Malignant)
+data = {
+    "Radius": [14.2, 20.1, 12.5, 18.3, 11.2, 19.5, 13.1, 21.0],
+    "Texture": [19.3, 24.5, 18.1, 22.0, 15.6, 25.1, 16.2, 26.0],
+    "Target": [0, 1, 0, 1, 0, 1, 0, 1]
+}
+
+df = pd.DataFrame(data)
+
+# 2. Separate Features (X) and Target (y)
+X = df[["Radius", "Texture"]]
+y = df["Target"]
+
+# 3. Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# 4. Train GaussianNB Model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# 5. Evaluate Accuracy
+predictions = model.predict(X_test)
+accuracy = accuracy_score(y_test, predictions)
+
+# 6. Predict on New Sample
+new_sample = pd.DataFrame([[13.5, 17.0]], columns=["Radius", "Texture"])
+prediction_new = model.predict(new_sample)[0]
+
+print(f"Dataset samples: {len(df)}")
+print(f"Training accuracy: {accuracy * 100:.1f}%")
+print(f"New sample classification: {int(prediction_new)}")''',
+        expected_output="Dataset samples: 8\nTraining accuracy: 100.0%\nNew sample classification: 0",
+        hint="""1. ארגן את הנתונים ב-DataFrame וחלץ את X ו-y.
+2. חלק בעזרת train_test_split עם test_size=0.25 ו-random_state=42.
+3. אמן את GaussianNB בעזרת model.fit(X_train, y_train).
+4. חשב את הדיוק בעזרת accuracy_score והצג בפורמט: Training accuracy: 100.0%
+5. בצע חיזוי על new_sample והדפס את התוצאה: New sample classification: 0""",
+        success_message="🎓👑 מעולה! השלמת את צינור למידת המכונה השלם! כעת אתה מוכן לעבור לשלבי השיא: רשתות נוירונים, למידה עמוקה ולמידת חיזוק!",
+        common_mistakes="""❌ אי התאמה בין שמות עמודות ה-Features באימון לבין הקלט בחיזוי חדש.
+❌ הדלפת מידע (Data Leakage) על ידי עיבוד נתונים משותף לפני חלוקת train/test.
+❌ שכחת בדיקת שגיאות או ערכים חסרים לפני הכנסת הנתונים לצינור האימון."""
     )
+,
+    Lesson(
+        id=61,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 61: מבנה הנוירון המלאכותי (The Perceptron / Artificial Neuron)",
+        recap="למדנו מודלים קלאסיים של למידת מכונה. כעת נעשה צעד ענק קדימה אל עולם הלמידה העמוקה (Deep Learning) בהשראת המוח האנושי!",
+        why_learn="רשתות נוירונים עומדות מאחורי פריצות הדרך הגדולות של ימינו: ChatGPT, זיהוי פנים, כלי רכב אוטונומיים ורובוטיקה. הכל מתחיל מנוירון בודד (Perceptron).",
+        when_to_use="חישוב החלטה בודדת המבוססת על שקלול מספר נתונים עם חשיבות (משקולות) שונה לכל נתון.",
+        explanation="נוירון מקבל קלטים (inputs), כופל כל קלט במשקולת שלו (weights), מוסיף הטיה (bias) ומחליט האם 'לירות' אות (0 או 1):",
+        tip="💡 הנוסחה המרכזית היא z = np.dot(inputs, weights) + bias. מכפלה סקלרית מכפלת ומחברת את כל האיברים בבת אחת!",
+        default_code='''import numpy as np
+
+# Inputs (Study hours, Practice tests)
+inputs = np.array([3.0, 4.0])
+# Weights (Importance of each input)
+weights = np.array([0.5, 0.4])
+bias = -2.0
+
+# Linear combination: z = (3.0 * 0.5) + (4.0 * 0.4) - 2.0
+z = np.dot(inputs, weights) + bias
+# Step activation function
+output = 1 if z >= 0 else 0
+
+print(f"Weighted sum (z): {round(float(z), 2)}")
+print(f"Neuron fired: {output}")''',
+        expected_output="Weighted sum (z): 1.1\nNeuron fired: 1",
+        hint="""1. חשב את המכפלה הסקלרית z = np.dot(inputs, weights) + bias.
+2. קבע output = 1 if z >= 0 else 0.
+3. הדפס את z מעוגל לספרה אחת ואת output.""",
+        success_message="מדהים! בנית את הנוירון המלאכותי הראשון שלך והבנת איך המוח הממוחשב מקבל החלטות.",
+        common_mistakes="""❌ אי התאמה בין אורך וקטור הקלטים לאורך וקטור המשקולות (חייב להיות בעל אותו אורך כדי לבצע np.dot).
+❌ שכחת ה-bias, שמאפשר לנוירון לכוונן את סף ההחלטה שלו ולא להיות מוגבל לראשית הצירים."""
+    ),
+    Lesson(
+        id=62,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 62: פונקציות שפעול (Activation Functions: Sigmoid & ReLU)",
+        recap="ראינו נוירון עם פונקציית מדרגה פשוטה. כעת נכיר את פונקציות השפעול המקצועיות של עולם הבינה המלאכותית.",
+        why_learn="ללא פונקציות שפעול אי-ליניאריות, רשת נוירונים ענקית של 100 שכבות הייתה שקולה למשוואת קו ישר אחת פשוטה! פונקציות כמו Sigmoid ו-ReLU מעניקות לרשת את היכולת ללמוד צורות ותבניות מורכבות.",
+        when_to_use="Sigmoid משמשת להסתברויות (בין 0 ל-1), ו-ReLU היא הפונקציה הנפוצה והפופולרית ביותר בשכבות חבויות של רשתות עמוקות.",
+        explanation="ממש פונקציית ReLU (שמשאירה מספרים חיוביים ומאפסת שליליים) ופונקציית Sigmoid:",
+        tip="💡 הנוסחה של ReLU היא פשוטה להפליא: max(0, x). הנוסחה של Sigmoid היא 1 / (1 + e^(-x)).",
+        default_code='''import numpy as np
+
+def relu(x):
+    return np.maximum(0, x)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+vals = np.array([-3.0, 0.0, 3.0])
+relu_out = relu(vals)
+sigmoid_out = sigmoid(vals)
+
+print(f"Input: {vals.tolist()}")
+print(f"ReLU: {relu_out.tolist()}")
+print(f"Sigmoid: {[round(float(v), 2) for v in sigmoid_out]}")''',
+        expected_output="Input: [-3.0, 0.0, 3.0]\nReLU: [0.0, 0.0, 3.0]\nSigmoid: [0.05, 0.5, 0.95]",
+        hint="""1. הגדר את relu(x) באמצעות np.maximum(0, x).
+2. הגדר את sigmoid(x) באמצעות 1 / (1 + np.exp(-x)).
+3. החל את הפונקציות על vals והדפס את התוצאות.""",
+        success_message="כל הכבוד! הבנת את תפקידן הקריטי של פונקציות השפעול בבניית רשתות נוירונים.",
+        common_mistakes="""❌ שימוש ב-max הרגיל של פייתון על מערך NumPy במקום np.maximum.
+❌ גלישה נומרית בחישוב exp עבור מספרים שליליים עצומים (פתיר בעזרת clipping)."""
+    ),
+    Lesson(
+        id=63,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 63: רשת נוירונים רב-שכבתית (Multilayer Perceptron - MLP)",
+        recap="חיברנו נוירון בודד ופונקציית שפעול. כעת נחבר עשרות נוירונים יחד לרשת שכבות מלאה.",
+        why_learn="נוירון בודד מסוגל לפתור רק בעיות שניתנות להפרדה בקו ישר. כדי לפתור בעיות מורכבות (כמו בעיית ה-XOR המפורסמת), חייבים שכבה חבויה (Hidden Layer) של נוירונים.",
+        when_to_use="סיווג תמונות, זיהוי קול, עיבוד שפה טבעית וחיזוי מורכב של התנהגות משתמשים.",
+        explanation="צור רשת נוירונים רב-שכבתית בעזרת MLPClassifier עם שכבה חבויה, ואמן אותה על מערך נתונים:",
+        tip="💡 הפרמטר hidden_layer_sizes=(8,) קובע שכבה חבויה אחת עם 8 נוירונים.",
+        default_code='''from sklearn.neural_network import MLPClassifier
+import numpy as np
+
+# Synthetic sensor data: [Feature 1, Feature 2] -> Status [0: Safe, 1: Alert]
+X = np.array([
+    [0.1, 0.2],
+    [0.2, 0.1],
+    [0.8, 0.9],
+    [0.9, 0.8]
+])
+y = np.array([0, 0, 1, 1])
+
+mlp = MLPClassifier(
+    hidden_layer_sizes=(8,),
+    activation="relu",
+    solver="lbfgs",
+    max_iter=200,
+    random_state=42
+)
+mlp.fit(X, y)
+
+new_reading = np.array([[0.85, 0.85]])
+prediction = mlp.predict(new_reading)[0]
+
+print(f"Hidden layers: {mlp.hidden_layer_sizes}")
+print(f"Alert predicted: {prediction == 1}")''',
+        expected_output="Hidden layers: (8,)\nAlert predicted: True",
+        hint="""1. ייבא את MLPClassifier מ-sklearn.neural_network.
+2. הגדר hidden_layer_sizes=(8,), activation="relu", solver="lbfgs", max_iter=200, random_state=42.
+3. אמן את הרשת עם fit(X, y) ובצע חיזוי על new_reading.""",
+        success_message="וואו! אימנת רשת נוירונים רב-שכבתית מלאה והפקת תחזית מדויקת!",
+        common_mistakes="""❌ בחירת מספר קטן מדי של איטרציות (max_iter) לפני שהרשת מספיקה להתכנס.
+❌ אי הגדרת random_state מה שגורם למשקולות ההתחלתיות האקראיות להשתנות בכל הרצה."""
+    ),
+    Lesson(
+        id=64,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 64: פרויקט זיהוי ספרות בכתב יד (Handwritten Digit Recognition)",
+        recap="הגענו לפרויקט הדגל מפרק 5 בספר: זיהוי ספרות בכתב יד בעזרת ראייה ממוחשבת ובינה מלאכותית!",
+        why_learn="ראייה ממוחשבת (Computer Vision) מאפשרת למחשב 'לראות' תמונות. כל תמונה היא למעשה מטריצה של מספרים (ערכי בהירות של פיקסלים). נלמד את המחשב לזהות ספרות 0 ו-1 מתוך תמונות.",
+        when_to_use="מיון דואר אוטומטי בדואר לפי מיקוד, קריאת צ'קים בבנקים, וזיהוי לוחיות רישוי בכבישים.",
+        explanation="נטען את מאגר התמונות של ספרות בכתב יד (Digits/MNIST), נחלק לאימון ומבחן, ונאמן מודל לזיהוי הספרה:",
+        tip="💡 כל תמונה בגודל 8x8 פיקסלים מיוצגת כווקטור שטוח של 64 ערכים מספריים בין 0 ל-16.",
+        default_code='''from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Load handwritten digits 0 and 1
+digits = load_digits(n_class=2)
+X, y = digits.data, digits.target
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+preds = model.predict(X_test)
+acc = accuracy_score(y_test, preds)
+
+print(f"Total digit images: {len(X)}")
+print(f"Pixels per image: {X.shape[1]}")
+print(f"Recognition accuracy: {acc * 100:.1f}%")
+print(f"First test sample predicted: {int(preds[0])}")''',
+        expected_output="Total digit images: 360\nPixels per image: 64\nRecognition accuracy: 100.0%\nFirst test sample predicted: 1",
+        hint="""1. טען את הנתונים בעזרת load_digits(n_class=2).
+2. חלק בעזרת train_test_split עם test_size=0.25 ו-random_state=42.
+3. אמן את המודל, בצע חיזוי וחשב את אחוזי הדיוק עם accuracy_score.""",
+        success_message="🏆 פרויקט ראייה ממוחשבת מושלם! המחשב שלך למד לקרוא ספרות בכתב יד בדיוק של 100%!",
+        common_mistakes="""❌ ניסיון להעביר תמונה דו-ממדית ישירות למודל מבלי לשטח אותה לווקטור חד-ממדי של פיקסלים.
+❌ שכחת נרמול ערכי פיקסלים בעבודה עם תמונות גדולות בעלות טווח 0–255."""
+    ),
+    Lesson(
+        id=65,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 65: עקרונות למידת חיזוק (Agent, Environment, Reward)",
+        recap="למדנו למידה מונחית עם נתונים מוכנים. כעת נכנס לתחום המתקדם מפרק 6 בספר: למידת חיזוק (Reinforcement Learning) שבו ה-AI לומד מתוך ניסוי וטעייה!",
+        why_learn="כשמחשב לומד לשחק שחמט, לנהוג ברכב או לשלוט ברובוט, אין לו מאגר נתונים עם 'תשובות נכונות'. הוא חייב לנסות פעולות, לקבל תגמולים (Rewards) וללמוד מהטעויות שלו בעצמו.",
+        when_to_use="בוטים למשחקי מחשב (Atari, StarCraft), נהיגה אוטונומית, ואופטימיזציה של מסחר בבורסה.",
+        explanation="נבנה מחלקת סביבה (Environment) שבה סוכן (Agent) נע לאורך מסלול ומקבל תגמול (Reward) חיובי כשהוא מגיע ליעד ושלילי על כל צעד:",
+        tip="💡 מחזור הפעולה הבסיסי בלמידת חיזוק הוא: מצב (State) -> פעולה (Action) -> תגמול (Reward) + מצב חדש (Next State).",
+        default_code='''class GridWorld1D:
+    def __init__(self, size=4):
+        self.size = size
+        self.state = 0
+
+    def step(self, action):
+        # Action 1: Move Right, Action 0: Move Left
+        if action == 1 and self.state < self.size - 1:
+            self.state += 1
+        elif action == 0 and self.state > 0:
+            self.state -= 1
+
+        done = (self.state == self.size - 1)
+        reward = 10 if done else -1
+        return self.state, reward, done
+
+env = GridWorld1D(size=4)
+next_s, rew, done = env.step(action=1)
+
+print(f"Current State: {next_s}")
+print(f"Step Reward: {rew}")
+print(f"Goal Reached: {done}")''',
+        expected_output="Current State: 1\nStep Reward: -1\nGoal Reached: False",
+        hint="""1. צור מופע של הסביבה: env = GridWorld1D(size=4).
+2. קרא למתודת step עם action=1.
+3. הדפס את המצב החדש, את התגמול ואת הסטטוס done.""",
+        success_message="מעולה! הבנת את עמודי התווך של למידת חיזוק: סוכן, סביבה ותגמולים.",
+        common_mistakes="""❌ מתן תגמולים שאינם מעודדים את היעד הרצוי (Reward Hacking).
+❌ אי הגבלת תנועת הסוכן בגבולות הסביבה (יציאה מגבולות המערך)."""
+    ),
+    Lesson(
+        id=66,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 66: טבלת החלטות ועדכון ערכים (Q-Table & Bellman Update)",
+        recap="הגדרנו סביבה ותגמולים. כעת נלמד כיצד הסוכן שומר את הידע שלו בזיכרון ומעדכן אותו.",
+        why_learn="טבלת Q (Q-Table) היא מפת הזיכרון של הסוכן. עבור כל מצב ופעולה, היא שומרת ציון איכות המייצג כמה כדאי לבצע את הפעולה הזו כדי לזכות בתגמול בעתיד.",
+        when_to_use="אלגוריתם Q-Learning הוא הצעד הראשון בבניית סוכנים אוטונומיים למשחקים ולרובוטיקה.",
+        explanation="בצע עדכון של ערך Q בטבלה לפי משוואת בלמן (Bellman Equation) עם קצב למידה (Learning Rate) ומקדם היוון (Gamma):",
+        tip="💡 הנוסחה: Q(s,a) = Q(s,a) + alpha * [reward + gamma * max(Q(s')) - Q(s,a)].",
+        default_code='''import numpy as np
+
+# 4 States, 2 Actions (0: Left, 1: Right)
+q_table = np.zeros((4, 2))
+
+state = 0
+action = 1
+reward = -1
+next_state = 1
+alpha = 0.5   # Learning rate
+gamma = 0.9   # Discount factor
+
+# Bellman Equation Update
+best_next_q = np.max(q_table[next_state])
+q_table[state, action] += alpha * (reward + gamma * best_next_q - q_table[state, action])
+
+print(f"Q-Table shape: {q_table.shape}")
+print(f"Updated Q(state=0, action=1): {round(float(q_table[0, 1]), 2)}")''',
+        expected_output="Q-Table shape: (4, 2)\nUpdated Q(state=0, action=1): -0.5",
+        hint="""1. אתחל q_table במערך אפסים בגודל 4 על 2.
+2. חשב את העדכון לפי משוואת בלמן בעזרת alpha ו-gamma.
+3. הדפס את גודל הטבלה ואת הערך המעודכן ב-q_table[0, 1].""",
+        success_message="כל הכבוד! למדת את משוואת בלמן – הנוסחה המפורסמת ביותר בלמידת חיזוק!",
+        common_mistakes="""❌ בחירת מקדם למידה (alpha) גדול מדי שגורם לתנודתיות יתר וחוסר יציבות בלמידה.
+❌ התעלמות מתגמולים עתידיים (gamma = 0) שהופכת את הסוכן ל'קצר רואי'."""
+    ),
+    Lesson(
+        id=67,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 67: דילמת חקירה מול ניצול (Exploration vs Exploitation)",
+        recap="הסוכן יודע לעדכן את טבלת ה-Q. כעת נפתור את אחת הדילמות הפילוסופיות והמתמטיות המרתקות ביותר בבינה מלאכותית.",
+        why_learn="אם הסוכן יבחר תמיד בפעולה המוכרת והבטוחה (Exploitation), הוא לעולם לא יגלה מסלול קצר וטוב יותר! מנגד, אם תמיד יבחר באקראי (Exploration), הוא יפעל כמו משוגע ולא יגיע למטרה.",
+        when_to_use="מדיניות Epsilon-Greedy משמשת בכל סוכני ה-AI כדי לגלות אפשרויות חדשות בהתחלה ולנצל את הידע בהמשך.",
+        explanation="ממש מדיניות Epsilon-Greedy: בהסתברות של epsilon הסוכן חוקר פעולה אקראית, ובשאר הזמן מנצל את הפעולה בעלת הציון הגבוה ביותר ב-Q-Table:",
+        tip="💡 בתחילת הלמידה מקובל לתת epsilon גבוה (חקירה מרובה), ועם הזמן להקטין אותו (Decay) כדי להתבסס על המסקנות.",
+        default_code='''import numpy as np
+
+# Q-values for 2 actions at current state: [Left: 1.2, Right: 4.5]
+q_values = np.array([1.2, 4.5])
+epsilon = 0.1
+
+def choose_action(q_vals, eps, seed=42):
+    np.random.seed(seed)
+    if np.random.rand() < eps:
+        # Explore: random action
+        return 0
+    else:
+        # Exploit: best action
+        return int(np.argmax(q_vals))
+
+action = choose_action(q_values, epsilon)
+
+print(f"Epsilon: {epsilon}")
+print(f"Best Action in Q-Table: {int(np.argmax(q_values))}")
+print(f"Chosen Action: {action}")''',
+        expected_output="Epsilon: 0.1\nBest Action in Q-Table: 1\nChosen Action: 1",
+        hint="""1. הגדר את הפונקציה choose_action.
+2. בצע בדיקה: אם np.random.rand() < eps בחר באקראי, אחרת בחר np.argmax(q_vals).
+3. קרא לפונקציה והדפס את הפעולה שנבחרה.""",
+        success_message="נהדר! הבנת את עקרון האיזון בין חקירה לניצול שעליו מבוססים מודלי AI מתקדמים.",
+        common_mistakes="""❌ קביעת אפסילון שווה ל-0 (אפס חקירה) מה שגורם לסוכן להיתקע במינימום מקומי.
+❌ אי הקטנת אפסילון לאורך הזמן, מה שגורם לסוכן להמשיך לבצע טעויות אקראיות גם אחרי שלמד לשחק מושלם."""
+    ),
+    Lesson(
+        id=68,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 68: פרויקט סוכן בינה מלאכותית שלם (Smart Game Agent Bot)",
+        recap="הגענו לשלב השיא החגיגי והמוחלט של כל הקורס המורחב כולו! סוכן AI חכם שמלמד את עצמו לשחק ולנצח!",
+        why_learn="זהו הפרויקט המרכזי מפרק 6 בספר Machine Learning Projects in Python (בניית בוט למשחק בעזרת למידת חיזוק). נחבר את כל מה שלמדנו: סביבה, לולאת אימונים, טבלת Q ומדיניות בחירה, ונראה את הסוכן לומד להגיע למטרה במינימום צעדים!",
+        when_to_use="בניית סוכני בינה מלאכותית עצמאיים למשחקים, רחפנים אוטונומיים, ופתרון בעיות ניווט בעולם האמיתי.",
+        explanation="הרכב את לולאת האימון המלאה של סוכן Q-Learning: במשך 40 פרקים (episodes) הסוכן מתנסה בסביבה, מעדכן את הטבלה ומגיע למדיניות אופטימלית:",
+        tip="💡 שים לב כיצד ללא אף שורת קוד שאומרת לו 'לך ימינה', הסוכן מגלה בעצמו בעזרת התגמולים שהדרך המהירה ביותר לנצח היא לנוע ימינה!",
+        default_code='''import numpy as np
+
+class Environment:
+    def __init__(self, size=4):
+        self.size = size
+        self.state = 0
+
+    def reset(self):
+        self.state = 0
+        return self.state
+
+    def step(self, action):
+        if action == 1 and self.state < self.size - 1:
+            self.state += 1
+        elif action == 0 and self.state > 0:
+            self.state -= 1
+        done = (self.state == self.size - 1)
+        reward = 10 if done else -1
+        return self.state, reward, done
+
+# Training Q-Learning Agent
+np.random.seed(42)
+env = Environment(size=4)
+q_table = np.zeros((4, 2))
+alpha, gamma = 0.5, 0.9
+
+for episode in range(40):
+    s = env.reset()
+    while True:
+        a = 1 if np.random.rand() > 0.1 else np.random.choice([0, 1])
+        next_s, reward, done = env.step(a)
+        q_table[s, a] += alpha * (reward + gamma * np.max(q_table[next_s]) - q_table[s, a])
+        s = next_s
+        if done:
+            break
+
+# Test optimal policy
+policy = [int(np.argmax(q_table[s])) for s in range(3)]
+print(f"Training Episodes: 40")
+print(f"Optimal Actions for states 0, 1, 2: {policy}")
+print(f"Agent Ready: {policy == [1, 1, 1]}")''',
+        expected_output="Training Episodes: 40\nOptimal Actions for states 0, 1, 2: [1, 1, 1]\nAgent Ready: True",
+        hint="""1. הגדר את מחלקת Environment עם reset ו-step.
+2. הרץ לולאת אימון של 40 פרקים ועדכן את q_table בעזרת משוואת בלמן.
+3. חלץ את הפעולות האופטימליות עבור כל מצב בעזרת np.argmax.
+4. הדפס את רשימת הפעולות ובדוק שהסוכן למד לנוע תמיד לכיוון המטרה [1, 1, 1].""",
+        success_message="🏆👑 מזל טוב ענקי! השלמת בהצלחה מזהירה את כל 68 השלבים של מסלול פייתון, מדעי הנתונים, למידה עמוקה ולמידת חיזוק! אתה שולט כעת בכל קשת הטכנולוגיות המודרניות של עולם התוכנה והבינה המלאכותית!",
+        common_mistakes="""❌ שכחת לאפס את הסביבה (env.reset) בתחילת כל פרק אימון חדש.
+❌ עדכון שגוי של מצב הסוכן בתוך לולאת הצעדים (יש לעדכן s = next_s).
+❌ שימוש ביותר מדי איטרציות או לולאה אינסופית במידה והסוכן לא מצליח להגיע ל-done."""
+    )
+
 ]
 
 def get_lesson_by_id(lesson_id):
