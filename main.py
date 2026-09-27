@@ -1,34 +1,63 @@
 import os
 import sys
 import json
+import mimetypes
 import webbrowser
 import threading
 import http.server
 import socketserver
+from urllib.parse import unquote
 from models.course_data import LESSONS, get_lesson_by_id
-from utils.code_evaluator import run_user_code
+from utils.code_evaluator import run_user_code, normalize_output
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX_FILE = os.path.join(CURRENT_DIR, "index.html")
 
-MANIFEST_FILE = os.path.join(CURRENT_DIR, "manifest.json")
-SW_FILE       = os.path.join(CURRENT_DIR, "service-worker.js")
+MIME_OVERRIDES = {
+    ".html": "text/html; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".js": "application/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".svg": "image/svg+xml",
+    ".ico": "image/x-icon",
+    ".txt": "text/plain; charset=utf-8",
+}
 
 class PyTeenHandler(http.server.BaseHTTPRequestHandler):
+    def serve_file(self, file_path, content_type=None, extra_headers=None):
+        if not os.path.isfile(file_path):
+            self.send_error(404, "File Not Found")
+            return
+
+        if not content_type:
+            ext = os.path.splitext(file_path)[1].lower()
+            content_type = MIME_OVERRIDES.get(ext) or mimetypes.guess_type(file_path)[0] or "application/octet-stream"
+
+        try:
+            with open(file_path, "rb") as f:
+                content = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(content)))
+            if extra_headers:
+                for k, v in extra_headers.items():
+                    self.send_header(k, v)
+            self.end_headers()
+            self.wfile.write(content)
+        except Exception as e:
+            self.send_error(500, f"Internal Error: {e}")
+
     def do_GET(self):
-        if self.path == "/" or self.path == "/index.html":
-            try:
-                with open(INDEX_FILE, "r", encoding="utf-8") as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(content.encode("utf-8"))
-            except Exception as e:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(str(e).encode("utf-8"))
-        elif self.path == "/api/lessons":
+        clean_path = unquote(self.path.split("?")[0].split("#")[0])
+
+        if clean_path in ("/", "/index.html"):
+            self.serve_file(INDEX_FILE)
+            return
+
+        if clean_path == "/api/lessons":
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
@@ -51,75 +80,72 @@ class PyTeenHandler(http.server.BaseHTTPRequestHandler):
                 for l in LESSONS
             ]
             self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
-        elif self.path == "/manifest.json":
-            try:
-                with open(MANIFEST_FILE, "r", encoding="utf-8") as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "application/manifest+json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(content.encode("utf-8"))
-            except Exception as e:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(str(e).encode("utf-8"))
-        elif self.path == "/service-worker.js":
-            try:
-                with open(SW_FILE, "r", encoding="utf-8") as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "application/javascript; charset=utf-8")
-                self.send_header("Service-Worker-Allowed", "/")
-                self.end_headers()
-                self.wfile.write(content.encode("utf-8"))
-            except Exception as e:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(str(e).encode("utf-8"))
-        else:
-            self.send_response(404)
-            self.end_headers()
+            return
+
+        if clean_path == "/service-worker.js":
+            sw_path = os.path.join(CURRENT_DIR, "service-worker.js")
+            self.serve_file(sw_path, extra_headers={"Service-Worker-Allowed": "/"})
+            return
+
+        if clean_path == "/manifest.json":
+            manifest_path = os.path.join(CURRENT_DIR, "manifest.json")
+            self.serve_file(manifest_path, content_type="application/manifest+json; charset=utf-8")
+            return
+
+        # Serve static assets and icons safely with path traversal protection
+        if clean_path.startswith("/static/") or clean_path.startswith("/icons/"):
+            rel_path = clean_path.lstrip("/")
+            target_path = os.path.abspath(os.path.join(CURRENT_DIR, rel_path))
+            if target_path.startswith(CURRENT_DIR) and os.path.isfile(target_path):
+                self.serve_file(target_path)
+                return
+
+        self.send_error(404, "Not Found")
 
     def do_POST(self):
         if self.path == "/api/run":
-            length = int(self.headers.get("Content-Length", 0))
-            raw_body = self.rfile.read(length).decode("utf-8")
-            req = json.loads(raw_body)
-            code = req.get("code", "")
-            lesson_id = req.get("lesson_id", 1)
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                raw_body = self.rfile.read(length).decode("utf-8")
+                req = json.loads(raw_body)
+                code = req.get("code", "")
+                lesson_id = req.get("lesson_id", 1)
 
-            lesson = get_lesson_by_id(lesson_id)
-            eval_result = run_user_code(code)
+                lesson = get_lesson_by_id(lesson_id)
+                eval_result = run_user_code(code)
 
-            passed = False
-            message = ""
-            if eval_result["success"] and lesson:
-                from utils.code_evaluator import normalize_output
-                actual_norm = normalize_output(eval_result.get("output", ""))
-                expected_norm = normalize_output(lesson.expected_output)
-                if actual_norm == expected_norm:
-                    passed = True
-                    message = lesson.success_message + " 🎉"
+                passed = False
+                message = ""
+                if eval_result.get("success") and lesson:
+                    actual_norm = normalize_output(eval_result.get("output", ""))
+                    expected_norm = normalize_output(lesson.expected_output)
+                    if actual_norm == expected_norm:
+                        passed = True
+                        message = lesson.success_message + " 🎉"
 
-            response = {
-                "success": eval_result["success"],
-                "output": eval_result.get("output", ""),
-                "error": eval_result.get("error", ""),
-                "passed": passed,
-                "message": message,
-                "expected": lesson.expected_output if lesson else ""
-            }
+                response = {
+                    "success": eval_result.get("success", False),
+                    "output": eval_result.get("output", ""),
+                    "error": eval_result.get("error", ""),
+                    "passed": passed,
+                    "message": message,
+                    "expected": lesson.expected_output if lesson else ""
+                }
 
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps(response, ensure_ascii=False).encode("utf-8"))
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps(response, ensure_ascii=False).encode("utf-8"))
+            except Exception as e:
+                self.send_error(500, f"Execution failed: {e}")
         else:
-            self.send_response(404)
-            self.end_headers()
+            self.send_error(404, "Not Found")
 
     def log_message(self, format, *args):
         return
+
+class ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
 
 def find_free_port():
     env_port = os.environ.get("PORT")
@@ -153,11 +179,9 @@ if __name__ == "__main__":
 
         threading.Thread(target=open_browser, daemon=True).start()
 
-    class ReusableTCPServer(socketserver.TCPServer):
-        allow_reuse_address = True
-
     with ReusableTCPServer((host, port), PyTeenHandler) as httpd:
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
             print("Server stopped.")
+

@@ -35,6 +35,13 @@ def get_home_view(page: ft.Page):
                                 text_style=ft.TextStyle(size=20, weight=ft.FontWeight.BOLD)
                             ),
                             on_click=on_start_click
+                        ),
+                        ft.Container(height=30),
+                        ft.Text(
+                            value="כל הזכויות שמורות למשפחת ברעם ©",
+                            size=13,
+                            color=ft.Colors.WHITE38,
+                            text_align=ft.TextAlign.CENTER,
                         )
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
