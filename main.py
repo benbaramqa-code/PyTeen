@@ -11,6 +11,9 @@ from utils.code_evaluator import run_user_code
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX_FILE = os.path.join(CURRENT_DIR, "index.html")
 
+MANIFEST_FILE = os.path.join(CURRENT_DIR, "manifest.json")
+SW_FILE       = os.path.join(CURRENT_DIR, "service-worker.js")
+
 class PyTeenHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/" or self.path == "/index.html":
@@ -48,6 +51,31 @@ class PyTeenHandler(http.server.BaseHTTPRequestHandler):
                 for l in LESSONS
             ]
             self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+        elif self.path == "/manifest.json":
+            try:
+                with open(MANIFEST_FILE, "r", encoding="utf-8") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/manifest+json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(content.encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(str(e).encode("utf-8"))
+        elif self.path == "/service-worker.js":
+            try:
+                with open(SW_FILE, "r", encoding="utf-8") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/javascript; charset=utf-8")
+                self.send_header("Service-Worker-Allowed", "/")
+                self.end_headers()
+                self.wfile.write(content.encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(str(e).encode("utf-8"))
         else:
             self.send_response(404)
             self.end_headers()
