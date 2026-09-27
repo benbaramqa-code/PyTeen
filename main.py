@@ -61,25 +61,7 @@ class PyTeenHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
-            data = [
-                {
-                    "id": l.id,
-                    "chapter": l.chapter,
-                    "title": l.title,
-                    "recap": l.recap,
-                    "why_learn": l.why_learn,
-                    "when_to_use": l.when_to_use,
-                    "explanation": l.explanation,
-                    "tip": l.tip,
-                    "default_code": l.default_code,
-                    "expected_output": l.expected_output,
-                    "hint": l.hint,
-                    "success_message": l.success_message,
-                    "common_mistakes": getattr(l, "common_mistakes", ""),
-                    "gemini_prompt": l.get_gemini_prompt()
-                }
-                for l in LESSONS
-            ]
+            data = [l.to_dict() for l in LESSONS]
             self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
             return
 
