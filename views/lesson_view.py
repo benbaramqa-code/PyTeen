@@ -78,8 +78,20 @@ def get_lesson_view(page: ft.Page, lesson_id: int):
                 bgcolor=ft.Colors.YELLOW_400,
                 padding=15,
                 border_radius=10,
-                margin=ft.Margin.symmetric(vertical=15)
+                margin=ft.Margin.symmetric(vertical=10)
             ),
+
+            # קוביית טעויות נפוצות
+            ft.Container(
+                content=ft.Column([
+                    ft.Text(value="⚠️ טעויות נפוצות ודוגמאות שגיאה שכדאי להכיר:", color=ft.Colors.RED_200, size=15, weight=ft.FontWeight.BOLD),
+                    ft.Text(value=getattr(lesson, "common_mistakes", ""), color=ft.Colors.WHITE, size=14)
+                ]),
+                bgcolor=ft.Colors.RED_900,
+                padding=15,
+                border_radius=10,
+                margin=ft.Margin.symmetric(vertical=10)
+            ) if getattr(lesson, "common_mistakes", "") else ft.Container(),
             
             # עורך קוד
             ft.Text(value="עורך קוד:", size=18, color=ft.Colors.WHITE_70),

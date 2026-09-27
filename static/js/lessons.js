@@ -412,6 +412,17 @@
       const tipCard = document.getElementById('tip-card');
       if (tipCard) tipCard.innerText = lesson.tip;
 
+      const mistakesCard = document.getElementById('mistakes-card');
+      const mistakesBody = document.getElementById('mistakes-body');
+      if (mistakesCard && mistakesBody) {
+        if (lesson.common_mistakes) {
+          mistakesBody.innerText = lesson.common_mistakes;
+          mistakesCard.style.display = 'block';
+        } else {
+          mistakesCard.style.display = 'none';
+        }
+      }
+
       const hintCard = document.getElementById('hint-card');
       if (hintCard) {
         const hintText = lesson.hint || 'נסה לעקוב אחר ההסבר והדוגמה בשלב זה.';

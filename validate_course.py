@@ -9,7 +9,8 @@ def validate_all():
 
     required_fields = [
         "id", "chapter", "title", "recap", "why_learn", "when_to_use",
-        "explanation", "tip", "default_code", "expected_output", "hint", "success_message"
+        "explanation", "tip", "default_code", "expected_output", "hint", "success_message",
+        "common_mistakes"
     ]
 
     all_passed = True
