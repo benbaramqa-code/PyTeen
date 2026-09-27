@@ -26,6 +26,9 @@
     })();
   </script>
 
+  <!-- Pyodide Client-Side Python WebAssembly Engine -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js" defer></script>
+
   <!-- Modular Stylesheets -->
   <link rel="stylesheet" href="/static/css/theme.css">
   <link rel="stylesheet" href="/static/css/layout.css">
@@ -54,6 +57,12 @@
     </div>
 
     <div class="header-actions">
+      <!-- PWA Download Icon / Install App Button -->
+      <button class="nav-btn pwa-install-btn" id="pwa-install-btn" onclick="triggerPWAInstall()" title="הורד והתקן את אייקון האפליקציה למסך הבית של המכשיר שלך">
+        <span>📲</span>
+        <span>הורד אייקון למסך הבית</span>
+      </button>
+
       <button class="nav-btn theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="החלף בין מצב יום למצב לילה">🌙 מצב לילה</button>
       <button class="nav-btn" onclick="openGuideModal()">📖 מדריך וטיפים</button>
       <button class="nav-btn" onclick="showHome()">🏠 דף הבית</button>

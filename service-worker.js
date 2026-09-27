@@ -1,9 +1,10 @@
-const CACHE_NAME = 'pyteen-v2';
+const CACHE_NAME = 'pyteen-v3';
 
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/static/data/lessons.json',
   '/static/css/theme.css',
   '/static/css/layout.css',
   '/static/css/components.css',

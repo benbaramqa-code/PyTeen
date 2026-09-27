@@ -1,57 +1,140 @@
 // ================================================================
-// PyTeen - Application Bootstrap & Event Listeners
+// PyTeen - Application Bootstrap, PWA Installation & Event Listeners
 // ================================================================
 
-    // --- Mobile Workspace View Switcher ---
-    function switchMobileTab(tabName) {
-      const courseView = document.getElementById('course-view');
-      if (!courseView) return;
-      courseView.setAttribute('data-mobile-tab', tabName);
+let deferredPWAInstallPrompt = null;
 
-      document.querySelectorAll('.mobile-tab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById('mtab-' + tabName);
-      if (activeBtn) activeBtn.classList.add('active');
+// Listen for PWA installation prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPWAInstallPrompt = e;
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) {
+    btn.style.display = 'inline-flex';
+    btn.title = 'לחץ להורדת אייקון האפליקציה למסך הבית!';
+  }
+});
 
-      if (tabName === 'editor') {
-        const editor = document.getElementById('code-editor');
-        if (editor) {
-          editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+window.addEventListener('appinstalled', () => {
+  deferredPWAInstallPrompt = null;
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) {
+    btn.innerHTML = '<span>✅</span><span>האייקון מותקן</span>';
+    btn.classList.add('installed');
+  }
+  showToast('🎉 אייקון האפליקציה הותקן בהצלחה במסך הבית של המכשיר!');
+});
+
+async function triggerPWAInstall() {
+  if (deferredPWAInstallPrompt) {
+    deferredPWAInstallPrompt.prompt();
+    const { outcome } = await deferredPWAInstallPrompt.userChoice;
+    if (outcome === 'accepted') {
+      showToast('🎉 האייקון נוסף למסך הבית שלך!');
+    }
+    deferredPWAInstallPrompt = null;
+    return;
+  }
+
+  // Detect iOS Safari or standalone mode
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+  if (isStandalone) {
+    showToast('✅ האפליקציה כבר מותקנת במסך הבית שלך!');
+  } else if (isIOS) {
+    showToast('📱 ב-iPhone/iPad: לחצו על כפתור השיתוף (Share ⎋) בתחתית הדפדפן, ואז בחרו "הוסף למסך הבית" ➕', 6500);
+  } else {
+    showToast('💡 להורדת האייקון למסך הבית: לחצו על תפריט הדפדפן (⋮) ובחרו "התקן אפליקציה" או "הוסף למסך הבית"', 5500);
+  }
+}
+
+// --- Mobile Workspace View Switcher ---
+function switchMobileTab(tabName) {
+  const courseView = document.getElementById('course-view');
+  if (!courseView) return;
+  courseView.setAttribute('data-mobile-tab', tabName);
+
+  document.querySelectorAll('.mobile-tab-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById('mtab-' + tabName);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  if (tabName === 'editor') {
+    const editor = document.getElementById('code-editor');
+    if (editor) {
+      editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+}
+
+async function initApp() {
+  // FEATURE: Initialize daily streak state on load
+  initStreak();
+
+  try {
+    let loaded = false;
+    // 1. Try static JSON first (instant 0ms response, works on GitHub Pages & offline)
+    try {
+      const staticRes = await fetch('/static/data/lessons.json');
+      if (staticRes.ok) {
+        allLessons = await staticRes.json();
+        loaded = true;
       }
+    } catch (_) {}
+
+    // 2. Fallback to API if static fetch fails
+    if (!loaded) {
+      const response = await fetch('/api/lessons');
+      allLessons = await response.json();
+      loaded = true;
     }
 
-    async function initApp() {
-      // FEATURE: Initialize daily streak state on load
-      initStreak();
-
-      try {
-        const response = await fetch('/api/lessons');
-        allLessons = await response.json();
-
-        const totalCount = allLessons.length;
-        const chaptersCount = new Set(allLessons.map(l => l.chapter)).size;
-
-        const statLessons = document.getElementById('stat-lessons-count');
-        if (statLessons) statLessons.innerText = totalCount;
-
-        const statChapters = document.getElementById('stat-chapters-count');
-        if (statChapters) statChapters.innerText = chaptersCount;
-
-        const sidebarCounter = document.getElementById('sidebar-counter');
-        if (sidebarCounter) sidebarCounter.innerText = totalCount + ' שלבים';
-
-        updateProgress();
-        renderSidebar();
-      } catch (err) {
-        console.error("Failed to fetch lessons", err);
+    // Cache in localStorage for ultra-fast startup
+    try {
+      localStorage.setItem('py_cached_lessons', JSON.stringify(allLessons));
+    } catch (_) {}
+  } catch (err) {
+    // 3. Fallback to localStorage cache
+    try {
+      const cached = localStorage.getItem('py_cached_lessons');
+      if (cached) {
+        allLessons = JSON.parse(cached);
       }
-    }
+    } catch (_) {}
+    console.warn("Using cached lessons or error:", err);
+  }
 
+  if (allLessons && allLessons.length > 0) {
+    const totalCount = allLessons.length;
+    const chaptersCount = new Set(allLessons.map(l => l.chapter)).size;
+
+    const statLessons = document.getElementById('stat-lessons-count');
+    if (statLessons) statLessons.innerText = totalCount;
+
+    const statChapters = document.getElementById('stat-chapters-count');
+    if (statChapters) statChapters.innerText = chaptersCount;
+
+    const sidebarCounter = document.getElementById('sidebar-counter');
+    if (sidebarCounter) sidebarCounter.innerText = totalCount + ' שלבים';
+
+    updateProgress();
+    renderSidebar();
+  }
+}
 
 // Setup editor event listeners and bootstrap
 document.addEventListener('DOMContentLoaded', function () {
   initTheme();
   initApp();
+
+  // Check if app is already running in standalone PWA mode
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) {
+      btn.innerHTML = '<span>✅</span><span>האייקון מותקן</span>';
+      btn.classList.add('installed');
+    }
+  }
 
   const codeEditor = document.getElementById('code-editor');
   if (codeEditor) {
