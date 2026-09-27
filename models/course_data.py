@@ -16,8 +16,26 @@ class Lesson:
         self.success_message = success_message
         self.common_mistakes = common_mistakes
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "chapter": self.chapter,
+            "title": self.title,
+            "recap": self.recap,
+            "why_learn": self.why_learn,
+            "when_to_use": self.when_to_use,
+            "explanation": self.explanation,
+            "tip": self.tip,
+            "default_code": self.default_code,
+            "expected_output": self.expected_output,
+            "hint": self.hint,
+            "success_message": self.success_message,
+            "common_mistakes": getattr(self, "common_mistakes", ""),
+            "gemini_prompt": self.get_gemini_prompt(),
+        }
+
     def get_gemini_prompt(self):
-        total_lessons = len(LESSONS) if 'LESSONS' in globals() else 42
+        total_lessons = len(LESSONS) if 'LESSONS' in globals() else 68
         percent = round((self.id / total_lessons) * 100)
 
         # פירוט הידע שנרכש עד כה
