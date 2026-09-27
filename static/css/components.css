@@ -1094,3 +1094,31 @@
       border-top: 1px solid var(--border-color);
       flex-shrink: 0;
     }
+
+    /* PWA App Icon Install Button */
+    .pwa-install-btn {
+      background: linear-gradient(135deg, #059669, #10b981) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(16, 185, 129, 0.4) !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .pwa-install-btn:hover {
+      background: linear-gradient(135deg, #047857, #059669) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.5);
+    }
+
+    .pwa-install-btn.installed {
+      background: rgba(30, 41, 59, 0.6) !important;
+      color: var(--text-muted) !important;
+      border-color: var(--border-color) !important;
+      box-shadow: none;
+    }
+
