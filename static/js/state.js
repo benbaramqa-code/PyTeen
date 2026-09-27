@@ -85,15 +85,16 @@
       // FEATURE: Update daily streak on every successful lesson completion
       updateStreak();
 
-      // FEATURE: Show certificate modal when all 42 lessons completed
-      if (completedLessons.size === totalLessons) {
+      // FEATURE: Show certificate modal when all lessons completed
+      const totalLessonsCount = (allLessons && allLessons.length) ? allLessons.length : 68;
+      if (completedLessons.size >= totalLessonsCount) {
         setTimeout(() => openCertModal(), 800);
       }
     }
 
     function updateProgress() {
       const count = completedLessons.size;
-      const total = allLessons.length || 42;
+      const total = (allLessons && allLessons.length) ? allLessons.length : 68;
       const percent = Math.round((count / total) * 100);
 
       const fill = document.getElementById('progress-fill');

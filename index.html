@@ -64,6 +64,7 @@
       </button>
 
       <button class="nav-btn theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="החלף בין מצב יום למצב לילה">🌙 מצב לילה</button>
+      <button class="nav-btn" id="cert-header-btn" onclick="openCertModal()" title="תעודת סיום הקורס">🎓 תעודת סיום</button>
       <button class="nav-btn" onclick="openGuideModal()">📖 מדריך וטיפים</button>
       <button class="nav-btn" onclick="showHome()">🏠 דף הבית</button>
     </div>
@@ -291,7 +292,7 @@
       <button class="cert-close-btn" onclick="closeCertModal()" title="סגור">×</button>
       <span class="cert-icon">🎓</span>
       <h2 class="cert-heading">תעודת סיום</h2>
-      <p class="cert-subheading">השלמת את כל 42 השלבים בקורס פייתון בקלות! 🐍</p>
+      <p class="cert-subheading" id="cert-subheading">השלמת את כל 68 השלבים בקורס פייתון בקלות! 🐍</p>
       <div class="cert-divider"></div>
       <label class="cert-label" for="cert-name-input">שם המסיים:</label>
       <input type="text" id="cert-name-input" class="cert-name-input"
@@ -300,7 +301,7 @@
         <div class="cert-preview-logo">פייתון בקלות 🐍</div>
         <div class="cert-preview-title">תעודת סיום קורס</div>
         <div class="cert-preview-name" id="cert-preview-name">שמך יופיע כאן</div>
-        <div class="cert-preview-meta">42 שלבים ב-14 פרקים<br><span id="cert-preview-date"></span></div>
+        <div class="cert-preview-meta" id="cert-preview-meta">68 שלבים ב-20 פרקים<br><span id="cert-preview-date"></span></div>
         <div class="cert-preview-congrats">🏆 בוגר/ת הקורס – ברכות על ההישג!</div>
       </div>
       <button class="cert-download-btn" onclick="downloadCertificate()">
