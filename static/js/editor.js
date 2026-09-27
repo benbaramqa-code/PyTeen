@@ -102,7 +102,7 @@ function toggleHint() {
 function resetCode() {
   if (currentLesson) {
     clearCodeDraft(currentLesson.id);
-    document.getElementById('code-editor').value = currentLesson.default_code;
+    document.getElementById('code-editor').value = fixBidiForDisplay(currentLesson.default_code || '');
     showSavedIndicator("הקוד אופס לברירת המחדל");
   }
 }
@@ -110,7 +110,8 @@ function resetCode() {
 async function runCode() {
   if (!currentLesson) return;
 
-  const code = document.getElementById('code-editor').value;
+  const rawCode = document.getElementById('code-editor').value;
+  const code = stripBidi(rawCode);
   const terminal = document.getElementById('terminal-body');
   const status = document.getElementById('terminal-status');
   const banner = document.getElementById('feedback-banner');
@@ -249,7 +250,8 @@ function makeTitleSlug(title) {
 
 function downloadCode() {
   if (!currentLesson) { showToast('⚠️ לא נטען שלב. נסה שוב.'); return; }
-  const code = document.getElementById('code-editor').value;
+  const rawCode = document.getElementById('code-editor').value;
+  const code = stripBidi(rawCode);
   const header = [
     `# ===================================================`,
     `# קובץ זה נוצר על ידי PyTeen – פייתון בקלות`,

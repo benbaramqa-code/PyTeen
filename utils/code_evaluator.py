@@ -8,6 +8,7 @@ import random
 import json
 import datetime
 import string
+import re
 
 ALLOWED_MODULES = {
     "math": math,
@@ -65,6 +66,9 @@ def run_user_code(code_str, timeout_seconds=3.0):
     """
     מריץ קוד פייתון בסביבה מבודדת עם הגבלת זמן ומחזיר פלט מפורט.
     """
+    if code_str:
+        code_str = re.sub(r'[\u200E\u200F\u202A-\u202E\u2066-\u2069]', '', code_str)
+
     result_queue = queue.Queue()
 
     def worker():

@@ -20,6 +20,20 @@
     }
 
 
+    // BiDi stabilizer helpers: prevents Hebrew text from flipping adjacent Python syntax (quotes, commas, parentheses)
+    function stripBidi(code) {
+      if (!code) return '';
+      return code.replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '');
+    }
+
+    function fixBidiForDisplay(code) {
+      if (!code) return '';
+      const clean = stripBidi(code);
+      // Match any quote containing Hebrew characters and append an LRM (\u200E) right after its closing quote
+      // This ensures the closing quote, commas, numbers, and brackets stay in LTR order on mobile and desktop
+      return clean.replace(/(["'])([^"'\n]*[\u0590-\u05FF][^"'\n]*)(\1)/g, '$1$2$3\u200E');
+    }
+
     // שמירה וטעינה של טיוטות קוד מה-localStorage
     function getCodeDraft(lessonId) {
       try {

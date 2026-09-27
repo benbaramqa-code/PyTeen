@@ -659,6 +659,13 @@
       display: flex;
     }
 
+    code, pre {
+      direction: ltr !important;
+      unicode-bidi: isolate !important;
+      font-family: "Consolas", "Courier New", monospace;
+      text-align: left !important;
+    }
+
     .code-textarea {
       width: 100%;
       height: 100%;
@@ -668,8 +675,9 @@
       padding: 16px 20px;
       font-family: "Consolas", "Courier New", monospace;
       font-size: 16px;
-      direction: ltr;
-      text-align: left;
+      direction: ltr !important;
+      text-align: left !important;
+      unicode-bidi: embed !important;
       resize: none;
       line-height: 1.6;
       outline: none;
