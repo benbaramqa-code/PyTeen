@@ -4,14 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>פייתון בקלות - לומדים לתכנת מאפס</title>
+
+  <!-- PWA manifest & theme -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <!-- iOS / Safari PWA support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="פייתון בקלות">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('py_theme');
+        if (!t) {
+          t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
   <style>
-    :root {
+    :root, html[data-theme="dark"] {
       --bg-dark: #0f172a;
       --bg-card: #1e293b;
       --bg-surface: #141e33;
+      --bg-input: #090d16;
+      --bg-toolbar: #111827;
+      --bg-terminal: #030712;
+      --terminal-header-bg: #0f172a;
       --border-color: #334155;
       --primary: #38bdf8;
       --primary-hover: #0ea5e9;
+      --primary-rgb: 56, 189, 248;
       --accent: #a855f7;
       --accent-hover: #9333ea;
       --success: #22c55e;
@@ -20,6 +45,66 @@
       --danger: #f87171;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --text-secondary: #cbd5e1;
+      --header-bg: rgba(15, 23, 42, 0.95);
+      --card-gradient: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(20, 30, 50, 0.9));
+      --gemini-gradient: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+      --gemini-banner-bg: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(59, 130, 246, 0.12));
+      --tip-bg: rgba(250, 204, 21, 0.1);
+      --tip-border: rgba(250, 204, 21, 0.25);
+      --tip-text: #fef08a;
+      --hint-bg: rgba(168, 85, 247, 0.1);
+      --hint-border: rgba(168, 85, 247, 0.3);
+      --hint-text: #e9d5ff;
+      --tab-active-bg: #1e293b;
+      --chapter-bg: rgba(30, 41, 59, 0.5);
+      --chapter-bg-hover: rgba(30, 41, 59, 0.85);
+      --lesson-item-color: #cbd5e1;
+      --lesson-active-bg: rgba(56, 189, 248, 0.15);
+      --hero-badge-bg: rgba(56, 189, 248, 0.1);
+      --modal-bg: #1e293b;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+    }
+
+    html[data-theme="light"] {
+      --bg-dark: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-surface: #f1f5f9;
+      --bg-input: #ffffff;
+      --bg-toolbar: #f8fafc;
+      --bg-terminal: #0f172a;
+      --terminal-header-bg: #1e293b;
+      --border-color: #cbd5e1;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-rgb: 2, 132, 199;
+      --accent: #7e22ce;
+      --accent-hover: #6b21a8;
+      --success: #16a34a;
+      --success-hover: #15803d;
+      --warning: #ca8a04;
+      --danger: #dc2626;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-secondary: #334155;
+      --header-bg: rgba(255, 255, 255, 0.95);
+      --card-gradient: linear-gradient(135deg, #ffffff, #f8fafc);
+      --gemini-gradient: linear-gradient(145deg, #ffffff, #f8fafc);
+      --gemini-banner-bg: linear-gradient(135deg, rgba(147, 51, 234, 0.08), rgba(59, 130, 246, 0.08));
+      --tip-bg: #fefce8;
+      --tip-border: #fde047;
+      --tip-text: #854d0e;
+      --hint-bg: #faf5ff;
+      --hint-border: #d8b4fe;
+      --hint-text: #6b21a8;
+      --tab-active-bg: #ffffff;
+      --chapter-bg: #e2e8f0;
+      --chapter-bg-hover: #cbd5e1;
+      --lesson-item-color: #334155;
+      --lesson-active-bg: rgba(2, 132, 199, 0.12);
+      --hero-badge-bg: rgba(2, 132, 199, 0.1);
+      --modal-bg: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.08);
     }
 
     * {
@@ -36,11 +121,12 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     /* Header */
     header {
-      background: rgba(15, 23, 42, 0.95);
+      background: var(--header-bg);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-color);
       padding: 12px 24px;
@@ -50,6 +136,7 @@
       position: sticky;
       top: 0;
       z-index: 50;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .brand {
@@ -231,13 +318,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 23, 42, 0.4);
+      background: var(--bg-surface);
+      color: var(--text-main);
     }
 
     /* Tabs / Filter */
     .sidebar-tabs {
       display: flex;
-      background: rgba(15, 23, 42, 0.6);
+      background: var(--bg-card);
       padding: 4px;
       border-radius: 10px;
       margin: 10px 12px 6px 12px;
@@ -264,25 +352,26 @@
 
     .tab-btn:hover {
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(var(--primary-rgb), 0.08);
     }
 
     .tab-btn.active {
-      background: var(--bg-card);
+      background: var(--tab-active-bg);
       color: var(--primary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 2px 8px var(--shadow-color);
+      border: 1px solid rgba(var(--primary-rgb), 0.3);
     }
 
     .tab-badge {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--bg-surface);
+      color: var(--text-muted);
       font-size: 10.5px;
       padding: 1px 6px;
       border-radius: 10px;
     }
 
     .tab-btn.active .tab-badge {
-      background: rgba(56, 189, 248, 0.2);
+      background: rgba(var(--primary-rgb), 0.2);
       color: var(--primary);
     }
 
@@ -292,7 +381,7 @@
       display: flex;
       gap: 6px;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .search-input-box {
@@ -304,7 +393,7 @@
 
     .search-input-box input {
       width: 100%;
-      background: rgba(15, 23, 42, 0.7);
+      background: var(--bg-input);
       border: 1px solid var(--border-color);
       border-radius: 6px;
       padding: 6px 26px 6px 22px;
@@ -377,18 +466,18 @@
       align-items: center;
       justify-content: space-between;
       padding: 8px 12px;
-      background: rgba(30, 41, 59, 0.5);
+      background: var(--chapter-bg);
       border-radius: 8px;
       cursor: pointer;
       user-select: none;
       margin-bottom: 4px;
       transition: all 0.15s;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
     }
 
     .chapter-header:hover {
-      background: rgba(30, 41, 59, 0.85);
-      border-color: rgba(56, 189, 248, 0.2);
+      background: var(--chapter-bg-hover);
+      border-color: rgba(var(--primary-rgb), 0.3);
     }
 
     .chapter-header.collapsed {
@@ -401,7 +490,7 @@
       gap: 8px;
       font-size: 12.5px;
       font-weight: 800;
-      color: #e2e8f0;
+      color: var(--text-main);
     }
 
     .chapter-chevron {
@@ -420,14 +509,14 @@
     .chapter-stats {
       font-size: 11px;
       color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.5);
+      background: var(--bg-card);
       padding: 2px 6px;
       border-radius: 6px;
       font-weight: 600;
     }
 
     .chapter-stats.done {
-      color: #4ade80;
+      color: var(--success);
       background: rgba(34, 197, 94, 0.12);
       border: 1px solid rgba(34, 197, 94, 0.2);
     }
@@ -448,7 +537,7 @@
       border-radius: 8px;
       font-size: 13.5px;
       font-weight: 600;
-      color: #cbd5e1;
+      color: var(--lesson-item-color);
       cursor: pointer;
       margin-bottom: 3px;
       transition: all 0.15s;
@@ -457,21 +546,21 @@
     }
 
     .lesson-item:hover {
-      background: rgba(56, 189, 248, 0.08);
+      background: rgba(var(--primary-rgb), 0.08);
       color: var(--primary);
-      border-color: rgba(56, 189, 248, 0.15);
+      border-color: rgba(var(--primary-rgb), 0.2);
     }
 
     .lesson-item.active {
-      background: rgba(56, 189, 248, 0.15);
+      background: var(--lesson-active-bg);
       color: var(--primary);
       border-right: 3px solid var(--primary);
-      border-color: rgba(56, 189, 248, 0.35);
+      border-color: rgba(var(--primary-rgb), 0.35);
       font-weight: 700;
     }
 
     .lesson-item.completed {
-      color: #e2e8f0;
+      color: var(--text-secondary);
     }
 
     .lesson-info-left {
@@ -561,21 +650,21 @@
 
     /* Roadmap & Motivation Card */
     .roadmap-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(20, 30, 50, 0.9));
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: var(--card-gradient);
+      border: 1px solid rgba(var(--primary-rgb), 0.25);
       border-radius: 12px;
       padding: 16px 18px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px var(--shadow-color);
     }
 
     .roadmap-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid var(--border-color);
       padding-bottom: 8px;
     }
 
@@ -608,8 +697,8 @@
     }
 
     .roadmap-box {
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       padding: 12px 14px;
       display: flex;
@@ -619,7 +708,7 @@
     }
 
     .roadmap-box:hover {
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(var(--primary-rgb), 0.3);
     }
 
     .roadmap-box-recap { border-top: 3px solid #38bdf8; }
@@ -643,51 +732,52 @@
     .roadmap-box-text {
       font-size: 13.5px;
       line-height: 1.6;
-      color: #cbd5e1;
+      color: var(--text-secondary);
     }
 
     .theory-content {
       font-size: 16px;
       line-height: 1.7;
-      color: #cbd5e1;
+      color: var(--text-secondary);
       white-space: pre-line;
     }
 
     .tip-card {
-      background: rgba(250, 204, 21, 0.1);
-      border: 1px solid rgba(250, 204, 21, 0.25);
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
       border-right: 4px solid var(--warning);
-      padding: 16px;
+      padding: 14px 16px;
       border-radius: 8px;
-      font-size: 15px;
-      color: #fef08a;
+      font-size: 14.5px;
+      color: var(--tip-text);
       line-height: 1.5;
     }
 
     .hint-card {
       display: none;
-      background: rgba(168, 85, 247, 0.1);
-      border: 1px solid rgba(168, 85, 247, 0.3);
+      background: var(--hint-bg);
+      border: 1px solid var(--hint-border);
       padding: 14px;
       border-radius: 8px;
       font-size: 14px;
-      color: #e9d5ff;
+      color: var(--hint-text);
     }
 
-    /* Gemini AI Box */
-    .gemini-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+    /* Compact Space-Saving Gemini Card */
+    .gemini-compact-card {
+      background: var(--gemini-gradient);
       border: 1px solid rgba(168, 85, 247, 0.35);
-      box-shadow: 0 4px 20px -2px rgba(168, 85, 247, 0.18);
-      border-radius: 14px;
-      padding: 18px;
-      margin-top: 8px;
+      box-shadow: 0 4px 16px -2px var(--shadow-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-top: 4px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      transition: all 0.2s ease;
     }
 
-    .gemini-header {
+    .gemini-compact-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -695,49 +785,157 @@
       gap: 8px;
     }
 
-    .gemini-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #f1f5f9;
+    .gemini-title-wrap {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    .gemini-title-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
     .gemini-icon-glow {
-      font-size: 20px;
-    }
-
-    .gemini-pills-wrap {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .gemini-pill {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 12px;
-      letter-spacing: 0.3px;
-    }
-
-    .gemini-pill-ai {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
+      font-size: 18px;
     }
 
     .gemini-pill-level {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(var(--primary-rgb), 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(var(--primary-rgb), 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
     }
 
-    /* Highlight Banner in Gemini */
+    .btn-info-pop {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+
+    .btn-info-pop:hover {
+      background: rgba(168, 85, 247, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .gemini-compact-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-gemini-action {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .btn-gemini-primary {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: white;
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-gemini-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-gemini-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-gemini-secondary:hover {
+      background: var(--bg-surface);
+      border-color: var(--primary);
+    }
+
+    .btn-gemini-toggle {
+      background: transparent;
+      border: 1px dashed var(--border-color);
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 7px 12px;
+    }
+
+    .btn-gemini-toggle:hover {
+      color: var(--text-main);
+      border-color: var(--primary);
+    }
+
+    .gemini-prompt-collapsible {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .prompt-meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .prompt-char-count {
+      color: var(--primary);
+      font-size: 11px;
+    }
+
+    .gemini-prompt-box {
+      width: 100%;
+      height: 90px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-size: 12.5px;
+      font-family: inherit;
+      resize: vertical;
+      line-height: 1.5;
+      outline: none;
+      direction: rtl;
+      transition: border-color 0.2s;
+    }
+
+    .gemini-prompt-box:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+    }
+
+    /* Modal Highlight Banner */
     .gemini-highlight-banner {
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(59, 130, 246, 0.12));
+      background: var(--gemini-banner-bg);
       border: 1px solid rgba(168, 85, 247, 0.35);
-      border-right: 4px solid #a855f7;
+      border-right: 4px solid var(--accent);
       border-radius: 8px;
       padding: 12px 14px;
       display: flex;
@@ -755,153 +953,24 @@
     .gemini-highlight-content {
       font-size: 13px;
       line-height: 1.55;
-      color: #e2e8f0;
+      color: var(--text-secondary);
     }
 
     .gemini-highlight-content strong {
-      color: #c084fc;
+      color: var(--accent);
       display: block;
       margin-bottom: 3px;
       font-size: 13.5px;
     }
 
     .gemini-highlight-content em {
-      color: #fef08a;
+      color: var(--warning);
       font-style: normal;
-      background: rgba(254, 240, 138, 0.12);
+      background: rgba(250, 204, 21, 0.12);
       padding: 1px 6px;
       border-radius: 4px;
       display: inline-block;
       margin: 2px 0;
-    }
-
-    .gemini-features-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      font-size: 11.5px;
-      color: var(--text-muted);
-    }
-
-    .gemini-feat-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(15, 23, 42, 0.6);
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .gemini-prompt-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .prompt-meta-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .prompt-char-count {
-      color: #38bdf8;
-      font-size: 11px;
-    }
-
-    .gemini-prompt-box {
-      width: 100%;
-      height: 125px;
-      background: #090d16;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px 14px;
-      color: #e2e8f0;
-      font-size: 13px;
-      font-family: inherit;
-      resize: vertical;
-      line-height: 1.6;
-      outline: none;
-      direction: rtl;
-      transition: border-color 0.2s;
-    }
-
-    .gemini-prompt-box:focus {
-      border-color: #a855f7;
-      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
-    }
-
-    .gemini-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .btn-copy-gemini {
-      background: linear-gradient(135deg, #7c3aed, #2563eb);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
-    }
-
-    .btn-copy-gemini:hover {
-      filter: brightness(1.15);
-      transform: translateY(-1px);
-    }
-
-    .btn-copy-open-gemini {
-      background: rgba(168, 85, 247, 0.15);
-      border: 1px solid rgba(168, 85, 247, 0.35);
-      color: #e9d5ff;
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-
-    .btn-copy-open-gemini:hover {
-      background: rgba(168, 85, 247, 0.25);
-      color: white;
-      transform: translateY(-1px);
-    }
-
-    .btn-open-gemini {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--primary);
-      text-decoration: none;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-
-    .btn-open-gemini:hover {
-      background: rgba(56, 189, 248, 0.2);
-      transform: translateY(-1px);
     }
 
     .workspace-nav {
@@ -909,7 +978,7 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      padding-top: 20px;
+      padding-top: 16px;
       border-top: 1px solid var(--border-color);
     }
 
@@ -918,18 +987,20 @@
       flex: 1.2;
       display: flex;
       flex-direction: column;
-      background: #090d16;
+      background: var(--bg-card);
       height: 100%;
       overflow: hidden;
     }
 
     .editor-toolbar {
       padding: 10px 16px;
-      background: #111827;
+      background: var(--bg-toolbar);
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .toolbar-title {
@@ -943,46 +1014,49 @@
 
     .toolbar-actions {
       display: flex;
-      gap: 8px;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .btn-sm {
-      background: #1f2937;
-      border: 1px solid #374151;
-      color: #d1d5db;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
       padding: 6px 12px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 5px;
       transition: all 0.15s;
     }
 
     .btn-sm:hover {
-      background: #374151;
-      color: white;
+      background: var(--bg-surface);
+      border-color: var(--primary);
     }
 
     .btn-run {
       background: #2563eb;
       color: white;
       border: none;
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.15s;
     }
 
     .btn-run:hover {
-      background: #3b82f6;
+      background: #1d4ed8;
+      transform: translateY(-1px);
     }
 
     .code-container {
@@ -994,8 +1068,8 @@
     .code-textarea {
       width: 100%;
       height: 100%;
-      background: transparent;
-      color: #38bdf8;
+      background: var(--bg-card);
+      color: var(--text-code);
       border: none;
       padding: 16px 20px;
       font-family: "Consolas", "Courier New", monospace;
@@ -1010,7 +1084,7 @@
     /* Terminal Output Panel */
     .terminal-panel {
       height: 220px;
-      background: #030712;
+      background: var(--bg-terminal);
       border-top: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
@@ -1018,8 +1092,8 @@
 
     .terminal-header {
       padding: 8px 16px;
-      background: #0f172a;
-      border-bottom: 1px solid #1e293b;
+      background: var(--terminal-header-bg);
+      border-bottom: 1px solid var(--border-color);
       font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
@@ -1035,9 +1109,15 @@
       font-family: "Consolas", monospace;
       direction: ltr;
       text-align: left;
-      font-size: 15px;
+      font-size: 14.5px;
       white-space: pre-wrap;
       line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .terminal-placeholder {
+      color: #64748b;
+      font-style: italic;
     }
 
     .terminal-placeholder {
@@ -1109,7 +1189,7 @@
       background: #334155;
       border-radius: 4px;
     }
-    /* Guide Modal */
+    /* Guide & Info Modals */
     .guide-modal-overlay {
       display: none;
       position: fixed;
@@ -1123,21 +1203,21 @@
     }
 
     .guide-modal-card {
-      background: #1e293b;
-      border: 1px solid #38bdf8;
+      background: var(--modal-bg);
+      border: 1px solid var(--primary);
       border-radius: 16px;
       max-width: 720px;
       width: 100%;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 40px var(--shadow-color);
       animation: modalFadeIn 0.25s ease;
     }
 
     .guide-modal-header {
       padding: 18px 24px;
-      border-bottom: 1px solid #334155;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1146,20 +1226,20 @@
     .guide-modal-header h2 {
       font-size: 18px;
       font-weight: 800;
-      color: #38bdf8;
+      color: var(--primary);
     }
 
     .guide-close-btn {
       background: none;
       border: none;
       font-size: 24px;
-      color: #94a3b8;
+      color: var(--text-muted);
       cursor: pointer;
       line-height: 1;
     }
 
     .guide-close-btn:hover {
-      color: white;
+      color: var(--text-main);
     }
 
     .guide-modal-body {
@@ -1167,15 +1247,15 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
       line-height: 1.6;
-      color: #cbd5e1;
+      color: var(--text-secondary);
     }
 
     .guide-section h3 {
       font-size: 16px;
       font-weight: 700;
-      color: #facc15;
+      color: var(--warning);
       margin-bottom: 10px;
     }
 
@@ -1188,18 +1268,504 @@
     }
 
     .guide-tips-list li {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
       padding: 10px 14px;
       border-radius: 8px;
       font-size: 14px;
+      color: var(--text-secondary);
     }
 
     @keyframes modalFadeIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
+
+    /* Mobile Responsive Layout & Controls */
+    .mobile-view-tabs {
+      display: none;
+    }
+
+    .mobile-go-editor-wrap {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .btn-mobile-go-editor {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
+    }
+
+    @media (max-width: 900px) {
+      header {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .brand {
+        font-size: 18px;
+        gap: 6px;
+      }
+
+      .progress-container {
+        padding: 4px 8px;
+        gap: 8px;
+      }
+
+      .progress-bar-bg {
+        width: 70px;
+      }
+
+      .progress-text {
+        font-size: 11px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .nav-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
+      .app-container {
+        height: auto;
+        min-height: calc(100vh - 65px);
+        overflow: visible;
+      }
+
+      #home-view {
+        padding: 24px 14px;
+      }
+
+      .hero-title {
+        font-size: 26px;
+      }
+
+      .hero-desc {
+        font-size: 15px;
+        margin-bottom: 25px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 280px;
+        margin-bottom: 30px;
+      }
+
+      .stat-box {
+        min-width: unset;
+        width: 100%;
+        padding: 12px;
+      }
+
+      .btn-start {
+        width: 100%;
+        max-width: 320px;
+        padding: 14px 18px;
+        font-size: 16px;
+      }
+
+      /* Course View on Mobile */
+      #course-view {
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 65px);
+        overflow: visible;
+      }
+
+      .mobile-view-tabs {
+        display: flex;
+        position: sticky;
+        top: 55px;
+        z-index: 45;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border-color);
+        padding: 6px;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .mobile-tab-btn {
+        flex: 1;
+        background: var(--bg-card);
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+        padding: 8px 4px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.15s;
+      }
+
+      .mobile-tab-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .workspace {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+      }
+
+      .sidebar {
+        width: 100% !important;
+        min-width: 100% !important;
+        border-left: none;
+        height: auto;
+        max-height: calc(100vh - 110px);
+      }
+
+      .theory-panel {
+        width: 100% !important;
+        padding: 16px;
+        border-left: none;
+        height: auto;
+        overflow: visible;
+      }
+
+      .mobile-go-editor-wrap {
+        display: block;
+      }
+
+      .editor-panel {
+        width: 100% !important;
+        border-left: none;
+        height: auto;
+        min-height: 520px;
+        overflow: visible;
+      }
+
+      .code-container {
+        height: 250px;
+      }
+
+      .code-textarea {
+        font-size: 15px; /* Prevents auto zoom in iOS */
+        padding: 12px;
+      }
+
+      .terminal-panel {
+        height: 200px;
+      }
+
+      /* Mobile tab visibility logic */
+      #course-view[data-mobile-tab="theory"] .sidebar { display: none !important; }
+      #course-view[data-mobile-tab="theory"] .editor-panel { display: none !important; }
+      #course-view[data-mobile-tab="theory"] .theory-panel { display: flex !important; }
+
+      #course-view[data-mobile-tab="editor"] .sidebar { display: none !important; }
+      #course-view[data-mobile-tab="editor"] .theory-panel { display: none !important; }
+      #course-view[data-mobile-tab="editor"] .editor-panel { display: flex !important; }
+
+      #course-view[data-mobile-tab="sidebar"] .workspace { display: none !important; }
+      #course-view[data-mobile-tab="sidebar"] .sidebar { display: flex !important; }
+    }
+
+    @media (max-width: 500px) {
+      .progress-text {
+        display: none;
+      }
+      .brand span:last-child {
+        font-size: 16px;
+      }
+      .nav-btn {
+        padding: 5px 8px;
+        font-size: 11.5px;
+      }
+      .roadmap-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================================
+       FEATURE: Shared Toast Notification (#pyteen-toast)
+       ============================================================ */
+    #pyteen-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 24px var(--shadow-color);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    #pyteen-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============================================================
+       FEATURE: Certificate of Completion Modal
+       ============================================================ */
+    #cert-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    #cert-overlay.active { display: flex; }
+
+    .cert-modal {
+      background: var(--modal-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 36px 40px 32px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 64px var(--shadow-color);
+      position: relative;
+      animation: certSlideIn 0.4s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes certSlideIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+    .cert-close-btn {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .cert-close-btn:hover { color: var(--text-main); background: var(--bg-surface); }
+    .cert-icon { font-size: 56px; margin-bottom: 8px; display: block; }
+    .cert-heading { font-size: 26px; font-weight: 800; color: var(--primary); margin: 0 0 6px; }
+    .cert-subheading { font-size: 14px; color: var(--text-muted); margin: 0 0 22px; }
+    .cert-divider { height: 1px; background: var(--border-color); margin: 18px 0; }
+    .cert-label { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 6px; text-align: right; }
+    .cert-name-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 16px;
+      color: var(--text-main);
+      font-family: inherit;
+      text-align: center;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+    .cert-name-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+    .cert-preview-box {
+      background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(168,85,247,0.08));
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px 20px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .cert-preview-logo { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .cert-preview-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
+    .cert-preview-name { font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 6px; min-height: 30px; }
+    .cert-preview-meta { font-size: 12px; color: var(--text-muted); }
+    .cert-preview-congrats { font-size: 13px; color: var(--success); margin-top: 8px; font-weight: 600; }
+    .cert-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 4px 16px rgba(56,189,248,0.3);
+    }
+    .cert-download-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ============================================================
+       FEATURE: Pure-JS Confetti
+       ============================================================ */
+    #confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8999;
+      overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      top: -12px;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+      border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0%   { opacity: 1; transform: translateY(0)     rotate(0deg); }
+      80%  { opacity: 1; }
+      100% { opacity: 0; transform: translateY(110vh) rotate(720deg); }
+    }
+
+    /* ============================================================
+       FEATURE: Daily Streak Badge in Header
+       ============================================================ */
+    #streak-badge {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 20px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #facc15;
+      white-space: nowrap;
+      cursor: default;
+      transition: background 0.3s;
+    }
+    #streak-badge.super-streak {
+      background: rgba(250, 204, 21, 0.22);
+      border-color: #facc15;
+      text-shadow: 0 0 8px rgba(250,204,21,0.6);
+    }
+
+    /* ============================================================
+       FEATURE: Streak Toast
+       ============================================================ */
+    #streak-toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 13px 22px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      box-shadow: 0 8px 32px var(--shadow-color);
+      z-index: 9500;
+      transition: transform 0.4s cubic-bezier(.22,1,.36,1), opacity 0.4s;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #streak-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ============================================================
+       FEATURE: Feedback / Question Floating Widget
+       ============================================================ */
+    #feedback-float-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 8000;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    #feedback-float-btn:hover { background: var(--primary); transform: scale(1.1); }
+
+    #feedback-popup {
+      position: fixed;
+      bottom: 82px;
+      left: 24px;
+      z-index: 8001;
+      width: 300px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px var(--shadow-color);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    #feedback-popup.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .feedback-popup-header { display: flex; align-items: center; justify-content: space-between; }
+    .feedback-popup-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
+    #feedback-close-btn {
+      background: none; border: none; color: var(--text-muted);
+      font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; transition: color 0.15s;
+    }
+    #feedback-close-btn:hover { color: var(--text-main); }
+    #feedback-topic, #feedback-message {
+      width: 100%; padding: 8px 10px; border-radius: 8px;
+      border: 1px solid var(--border-color); background: var(--bg-input);
+      color: var(--text-main); font-size: 13px; font-family: inherit;
+      direction: rtl; box-sizing: border-box;
+    }
+    #feedback-topic:focus, #feedback-message:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+    #feedback-message { height: 90px; resize: vertical; }
+    .feedback-char-counter { font-size: 11px; color: var(--text-muted); text-align: left; margin-top: -6px; }
+    #feedback-send-btn {
+      background: var(--primary); color: #fff; border: none; border-radius: 8px;
+      padding: 9px 14px; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background 0.2s; font-family: inherit;
+    }
+    #feedback-send-btn:hover { filter: brightness(1.1); }
+    #feedback-success-msg { display: none; text-align: center; font-size: 14px; font-weight: 600; color: var(--success); padding: 8px 0; }
   </style>
+
 </head>
 <body>
 
@@ -1217,7 +1783,13 @@
       <span class="progress-text" id="progress-text">0/42 הושלמו (0%)</span>
     </div>
 
-    <div style="display: flex; gap: 8px;">
+    <!-- Daily Streak Badge (Feature B) -->
+    <div id="streak-badge" title="מספר הימים ברצף שלמדת בקורס">
+      🔥 <span id="streak-count-text">2 ימים רצופים</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="nav-btn theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="החלף בין מצב יום למצב לילה">🌙 מצב לילה</button>
       <button class="nav-btn" onclick="openGuideModal()">📖 מדריך וטיפים</button>
       <button class="nav-btn" onclick="showHome()">🏠 דף הבית</button>
     </div>
@@ -1247,11 +1819,17 @@
         </div>
       </div>
 
-      <button class="btn-start" onclick="startCourse()">🚀 התחל ללמוד עכשיו</button>
+      <button class="btn-start" id="btn-start-hero" onclick="startCourse()">🚀 התחל ללמוד עכשיו</button>
     </div>
 
     <!-- Course View -->
-    <div id="course-view">
+    <div id="course-view" data-mobile-tab="theory">
+      <!-- Mobile View Bar -->
+      <div class="mobile-view-tabs" id="mobile-view-tabs">
+        <button class="mobile-tab-btn active" id="mtab-theory" onclick="switchMobileTab('theory')">📖 תוכן השיעור</button>
+        <button class="mobile-tab-btn" id="mtab-editor" onclick="switchMobileTab('editor')">💻 עורך והרצה</button>
+        <button class="mobile-tab-btn" id="mtab-sidebar" onclick="switchMobileTab('sidebar')">📚 רשימת שלבים</button>
+      </div>
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-header">
@@ -1328,61 +1906,45 @@
           <div class="tip-card" id="tip-card"></div>
           <div class="hint-card" id="hint-card"></div>
 
-          <!-- Gemini AI Prompt Assistant -->
-          <div class="gemini-card" id="gemini-card">
-            <div class="gemini-header">
-              <div class="gemini-title">
+          <!-- Compact Gemini AI Assistant -->
+          <div class="gemini-compact-card" id="gemini-card">
+            <div class="gemini-compact-top">
+              <div class="gemini-title-wrap">
                 <span class="gemini-icon-glow">🤖</span>
-                <span>מנטור AI אישי (Google Gemini)</span>
+                <span class="gemini-title-text">מנטור AI אישי (Gemini)</span>
+                <span class="gemini-pill-level" id="gemini-level-badge">התאמה מלאה</span>
               </div>
-              <div class="gemini-pills-wrap">
-                <span class="gemini-pill gemini-pill-ai">Gemini AI</span>
-                <span class="gemini-pill gemini-pill-level" id="gemini-level-badge">התאמה אישית מלאה</span>
-              </div>
+              <button class="btn-info-pop" onclick="openGeminiInfoModal()" title="איך המנטור עובד ומותאם לרמתך?">ℹ️ איך המנטור עובד?</button>
             </div>
 
-            <!-- באנר הדגשה מיוחד: מותאם אישית לרמת התלמיד ומכיל את כל ההיסטוריה -->
-            <div class="gemini-highlight-banner">
-              <div class="gemini-highlight-icon">🎯</div>
-              <div class="gemini-highlight-content">
-                <strong>פרומפט פדגוגי מבוקר ומותאם אישית להיסטוריית הלמידה שלך:</strong>
-                <span>
-                  הפרומפט שלהלן מזין לג'מיני את <strong>כל הידע והכלים שכבר צברת עד שלב זה</strong>, ומנחה אותו בקפידה:
-                  <em>"השתמש אך ורק במושגים שהתלמיד כבר למד, ללא שימוש בכלים מתקדמים או מבלבלים שטרם נלמדו!"</em>
-                  כך תיהנה מהסבר פשוט, דוגמאות מהעולם האמיתי ואתגרים שמתאימים בדיוק לרמתך הנוכחית.
-                </span>
-              </div>
+            <div class="gemini-compact-actions">
+              <button class="btn-gemini-action btn-gemini-primary" onclick="copyAndOpenGemini()" title="מעתיק את הפרומפט ופותח את ג'מיני בחלון חדש">
+                <span>⚡</span>
+                <span>העתק ופתח ב-Gemini</span>
+              </button>
+              <button class="btn-gemini-action btn-gemini-secondary" onclick="copyGeminiPrompt()" title="מעתיק את הפרומפט ללוח">
+                <span>📋</span>
+                <span id="copy-btn-text">העתק פרומפט</span>
+              </button>
+              <button class="btn-gemini-action btn-gemini-toggle" id="btn-toggle-prompt" onclick="togglePromptPreview()">
+                <span>👁️</span>
+                <span id="toggle-prompt-text">הצג פרומפט</span>
+              </button>
             </div>
 
-            <div class="gemini-features-row">
-              <span class="gemini-feat-item">📜 היסטוריית למידה מצטברת</span>
-              <span class="gemini-feat-item">🛡️ סינון מושגים שטרם נלמדו</span>
-              <span class="gemini-feat-item">💡 משלים ודוגמאות אינטואיטיביות</span>
-              <span class="gemini-feat-item">🚀 הכנה לשלבים הבאים</span>
-            </div>
-
-            <div class="gemini-prompt-wrapper">
+            <!-- Collapsible Prompt Box (Hidden by default to save screen space) -->
+            <div class="gemini-prompt-collapsible" id="gemini-prompt-wrapper" style="display: none;">
               <div class="prompt-meta-bar">
-                <span>פרומפט מוכן לשליחה:</span>
+                <span>פרומפט מותאם אישית שנבנה עבור שלב זה:</span>
                 <span id="prompt-char-count" class="prompt-char-count"></span>
               </div>
               <textarea id="gemini-prompt-text" class="gemini-prompt-box" readonly spellcheck="false"></textarea>
             </div>
+          </div>
 
-            <div class="gemini-actions">
-              <button class="btn-copy-gemini" id="btn-copy-gemini" onclick="copyGeminiPrompt()">
-                <span>📋</span>
-                <span id="copy-btn-text">העתק פרומפט לג'מיני</span>
-              </button>
-              <button class="btn-copy-open-gemini" onclick="copyAndOpenGemini()">
-                <span>⚡</span>
-                <span>העתק ופתח את Gemini</span>
-              </button>
-              <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="btn-open-gemini">
-                <span>🚀</span>
-                <span>פתח את Gemini בלשונית חדשה</span>
-              </a>
-            </div>
+          <!-- Mobile Go-to-Editor Button -->
+          <div class="mobile-go-editor-wrap">
+            <button class="btn-mobile-go-editor" onclick="switchMobileTab('editor')">עבור לכתיבת קוד והרצה 💻 ⬅️</button>
           </div>
 
           <div class="workspace-nav">
@@ -1395,12 +1957,15 @@
         <!-- Code & Terminal Panel -->
         <section class="editor-panel">
           <div class="editor-toolbar">
-            <div class="toolbar-title">
+            <div class="toolbar-title" style="display: flex; align-items: center; gap: 8px;">
               <span>💻 עורך קוד פייתון</span>
               <span style="font-size: 11px; opacity: 0.7;">(Ctrl+Enter להרצה)</span>
+              <span id="save-indicator" style="font-size: 11px; color: #4ade80; opacity: 0; transition: opacity 0.3s; font-weight: 600;">💾 נשמר</span>
             </div>
             <div class="toolbar-actions">
-              <button class="btn-sm" onclick="resetCode()">🔄 איפוס קוד</button>
+              <button class="btn-sm" id="btn-tab-helper" onclick="insertTab()" title="הכנס 4 רווחים (Tab) - שימושי במיוחד בנייד">⌨️ Tab</button>
+              <button class="btn-sm" onclick="resetCode()" title="מחזיר את הקוד לברירת המחדל של השלב">🔄 איפוס קוד</button>
+              <button class="btn-sm" onclick="downloadCode()" title="הורד את הקוד הנוכחי כקובץ .py">📥 הורד קוד</button>
               <button class="btn-run" onclick="runCode()">▶️ הרץ קוד</button>
             </div>
           </div>
@@ -1445,6 +2010,9 @@
     }
 
     async function initApp() {
+      // FEATURE: Initialize daily streak state on load
+      initStreak();
+
       try {
         const response = await fetch('/api/lessons');
         allLessons = await response.json();
@@ -1468,12 +2036,61 @@
       }
     }
 
+    // שמירה וטעינה של טיוטות קוד מה-localStorage
+    function getCodeDraft(lessonId) {
+      try {
+        const drafts = JSON.parse(localStorage.getItem('py_bekalut_code_drafts') || '{}');
+        return drafts[lessonId];
+      } catch (e) {
+        return null;
+      }
+    }
+
+    let saveIndicatorTimeout = null;
+    function showSavedIndicator(msg = '💾 נשמר') {
+      const el = document.getElementById('save-indicator');
+      if (!el) return;
+      el.innerText = msg;
+      el.style.opacity = '1';
+      clearTimeout(saveIndicatorTimeout);
+      saveIndicatorTimeout = setTimeout(() => {
+        el.style.opacity = '0';
+      }, 1500);
+    }
+
+    function saveCodeDraft(lessonId, code) {
+      if (!lessonId) return;
+      try {
+        const drafts = JSON.parse(localStorage.getItem('py_bekalut_code_drafts') || '{}');
+        drafts[lessonId] = code;
+        localStorage.setItem('py_bekalut_code_drafts', JSON.stringify(drafts));
+        showSavedIndicator('💾 נשמר');
+      } catch (e) {}
+    }
+
+    function clearCodeDraft(lessonId) {
+      if (!lessonId) return;
+      try {
+        const drafts = JSON.parse(localStorage.getItem('py_bekalut_code_drafts') || '{}');
+        delete drafts[lessonId];
+        localStorage.setItem('py_bekalut_code_drafts', JSON.stringify(drafts));
+      } catch (e) {}
+    }
+
     function saveProgress() {
       try {
         localStorage.setItem('py_bekalut_completed', JSON.stringify(Array.from(completedLessons)));
       } catch (e) {}
       updateProgress();
       renderSidebar();
+
+      // FEATURE: Update daily streak on every successful lesson completion
+      updateStreak();
+
+      // FEATURE: Show certificate modal when all 42 lessons completed
+      if (completedLessons.size === totalLessons) {
+        setTimeout(() => openCertModal(), 800);
+      }
     }
 
     function updateProgress() {
@@ -1489,6 +2106,22 @@
 
       const statComp = document.getElementById('stat-completed-count');
       if (statComp) statComp.innerText = count;
+
+      // עדכון כפתור דף הבית (המשך מאיפה שהפסקת)
+      const btnStart = document.getElementById('btn-start-hero');
+      if (btnStart) {
+        let lastActive = null;
+        try { lastActive = parseInt(localStorage.getItem('py_bekalut_active_lesson'), 10); } catch(e){}
+        if (lastActive && allLessons.some(l => l.id === lastActive)) {
+          btnStart.innerText = '🚀 המשך מאיפה שהפסקת (שלב ' + lastActive + ')';
+        } else if (count > 0) {
+          const nextUnfinished = allLessons.find(l => !completedLessons.has(l.id));
+          const stepNum = nextUnfinished ? nextUnfinished.id : 1;
+          btnStart.innerText = '🚀 המשך מאיפה שהפסקת (שלב ' + stepNum + ')';
+        } else {
+          btnStart.innerText = '🚀 התחל ללמוד עכשיו';
+        }
+      }
     }
 
     // קביעת רמת השיעור: 'יסודות' או 'מתקדם'
@@ -1739,9 +2372,20 @@
       document.getElementById('home-view').style.display = 'none';
       document.getElementById('course-view').style.display = 'flex';
 
-      // מציאת השלב הראשון שטרם הושלם
-      const firstUncompleted = allLessons.find(l => !completedLessons.has(l.id));
-      selectLesson(firstUncompleted ? firstUncompleted.id : (allLessons[0] ? allLessons[0].id : 1));
+      let targetLessonId = null;
+      try {
+        const lastActive = parseInt(localStorage.getItem('py_bekalut_active_lesson'), 10);
+        if (lastActive && allLessons.some(l => l.id === lastActive)) {
+          targetLessonId = lastActive;
+        }
+      } catch (e) {}
+
+      if (!targetLessonId) {
+        const firstUncompleted = allLessons.find(l => !completedLessons.has(l.id));
+        targetLessonId = firstUncompleted ? firstUncompleted.id : (allLessons[0] ? allLessons[0].id : 1);
+      }
+
+      selectLesson(targetLessonId);
     }
 
     // יצירת פרומפט גיבוי מלא ל-Gemini אם לא סופק מהשרת
@@ -1803,6 +2447,11 @@
       if (!lesson) return;
 
       currentLesson = lesson;
+
+      // שמירת השלב הפעיל ב-localStorage
+      try {
+        localStorage.setItem('py_bekalut_active_lesson', lesson.id);
+      } catch (e) {}
 
       // ודא שפרק השיעור פתוח באקורדיון
       collapsedChapters.delete(lesson.chapter);
@@ -1896,11 +2545,11 @@
       }
 
       const copyBtnText = document.getElementById('copy-btn-text');
-      if (copyBtnText) copyBtnText.innerText = 'העתק פרומפט לג\'מיני';
+      if (copyBtnText) copyBtnText.innerText = 'העתק פרומפט';
 
       const charCountEl = document.getElementById('prompt-char-count');
       if (charCountEl) {
-        charCountEl.innerText = promptText.length + ' תווים מותאמים אישית';
+        charCountEl.innerText = promptText.length + ' תווים';
       }
 
       const geminiBadge = document.getElementById('gemini-level-badge');
@@ -1908,9 +2557,23 @@
         geminiBadge.innerText = 'שלב ' + lesson.id + ' • ' + lessonLevel;
       }
 
-      // קוד ועורך
+      // שמירה על תצוגת פרומפט מכווצת בעת מעבר בין שלבים
+      const promptWrapper = document.getElementById('gemini-prompt-wrapper');
+      if (promptWrapper) promptWrapper.style.display = 'none';
+      const toggleBtnText = document.getElementById('toggle-prompt-text');
+      if (toggleBtnText) toggleBtnText.innerText = 'הצג פרומפט';
+
+      // במובייל: במעבר לשלב, עוברים מיד לטאב השיעור
+      if (window.innerWidth <= 900) {
+        switchMobileTab('theory');
+      }
+
+      // קוד ועורך: טעינת טיוטה שמורה אם קיימת, אחרת קוד ברירת מחדל
       const codeEditor = document.getElementById('code-editor');
-      if (codeEditor) codeEditor.value = lesson.default_code;
+      if (codeEditor) {
+        const savedDraft = getCodeDraft(lesson.id);
+        codeEditor.value = (savedDraft !== null && savedDraft !== undefined) ? savedDraft : lesson.default_code;
+      }
 
       // איפוס מסוף
       const terminal = document.getElementById('terminal-body');
@@ -1948,17 +2611,17 @@
 
       try {
         await navigator.clipboard.writeText(text);
-        if (btnText) btnText.innerText = '✔️ הפרומפט הועתק בהצלחה!';
+        if (btnText) btnText.innerText = '✔️ הועתק!';
         setTimeout(() => {
-          if (btnText) btnText.innerText = 'העתק פרומפט לג\'מיני';
+          if (btnText) btnText.innerText = 'העתק פרומפט';
         }, 2500);
       } catch (err) {
         const ta = document.getElementById('gemini-prompt-text');
         ta.select();
         document.execCommand('copy');
-        if (btnText) btnText.innerText = '✔️ הפרומפט הועתק בהצלחה!';
+        if (btnText) btnText.innerText = '✔️ הועתק!';
         setTimeout(() => {
-          if (btnText) btnText.innerText = 'העתק פרומפט לג\'מיני';
+          if (btnText) btnText.innerText = 'העתק פרומפט';
         }, 2500);
       }
     }
@@ -1977,7 +2640,9 @@
 
     function resetCode() {
       if (currentLesson) {
+        clearCodeDraft(currentLesson.id);
         document.getElementById('code-editor').value = currentLesson.default_code;
+        showSavedIndicator("הקוד אופס לברירת המחדל");
       }
     }
 
@@ -2063,6 +2728,100 @@
       }
     });
 
+    // שמירה אוטומטית בעת הקלדה בעורך
+    let autoSaveTimer = null;
+    document.getElementById('code-editor').addEventListener('input', function() {
+      if (!currentLesson) return;
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        saveCodeDraft(currentLesson.id, this.value);
+      }, 400);
+    });
+
+    // --- Dark / Light Theme Logic ---
+    function initTheme() {
+      let saved = null;
+      try { saved = localStorage.getItem('py_theme'); } catch(e){}
+      if (!saved) {
+        saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      applyTheme(saved);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('py_theme', theme); } catch(e){}
+      const btn = document.getElementById('theme-toggle-btn');
+      if (btn) {
+        btn.innerHTML = (theme === 'dark') ? '☀️ יום בהיר' : '🌙 לילה כהה';
+        btn.title = (theme === 'dark') ? 'עבור למצב יום (בהיר)' : 'עבור למצב לילה (כהה)';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = (current === 'dark') ? 'light' : 'dark';
+      applyTheme(next);
+    }
+
+    // --- Mobile Workspace View Switcher ---
+    function switchMobileTab(tabName) {
+      const courseView = document.getElementById('course-view');
+      if (!courseView) return;
+      courseView.setAttribute('data-mobile-tab', tabName);
+
+      document.querySelectorAll('.mobile-tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('mtab-' + tabName);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tabName === 'editor') {
+        const editor = document.getElementById('code-editor');
+        if (editor) {
+          editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+
+    // --- Mobile Tab / Indentation Helper (4 spaces) ---
+    function insertTab() {
+      const editor = document.getElementById('code-editor');
+      if (!editor) return;
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+      editor.selectionStart = editor.selectionEnd = start + 4;
+      editor.focus();
+      if (currentLesson) {
+        saveCodeDraft(currentLesson.id, editor.value);
+      }
+    }
+
+    // --- Gemini Compact Assistant & Info Modal ---
+    function togglePromptPreview() {
+      const wrapper = document.getElementById('gemini-prompt-wrapper');
+      const btnText = document.getElementById('toggle-prompt-text');
+      if (!wrapper) return;
+      if (wrapper.style.display === 'none' || wrapper.style.display === '') {
+        wrapper.style.display = 'flex';
+        if (btnText) btnText.innerText = 'הסתר פרומפט';
+      } else {
+        wrapper.style.display = 'none';
+        if (btnText) btnText.innerText = 'הצג פרומפט';
+      }
+    }
+
+    function openGeminiInfoModal() {
+      const modal = document.getElementById('gemini-info-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeGeminiInfoModal(event) {
+      if (!event || event.target.id === 'gemini-info-modal' || event.target.className === 'guide-close-btn') {
+        const modal = document.getElementById('gemini-info-modal');
+        if (modal) modal.style.display = 'none';
+      }
+    }
+
     function openGuideModal() {
       document.getElementById('guide-modal').style.display = 'flex';
     }
@@ -2073,7 +2832,383 @@
       }
     }
 
+    // ================================================================
+    // FEATURE: Certificate of Completion
+    // ================================================================
+
+    const totalLessons = 42;
+
+    function openCertModal() {
+      const overlay = document.getElementById('cert-overlay');
+      if (overlay) {
+        overlay.classList.add('active');
+        const dateEl = document.getElementById('cert-preview-date');
+        if (dateEl) dateEl.innerText = 'תאריך השלמה: ' + getFormattedDate();
+        updateCertPreview();
+        const nameInput = document.getElementById('cert-name-input');
+        if (nameInput) setTimeout(() => nameInput.focus(), 300);
+      }
+      launchConfetti();
+    }
+
+    function closeCertModal(event) {
+      if (!event || event.target.id === 'cert-overlay' || event.target.className === 'cert-close-btn') {
+        const overlay = document.getElementById('cert-overlay');
+        if (overlay) overlay.classList.remove('active');
+      }
+    }
+
+    function updateCertPreview() {
+      const nameInput = document.getElementById('cert-name-input');
+      const previewName = document.getElementById('cert-preview-name');
+      if (nameInput && previewName) {
+        previewName.innerText = nameInput.value.trim() || 'שמך יופיע כאן';
+      }
+    }
+
+    function getFormattedDate() {
+      return new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function downloadCertificate() {
+      const nameInput = document.getElementById('cert-name-input');
+      const studentName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'בוגר/ת הקורס';
+      const dateStr = getFormattedDate();
+
+      const W = 900, H = 630;
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+      bgGrad.addColorStop(0, '#0f172a'); bgGrad.addColorStop(0.5, '#1a2540'); bgGrad.addColorStop(1, '#0d1b32');
+      ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
+
+      // Color bars
+      const topGrad = ctx.createLinearGradient(0, 0, W, 0);
+      topGrad.addColorStop(0, '#38bdf8'); topGrad.addColorStop(1, '#a855f7');
+      ctx.fillStyle = topGrad; ctx.fillRect(0, 0, W, 6); ctx.fillRect(0, H - 6, W, 6);
+
+      // Border
+      ctx.strokeStyle = 'rgba(56,189,248,0.25)'; ctx.lineWidth = 1.5;
+      ctx.strokeRect(24, 22, W - 48, H - 44);
+
+      ctx.textAlign = 'center'; ctx.direction = 'rtl';
+
+      // Logo
+      ctx.font = 'bold 28px Arial, sans-serif'; ctx.fillStyle = '#38bdf8';
+      ctx.fillText('🐍 פייתון בקלות', W / 2, 85);
+
+      // Title
+      ctx.font = 'bold 40px Arial, sans-serif'; ctx.fillStyle = '#f8fafc';
+      ctx.fillText('תעודת סיום קורס', W / 2, 165);
+
+      ctx.font = '18px Arial, sans-serif'; ctx.fillStyle = '#94a3b8';
+      ctx.fillText('זה מאשר בגאווה כי', W / 2, 210);
+
+      // Student name
+      const nameGrad = ctx.createLinearGradient(0, 0, W, 0);
+      nameGrad.addColorStop(0, '#a855f7'); nameGrad.addColorStop(1, '#38bdf8');
+      ctx.font = 'bold 46px Arial, sans-serif'; ctx.fillStyle = nameGrad;
+      ctx.fillText(studentName, W / 2, 278);
+
+      // Underline
+      const nw = Math.min(ctx.measureText(studentName).width + 40, W * 0.7);
+      const nlg = ctx.createLinearGradient((W - nw) / 2, 0, (W + nw) / 2, 0);
+      nlg.addColorStop(0, '#a855f7'); nlg.addColorStop(1, '#38bdf8');
+      ctx.strokeStyle = nlg; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo((W - nw) / 2, 290); ctx.lineTo((W + nw) / 2, 290); ctx.stroke();
+
+      ctx.font = '20px Arial, sans-serif'; ctx.fillStyle = '#cbd5e1';
+      ctx.fillText('השלים/ה בהצלחה את כל שלבי הקורס:', W / 2, 340);
+
+      // Details box
+      ctx.fillStyle = 'rgba(56,189,248,0.07)';
+      const bx = W * 0.15, bw = W * 0.7;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(bx, 360, bw, 80, 12); else ctx.rect(bx, 360, bw, 80);
+      ctx.fill(); ctx.strokeStyle = 'rgba(56,189,248,0.2)'; ctx.lineWidth = 1; ctx.stroke();
+
+      ctx.font = 'bold 22px Arial, sans-serif'; ctx.fillStyle = '#38bdf8';
+      ctx.fillText('42 שלבים ב-14 פרקים', W / 2, 396);
+      ctx.font = '16px Arial, sans-serif'; ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Python — מהתחלה ועד תכנות מתקדם', W / 2, 424);
+
+      ctx.font = 'bold 18px Arial, sans-serif'; ctx.fillStyle = '#22c55e';
+      ctx.fillText('🏆 כל הכבוד! ההתמדה, הסקרנות והעבודה הקשה שלך הניבו פרי.', W / 2, 490);
+      ctx.font = '15px Arial, sans-serif'; ctx.fillStyle = '#94a3b8';
+      ctx.fillText('את/ה מוכן/ה לצאת לפרויקטים עצמאיים ולהמשיך לגדול כמתכנת/ת!', W / 2, 515);
+      ctx.font = '14px Arial, sans-serif'; ctx.fillStyle = '#64748b';
+      ctx.fillText('תאריך השלמה: ' + dateStr, W / 2, 575);
+
+      // Watermark
+      ctx.globalAlpha = 0.07; ctx.font = '180px Arial'; ctx.fillStyle = '#ffffff';
+      ctx.fillText('🏆', W / 2, H / 2 + 80); ctx.globalAlpha = 1;
+
+      const link = document.createElement('a');
+      link.download = 'תעודת-סיום-פייתון-בקלות.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // ================================================================
+    // FEATURE: Pure-JS Confetti
+    // ================================================================
+
+    function launchConfetti() {
+      const container = document.getElementById('confetti-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const colors = ['#38bdf8','#a855f7','#22c55e','#facc15','#f87171','#fb923c','#34d399'];
+      const shapes = ['2px','50%','0%'];
+      for (let i = 0; i < 120; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = 8 + Math.random() * 8;
+        el.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${color};border-radius:${shapes[Math.floor(Math.random()*3)]};animation-duration:${2.2+Math.random()*2.5}s;animation-delay:${Math.random()*1.8}s;`;
+        container.appendChild(el);
+      }
+      setTimeout(() => { container.innerHTML = ''; }, 6000);
+    }
+
+    // ================================================================
+    // FEATURE: Daily Learning Streak
+    // ================================================================
+
+    let currentStreak = 0;
+
+    function initStreak() {
+      try {
+        const lastDate = localStorage.getItem('py_last_activity_date');
+        const savedStreak = parseInt(localStorage.getItem('py_streak_days') || '0', 10);
+        const today = getTodayISO();
+        if (!lastDate) {
+          currentStreak = 0;
+        } else if (lastDate === today) {
+          currentStreak = savedStreak;
+        } else {
+          const diff = daysBetween(lastDate, today);
+          if (diff === 1) { currentStreak = savedStreak; }
+          else { currentStreak = 0; localStorage.setItem('py_streak_days', '0'); }
+        }
+      } catch (e) {}
+      renderStreakBadge();
+    }
+
+    function updateStreak() {
+      try {
+        const lastDate = localStorage.getItem('py_last_activity_date');
+        const today = getTodayISO();
+        const prevStreak = currentStreak;
+        if (!lastDate) {
+          currentStreak = 1;
+        } else if (lastDate === today) {
+          // already logged today — no change
+        } else {
+          const diff = daysBetween(lastDate, today);
+          currentStreak = (diff === 1) ? currentStreak + 1 : 1;
+        }
+        localStorage.setItem('py_last_activity_date', today);
+        localStorage.setItem('py_streak_days', String(currentStreak));
+        renderStreakBadge();
+        if (lastDate !== today && currentStreak >= 2) showStreakToast(currentStreak);
+      } catch (e) {}
+    }
+
+    function renderStreakBadge() {
+      const badge = document.getElementById('streak-badge');
+      const countText = document.getElementById('streak-count-text');
+      if (!badge || !countText) return;
+      if (currentStreak >= 2) {
+        badge.style.display = 'flex';
+        if (currentStreak >= 7) {
+          badge.classList.add('super-streak');
+          countText.innerText = '🔥 ' + currentStreak + ' ימים! אלוף!';
+        } else {
+          badge.classList.remove('super-streak');
+          countText.innerText = currentStreak + ' ימים רצופים';
+        }
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function showStreakToast(streak) {
+      const toast = document.getElementById('streak-toast');
+      if (!toast) return;
+      toast.innerText = '🔥 רצף של ' + streak + ' ימים! כל הכבוד!';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function getTodayISO() { return new Date().toISOString().slice(0, 10); }
+    function daysBetween(a, b) { return Math.round((new Date(b) - new Date(a)) / 86400000); }
+
+    // ================================================================
+    // FEATURE: Download .py File
+    // ================================================================
+
+    function showToast(msg, durationMs = 2500) {
+      const toast = document.getElementById('pyteen-toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), durationMs);
+    }
+
+    function makeTitleSlug(title) {
+      return (title || '').replace(/^שלב\s*\d+\s*:\s*/, '').replace(/[^\w\u0590-\u05FF\s-]/g, '').trim().replace(/\s+/g, '_').substring(0, 40) || 'lesson';
+    }
+
+    function downloadCode() {
+      if (!currentLesson) { showToast('⚠️ לא נטען שלב. נסה שוב.'); return; }
+      const code = document.getElementById('code-editor').value;
+      const header = [
+        `# ===================================================`,
+        `# קובץ זה נוצר על ידי PyTeen – פייתון בקלות`,
+        `# שלב ${currentLesson.id}: ${currentLesson.title}`,
+        `# תאריך הורדה: ${new Date().toLocaleDateString('he-IL')}`,
+        `# ===================================================`,
+        ``
+      ].join('\n');
+      const blob = new Blob([header + code], { type: 'text/x-python;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `pyteen_lesson_${currentLesson.id}_${makeTitleSlug(currentLesson.title)}.py`;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('✅ הקוד הורד בהצלחה!');
+    }
+
+    // ================================================================
+    // FEATURE: Feedback / Question Widget
+    // ================================================================
+
+    const FEEDBACK_EMAIL = 'pyteen.feedback@gmail.com';
+    let feedbackPopupOpen = false;
+
+    function toggleFeedbackPopup() { feedbackPopupOpen ? closeFeedbackPopup() : openFeedbackPopup(); }
+
+    function openFeedbackPopup() {
+      const popup = document.getElementById('feedback-popup');
+      if (!popup) return;
+      document.getElementById('feedback-topic').value = '';
+      document.getElementById('feedback-message').value = '';
+      document.getElementById('feedback-char-count').textContent = '0';
+      document.getElementById('feedback-success-msg').style.display = 'none';
+      document.getElementById('feedback-send-btn').style.display = '';
+      popup.classList.add('open');
+      feedbackPopupOpen = true;
+    }
+
+    function closeFeedbackPopup() {
+      const popup = document.getElementById('feedback-popup');
+      if (popup) popup.classList.remove('open');
+      feedbackPopupOpen = false;
+    }
+
+    function updateFeedbackCounter() {
+      const msg = document.getElementById('feedback-message');
+      const counter = document.getElementById('feedback-char-count');
+      if (msg && counter) counter.textContent = msg.value.length;
+    }
+
+    function sendFeedback() {
+      const topic = document.getElementById('feedback-topic').value;
+      const message = document.getElementById('feedback-message').value.trim();
+      if (!topic) { showToast('⚠️ נא לבחור נושא לפנייה.'); return; }
+      if (!message) { showToast('⚠️ נא לכתוב הודעה לפני השליחה.'); return; }
+      const lessonInfo = currentLesson ? `שלב ${currentLesson.id}: ${currentLesson.title}` : 'שלב לא ידוע';
+      const subject = encodeURIComponent(`[PyTeen] ${topic} – ${lessonInfo}`);
+      const body = encodeURIComponent(`נושא: ${topic}\nשלב: ${lessonInfo}\n\nהודעה:\n${message}\n\n---\nנשלח מ-PyTeen`);
+      window.open(`mailto:${FEEDBACK_EMAIL}?subject=${subject}&body=${body}`, '_blank');
+      document.getElementById('feedback-send-btn').style.display = 'none';
+      document.getElementById('feedback-success-msg').style.display = 'block';
+      setTimeout(() => closeFeedbackPopup(), 3000);
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!feedbackPopupOpen) return;
+      const popup = document.getElementById('feedback-popup');
+      const btn = document.getElementById('feedback-float-btn');
+      if (popup && btn && !popup.contains(e.target) && !btn.contains(e.target)) closeFeedbackPopup();
+    });
+
+    initTheme();
     initApp();
+  </script>
+
+  <!-- Confetti Container (Feature: Certificate) -->
+  <div id="confetti-container"></div>
+
+  <!-- Streak Toast (Feature: Daily Streak) -->
+  <div id="streak-toast"></div>
+
+  <!-- Certificate of Completion Modal -->
+  <div id="cert-overlay" onclick="closeCertModal(event)">
+    <div class="cert-modal" onclick="event.stopPropagation()">
+      <button class="cert-close-btn" onclick="closeCertModal()" title="סגור">×</button>
+      <span class="cert-icon">🎓</span>
+      <h2 class="cert-heading">תעודת סיום</h2>
+      <p class="cert-subheading">השלמת את כל 42 השלבים בקורס פייתון בקלות! 🐍</p>
+      <div class="cert-divider"></div>
+      <label class="cert-label" for="cert-name-input">שם המסיים:</label>
+      <input type="text" id="cert-name-input" class="cert-name-input"
+        placeholder="הקלד את שמך המלא..." oninput="updateCertPreview()" maxlength="60">
+      <div class="cert-preview-box">
+        <div class="cert-preview-logo">פייתון בקלות 🐍</div>
+        <div class="cert-preview-title">תעודת סיום קורס</div>
+        <div class="cert-preview-name" id="cert-preview-name">שמך יופיע כאן</div>
+        <div class="cert-preview-meta">42 שלבים ב-14 פרקים<br><span id="cert-preview-date"></span></div>
+        <div class="cert-preview-congrats">🏆 בוגר/ת הקורס – ברכות על ההישג!</div>
+      </div>
+      <button class="cert-download-btn" onclick="downloadCertificate()">
+        <span>📄</span><span>הורד תעודה</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Shared Toast Notification -->
+  <div id="pyteen-toast"></div>
+
+  <!-- Feedback Floating Button -->
+  <button id="feedback-float-btn" onclick="toggleFeedbackPopup()" title="שאלה או הצעה?">💬</button>
+
+  <!-- Feedback Popup Panel -->
+  <div id="feedback-popup" role="dialog" aria-label="שאלה או הצעה">
+    <div class="feedback-popup-header">
+      <span class="feedback-popup-title">שאלה או הצעה? 💙</span>
+      <button id="feedback-close-btn" onclick="closeFeedbackPopup()" title="סגור">✕</button>
+    </div>
+    <select id="feedback-topic">
+      <option value="" disabled selected>בחר נושא</option>
+      <option value="שאלה על שלב זה">שאלה על שלב זה</option>
+      <option value="דיווח על בעיה">דיווח על בעיה</option>
+      <option value="הצעה לשיפור">הצעה לשיפור</option>
+      <option value="אחר">אחר</option>
+    </select>
+    <textarea id="feedback-message" placeholder="כתוב את הודעתך כאן... (עד 500 תווים)"
+      maxlength="500" oninput="updateFeedbackCounter()"></textarea>
+    <div class="feedback-char-counter"><span id="feedback-char-count">0</span> / 500</div>
+    <button id="feedback-send-btn" onclick="sendFeedback()">📨 שלח</button>
+    <div id="feedback-success-msg">תודה! הפנייה נשלחה 💙</div>
+  </div>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+          .then(function (reg) { console.log('[PWA] SW registered, scope:', reg.scope); })
+          .catch(function (err) { console.warn('[PWA] SW registration failed:', err); });
+      });
+    }
   </script>
 
   <!-- Guide Modal -->
@@ -2090,7 +3225,7 @@
             <li><strong>1. הקלד בעצמך, אל תעתיק:</strong> הקלדה ידנית בונה זיכרון שריר ומטמיעה את התחביר של פייתון בצורה עמוקה.</li>
             <li><strong>2. "שבור את הקוד" בכוונה:</strong> שנה ערכים, מחק נקודתיים, ובדוק איך המערכת מסבירה את השגיאות בעברית. כך לומדים הכי טוב!</li>
             <li><strong>3. 20 דקות ביום:</strong> עדיף לפתור 2–3 שלבים בכל יום ברציפות מאשר ללמוד 5 שעות פעם בשבוע. ההתמדה היא סוד ההצלחה בתכנות.</li>
-            <li><strong>4. השתמש במנטור Gemini AI:</strong> לחץ על כפתור "⚡ העתק ופתח את Gemini" בכל שלב כדי לקבל שיעור פרטי, משלים מהחיים והסבר טכני מותאם אישית.</li>
+            <li><strong>4. השתמש במנטור Gemini AI:</strong> לחץ על כפתור "⚡ העתק ופתח ב-Gemini" בכל שלב כדי לקבל שיעור פרטי, משלים מהחיים והסבר טכני מותאם אישית.</li>
             <li><strong>5. עשה וריאציות משלך:</strong> הצלחת בשלב? נסה להוסיף הדפסה נוספת או לשנות את החישוב לפני המעבר הלאה.</li>
           </ul>
         </div>
@@ -2098,10 +3233,54 @@
         <div class="guide-section">
           <h3>🚀 קיצורי דרך ופיצ'רים חשובים במערכת</h3>
           <p>• <strong>הרצה מהירה:</strong> לחיצה על <code>Ctrl + Enter</code> בעורך הקוד מריצה את הקוד מיד.</p>
-          <p>• <strong>הזחה נוחה:</strong> מקש <code>Tab</code> מכניס אוטומטית 4 רווחים מדויקים.</p>
-          <p>• <strong>סרגל צד מתקדם:</strong> סנן בין 'יסודות' ל-'מתקדם', כווץ ופתח פרקים, וחפש כל שלב לפי מילות מפתח.</p>
-          <p>• <strong>התקדמות שמורה:</strong> כל שלב שתעבור נשמר אוטומטית במחשב שלך (ניתן לסגור ולחזור תמיד).</p>
+          <p>• <strong>הזחה נוחה:</strong> מקש <code>Tab</code> (או כפתור Tab בסרגל הכלים) מכניס 4 רווחים מדויקים.</p>
+          <p>• <strong>תמיכה מלאה במובייל:</strong> טאבים ייעודיים למעבר קל בין תוכן השיעור, עורך הקוד והרשימה בסמארטפונים וטאבלטים.</p>
+          <p>• <strong>מצב יום / לילה:</strong> כפתור החלפת תמה בראש הדף להתאמה מושלמת לקריאה נוחה בכל שעה.</p>
+          <p>• <strong>התקדמות וטיוטות שמורות:</strong> כל שלב שעברת וכל טיוטת קוד שכתבת נשמרים אוטומטית בדפדפן שלך!</p>
           <p>• <strong>מדריך מורחב:</strong> לקריאת המדריך המלא למשתמש, פתח את הקובץ <code>USER_GUIDE.md</code> בתיקיית הפרויקט.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gemini Info Modal (Pop-up explaining the personal AI mentor) -->
+  <div id="gemini-info-modal" class="guide-modal-overlay" onclick="closeGeminiInfoModal(event)">
+    <div class="guide-modal-card" onclick="event.stopPropagation()">
+      <div class="guide-modal-header">
+        <h2 style="display: flex; align-items: center; gap: 8px;">
+          <span>🤖</span>
+          <span>מנטור הבינה המלאכותית האישי שלך (Gemini AI)</span>
+        </h2>
+        <button class="guide-close-btn" onclick="closeGeminiInfoModal()">&times;</button>
+      </div>
+      <div class="guide-modal-body">
+        <div class="gemini-highlight-banner">
+          <div class="gemini-highlight-icon">🎯</div>
+          <div class="gemini-highlight-content">
+            <strong>פרומפט פדגוגי מבוקר ומותאם אישית להיסטוריית הלמידה שלך:</strong>
+            <span>
+              הפרומפט שנבנה עבורך בכל שלב מזין לג'מיני את <strong>כל הידע והכלים שכבר צברת עד שלב זה</strong>, ומנחה אותו בקפידה:
+              <em>"השתמש אך ורק במושגים שהתלמיד כבר למד, ללא שימוש בכלים מתקדמים או מבלבלים שטרם נלמדו!"</em>
+              כך תיהנה מהסבר פשוט, דוגמאות מהעולם האמיתי ואתגרים שמתאימים בדיוק לרמתך הנוכחית.
+            </span>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <h3>🌟 ארבעת עקרונות המנטור:</h3>
+          <ul class="guide-tips-list">
+            <li><strong>📜 היסטוריית למידה מצטברת:</strong> המנטור יודע בדיוק אילו שלבים עברת עד כה ומסתמך רק על מה שנלמד.</li>
+            <li><strong>🛡️ סינון מושגים מבלבלים:</strong> מונע שימוש בפונקציות מתקדמות, ספריות זרות או מחלקות מורכבות שטרם הגעת אליהן.</li>
+            <li><strong>💡 משלים ודוגמאות אינטואיטיביות:</strong> מספק אנלוגיות פשוטות מהיומיום שמסבירות את השימוש האמיתי בקוד.</li>
+            <li><strong>🚀 הכנה לשלבים הבאים:</strong> מסביר איך השלב הזה בונה את הגשר לשלבים הבאים כדי לשמור על רצף והתמדה.</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <h3>⚡ איך להשתמש במנטור?</h3>
+          <p>1. לוחצים על כפתור <strong>"⚡ העתק ופתח ב-Gemini"</strong> בכל שלב שבו רוצים הסבר מעמיק או דוגמה נוספת.</p>
+          <p>2. בחלון ה-Gemini שנפתח, לוחצים על <code>Ctrl + V</code> (הדבק) ושולחים.</p>
+          <p>3. נהנים ממורה פרטי צמוד שזמין עבורך 24/7 ומכיר את הקצב האישי שלך!</p>
         </div>
       </div>
     </div>
