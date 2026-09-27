@@ -757,11 +757,59 @@
       display: none;
       background: var(--hint-bg);
       border: 1px solid var(--hint-border);
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      color: var(--hint-text);
+      border-right: 4px solid var(--accent);
+      padding: 16px 18px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      color: var(--text-main);
+      box-shadow: 0 4px 16px -2px var(--shadow-color);
+      animation: fadeIn 0.25s ease-out;
+      margin-top: 6px;
+      line-height: 1.6;
     }
+
+    .hint-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--hint-border);
+    }
+
+    .hint-title-text {
+      font-weight: 800;
+      font-size: 14.5px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hint-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .hint-close-btn:hover {
+      color: var(--text-main);
+      background: rgba(168, 85, 247, 0.15);
+    }
+
+    .hint-content-body {
+      white-space: pre-line;
+      color: var(--text-main);
+      font-size: 13.5px;
+      direction: rtl;
+    }
+
 
     /* Compact Space-Saving Gemini Card */
     .gemini-compact-card {
@@ -1949,7 +1997,7 @@
 
           <div class="workspace-nav">
             <button class="nav-btn" id="btn-prev" onclick="prevLesson()">➡️ שלב קודם</button>
-            <button class="nav-btn" onclick="toggleHint()">💡 רמז לפתרון</button>
+            <button class="nav-btn" id="btn-nav-hint" onclick="toggleHint()" title="הצג או הסתר רמז והכוונה לשלב זה">💡 רמז לפתרון</button>
             <button class="nav-btn" id="btn-next-nav" onclick="nextLesson()">שלב הבא ⬅️</button>
           </div>
         </section>
@@ -1964,6 +2012,7 @@
             </div>
             <div class="toolbar-actions">
               <button class="btn-sm" id="btn-tab-helper" onclick="insertTab()" title="הכנס 4 רווחים (Tab) - שימושי במיוחד בנייד">⌨️ Tab</button>
+              <button class="btn-sm" id="btn-editor-hint" onclick="toggleHint()" title="הצג או הסתר רמז והכוונה לשלב זה">💡 רמז</button>
               <button class="btn-sm" onclick="resetCode()" title="מחזיר את הקוד לברירת המחדל של השלב">🔄 איפוס קוד</button>
               <button class="btn-sm" onclick="downloadCode()" title="הורד את הקוד הנוכחי כקובץ .py">📥 הורד קוד</button>
               <button class="btn-run" onclick="runCode()">▶️ הרץ קוד</button>
@@ -2533,9 +2582,26 @@
 
       const hintCard = document.getElementById('hint-card');
       if (hintCard) {
-        hintCard.innerText = '💡 רמז: ' + (lesson.hint || 'נסה לעקוב אחר ההסבר והדוגמה.');
+        const hintText = lesson.hint || 'נסה לעקוב אחר ההסבר והדוגמה בשלב זה.';
+        hintCard.innerHTML = `
+          <div class="hint-header">
+            <div class="hint-title-text">
+              <span>💡</span>
+              <span>רמז והכוונה לפתרון השלב</span>
+            </div>
+            <button class="hint-close-btn" onclick="toggleHint()" title="סגור רמז">✕</button>
+          </div>
+          <div class="hint-content-body" id="hint-content-text"></div>
+        `;
+        const bodyEl = document.getElementById('hint-content-text');
+        if (bodyEl) bodyEl.textContent = hintText;
         hintCard.style.display = 'none';
       }
+      const navHintBtn = document.getElementById('btn-nav-hint');
+      if (navHintBtn) navHintBtn.innerHTML = '💡 רמז לפתרון';
+      const editorHintBtn = document.getElementById('btn-editor-hint');
+      if (editorHintBtn) editorHintBtn.innerHTML = '💡 רמז';
+
 
       // 6. gemini-prompt-text: הפרומפט המלא למנטור Gemini
       const promptText = lesson.gemini_prompt || generateFallbackGeminiPrompt(lesson, allLessons);
@@ -2633,10 +2699,31 @@
 
     function toggleHint() {
       const hint = document.getElementById('hint-card');
-      if (hint) {
-        hint.style.display = (hint.style.display === 'none' || hint.style.display === '') ? 'block' : 'none';
+      if (!hint) return;
+      const isVisible = (hint.style.display === 'block');
+      const navBtn = document.getElementById('btn-nav-hint');
+      const editorBtn = document.getElementById('btn-editor-hint');
+
+      if (isVisible) {
+        hint.style.display = 'none';
+        if (navBtn) navBtn.innerHTML = '💡 רמז לפתרון';
+        if (editorBtn) editorBtn.innerHTML = '💡 רמז';
+      } else {
+        hint.style.display = 'block';
+        if (navBtn) navBtn.innerHTML = '💡 הסתר רמז';
+        if (editorBtn) editorBtn.innerHTML = '💡 הסתר רמז';
+
+        // If on mobile and in editor tab, switch to theory tab to view the hint
+        const courseView = document.getElementById('course-view');
+        if (courseView && courseView.getAttribute('data-mobile-tab') === 'editor') {
+          switchMobileTab('theory');
+        }
+        setTimeout(() => {
+          hint.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 80);
       }
     }
+
 
     function resetCode() {
       if (currentLesson) {
