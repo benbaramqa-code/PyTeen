@@ -48,7 +48,7 @@
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" id="progress-fill"></div>
       </div>
-      <span class="progress-text" id="progress-text">0/42 הושלמו (0%)</span>
+      <span class="progress-text" id="progress-text">0/60 הושלמו (0%)</span>
     </div>
 
     <!-- Daily Streak Badge (Feature B) -->
@@ -75,16 +75,16 @@
       <div class="hero-badge">🚀 קורס פייתון אינטראקטיבי למתחילים ולמתקדמים</div>
       <h1 class="hero-title">לומדים לתכנת בפייתון בקלות!</h1>
       <p class="hero-desc">
-        מסלול לימוד מקיף, סדור ומעשי – החל מהפקודה הראשונה ועד לכתיבת לוגיקה, מבני נתונים, פונקציות ואתגרי תכנות אמיתיים בליווי מנטור AI אישי בכל שלב.
+        מסלול לימוד מקיף, סדור ומעשי – החל מהפקודה הראשונה ועד לכתיבת לוגיקה, מבני נתונים, פונקציות, עיבוד נתונים ולמידת מכונה (Machine Learning) בליווי מנטור AI אישי בכל שלב.
       </p>
 
       <div class="hero-stats">
         <div class="stat-box">
-          <div class="stat-num" id="stat-lessons-count">42</div>
+          <div class="stat-num" id="stat-lessons-count">60</div>
           <div class="stat-label">שלבי לימוד ותרגול</div>
         </div>
         <div class="stat-box">
-          <div class="stat-num" id="stat-chapters-count">14</div>
+          <div class="stat-num" id="stat-chapters-count">18</div>
           <div class="stat-label">פרקי לימוד מסודרים</div>
         </div>
         <div class="stat-box">
@@ -109,10 +109,10 @@
       <aside class="sidebar">
         <div class="sidebar-header">
           <span>📚 תוכן הקורס</span>
-          <span style="font-size: 13px; color: var(--text-muted);" id="sidebar-counter">42 שלבים</span>
+          <span style="font-size: 13px; color: var(--text-muted);" id="sidebar-counter">60 שלבים</span>
         </div>
 
-        <!-- פילטרים / טאבים: כל השיעורים / יסודות / מתקדם -->
+        <!-- פילטרים / טאבים: כל השיעורים / יסודות / מתקדם / דאטה ו-AI -->
         <div class="sidebar-tabs">
           <button class="tab-btn active" id="tab-all" onclick="setCategoryFilter('all')">
             <span>כל השיעורים</span>
@@ -125,6 +125,10 @@
           <button class="tab-btn" id="tab-advanced" onclick="setCategoryFilter('advanced')">
             <span>מתקדם</span>
             <span class="tab-badge" id="count-advanced">0</span>
+          </button>
+          <button class="tab-btn" id="tab-data-ai" onclick="setCategoryFilter('data-ai')">
+            <span>דאטה ו-AI</span>
+            <span class="tab-badge" id="count-data-ai">0</span>
           </button>
         </div>
 

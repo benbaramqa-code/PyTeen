@@ -5,7 +5,7 @@
     let allLessons = [];
     let currentLesson = null;
     let completedLessons = new Set();
-    let currentCategoryFilter = 'all'; // 'all', 'basics', 'advanced'
+    let currentCategoryFilter = 'all'; // 'all', 'basics', 'advanced', 'data-ai'
     let searchQuery = '';
     let collapsedChapters = new Set();
 

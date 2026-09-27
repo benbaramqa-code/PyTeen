@@ -9,6 +9,22 @@ import json
 import datetime
 import string
 import re
+try:
+    import numpy
+except ImportError:
+    numpy = None
+try:
+    import pandas
+except ImportError:
+    pandas = None
+try:
+    import sklearn
+except ImportError:
+    sklearn = None
+try:
+    import scipy
+except ImportError:
+    scipy = None
 
 ALLOWED_MODULES = {
     "math": math,
@@ -16,15 +32,16 @@ ALLOWED_MODULES = {
     "json": json,
     "datetime": datetime,
     "string": string,
+    "numpy": numpy,
+    "pandas": pandas,
+    "sklearn": sklearn,
+    "scipy": scipy,
 }
 
 def safe_import(name, globals=None, locals=None, fromlist=(), level=0):
     root_name = name.split(".")[0]
     if root_name in ALLOWED_MODULES:
-        mod = ALLOWED_MODULES[root_name]
-        if fromlist:
-            return __import__(name, globals, locals, fromlist, level)
-        return mod
+        return __import__(name, globals, locals, fromlist, level)
     raise ImportError(f"היבוא של המודול '{name}' אינו מורשה בסביבת לימוד זו. מודולים מורשים: {', '.join(ALLOWED_MODULES.keys())}")
 
 def translate_error(error_msg):

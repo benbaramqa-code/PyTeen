@@ -2,9 +2,19 @@
 // PyTeen - Lessons, Navigation, Filters & Sidebar
 // ================================================================
 
-    // קביעת רמת השיעור: 'יסודות' או 'מתקדם'
+    // קביעת רמת השיעור: 'יסודות', 'מתקדם' או 'דאטה ו-AI'
     function getLessonLevel(lesson) {
+      if (lesson.id >= 43) {
+        return 'דאטה ו-AI';
+      }
+      const fullText = ((lesson.chapter || '') + ' ' + (lesson.title || '')).toLowerCase();
+      const dataAiKeywords = ['numpy', 'pandas', 'למידת מכונה', 'בינה מלאכותית', 'scikit', 'sklearn', 'נתונים ומדע'];
+      if (dataAiKeywords.some(kw => fullText.includes(kw))) {
+        return 'דאטה ו-AI';
+      }
+
       if (lesson.level) {
+        if (lesson.level === 'data-ai' || lesson.level === 'דאטה ו-AI') return 'דאטה ו-AI';
         return (lesson.level === 'advanced' || lesson.level === 'מתקדם') ? 'מתקדם' : 'יסודות';
       }
       if (typeof lesson.is_advanced === 'boolean') {
@@ -15,18 +25,18 @@
       const chMatch = (lesson.chapter || '').match(/פרק\s*(\d+)/);
       if (chMatch) {
         const chNum = parseInt(chMatch[1], 10);
+        if (chNum >= 15) return 'דאטה ו-AI';
         if (chNum >= 6) return 'מתקדם';
         if (chNum <= 5) return 'יסודות';
       }
 
       // בדיקת מילות מפתח מובהקות של חומר מתקדם
       const advKeywords = ['מתקדם', 'מילון', 'פונקצי', 'אתגר', 'אלגוריתם', 'מודולר', 'מחלק', 'עצמים', 'oop', 'קובץ', 'קבצים', 'חריג', 'json', 'api'];
-      const fullText = ((lesson.chapter || '') + ' ' + (lesson.title || '')).toLowerCase();
       if (advKeywords.some(kw => fullText.includes(kw))) {
         return 'מתקדם';
       }
 
-      if (lesson.id >= 18) {
+      if (lesson.id >= 26) {
         return 'מתקדם';
       }
       return 'יסודות';
@@ -36,9 +46,13 @@
       const total = allLessons.length;
       let basicsCount = 0;
       let advancedCount = 0;
+      let dataAiCount = 0;
 
       allLessons.forEach(l => {
-        if (getLessonLevel(l) === 'מתקדם') {
+        const lvl = getLessonLevel(l);
+        if (lvl === 'דאטה ו-AI') {
+          dataAiCount++;
+        } else if (lvl === 'מתקדם') {
           advancedCount++;
         } else {
           basicsCount++;
@@ -48,10 +62,12 @@
       const countAll = document.getElementById('count-all');
       const countBasics = document.getElementById('count-basics');
       const countAdvanced = document.getElementById('count-advanced');
+      const countDataAi = document.getElementById('count-data-ai');
 
       if (countAll) countAll.innerText = total;
       if (countBasics) countBasics.innerText = basicsCount;
       if (countAdvanced) countAdvanced.innerText = advancedCount;
+      if (countDataAi) countDataAi.innerText = dataAiCount;
     }
 
     function setCategoryFilter(filter) {
@@ -61,7 +77,7 @@
     }
 
     function updateTabButtons() {
-      ['all', 'basics', 'advanced'].forEach(f => {
+      ['all', 'basics', 'advanced', 'data-ai'].forEach(f => {
         const btn = document.getElementById('tab-' + f);
         if (btn) {
           if (f === currentCategoryFilter) {
@@ -136,6 +152,7 @@
           const level = getLessonLevel(l);
           if (currentCategoryFilter === 'basics' && level !== 'יסודות') return false;
           if (currentCategoryFilter === 'advanced' && level !== 'מתקדם') return false;
+          if (currentCategoryFilter === 'data-ai' && level !== 'דאטה ו-AI') return false;
 
           if (searchQuery) {
             const queryMatches = (l.title || '').toLowerCase().includes(searchQuery) ||
@@ -343,6 +360,9 @@
         currentCategoryFilter = 'all';
         updateTabButtons();
       } else if (currentCategoryFilter === 'advanced' && lessonLevel !== 'מתקדם') {
+        currentCategoryFilter = 'all';
+        updateTabButtons();
+      } else if (currentCategoryFilter === 'data-ai' && lessonLevel !== 'דאטה ו-AI') {
         currentCategoryFilter = 'all';
         updateTabButtons();
       }

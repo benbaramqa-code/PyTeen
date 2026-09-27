@@ -124,6 +124,15 @@ async function runCode() {
   try {
     const py = await getPyodideRuntime();
     if (py) {
+      const packagesToLoad = [];
+      if (code.includes('numpy') || code.includes('np.')) packagesToLoad.push('numpy');
+      if (code.includes('pandas') || code.includes('pd.')) packagesToLoad.push('pandas');
+      if (code.includes('sklearn') || code.includes('scikit-learn')) packagesToLoad.push('scikit-learn');
+      if (packagesToLoad.length > 0) {
+        status.innerText = 'טוען חבילות דאטה...';
+        await py.loadPackage(packagesToLoad);
+        status.innerText = 'מריץ...';
+      }
       py.globals.set("py_user_code", code);
       const runnerCode = `
 import sys, io, traceback
