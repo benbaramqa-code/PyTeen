@@ -1,0 +1,479 @@
+/* ============================================================
+   LAYOUT & RESPONSIVE GRID
+   ============================================================ */
+
+    /* Layout */
+    .app-container {
+      flex: 1;
+      display: flex;
+      height: calc(100vh - 65px);
+      overflow: hidden;
+    }
+
+    /* Home View */
+    #home-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+
+    .hero-badge {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: 46px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #4ade80, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .hero-desc {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin-bottom: 35px;
+      line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 16px 24px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, #9333ea, #3b82f6);
+      color: white;
+      border: none;
+      padding: 18px 44px;
+      font-size: 20px;
+      font-weight: 800;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.5);
+      transition: all 0.2s;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(147, 51, 234, 0.6);
+    }
+
+    /* Course Workspace Layout */
+    #course-view {
+      display: none;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 350px;
+      min-width: 330px;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      user-select: none;
+    }
+
+    .sidebar-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-surface);
+      color: var(--text-main);
+    }
+
+    /* Tabs / Filter */
+    .sidebar-tabs {
+      display: flex;
+      background: var(--bg-card);
+      padding: 4px;
+      border-radius: 10px;
+      margin: 10px 12px 6px 12px;
+      gap: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 4px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(var(--primary-rgb), 0.08);
+    }
+
+    .tab-btn.active {
+      background: var(--tab-active-bg);
+      color: var(--primary);
+      box-shadow: 0 2px 8px var(--shadow-color);
+      border: 1px solid rgba(var(--primary-rgb), 0.3);
+    }
+
+    .tab-badge {
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+
+    .tab-btn.active .tab-badge {
+      background: rgba(var(--primary-rgb), 0.2);
+      color: var(--primary);
+    }
+
+    /* Search & Accordion Controls */
+    .sidebar-search-wrap {
+      padding: 4px 12px 10px 12px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-input-box {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-box input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 6px 26px 6px 22px;
+      color: var(--text-main);
+      font-size: 12.5px;
+      outline: none;
+      transition: border-color 0.2s;
+      direction: rtl;
+    }
+
+    .search-input-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .search-icon-inside {
+      position: absolute;
+      right: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .clear-btn {
+      position: absolute;
+      left: 6px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 4px;
+    }
+
+    .accordion-mini-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn-icon-tool {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-icon-tool:hover {
+      background: var(--border-color);
+      color: var(--text-main);
+    }
+
+    .lessons-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px;
+    }
+
+
+    /* Mobile Responsive Layout & Controls */
+    .mobile-view-tabs {
+      display: none;
+    }
+
+    .mobile-go-editor-wrap {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .btn-mobile-go-editor {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
+    }
+
+    @media (max-width: 900px) {
+      header {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .brand {
+        font-size: 18px;
+        gap: 6px;
+      }
+
+      .progress-container {
+        padding: 4px 8px;
+        gap: 8px;
+      }
+
+      .progress-bar-bg {
+        width: 70px;
+      }
+
+      .progress-text {
+        font-size: 11px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .nav-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
+      .app-container {
+        height: auto;
+        min-height: calc(100vh - 65px);
+        overflow: visible;
+      }
+
+      #home-view {
+        padding: 24px 14px;
+      }
+
+      .hero-title {
+        font-size: 26px;
+      }
+
+      .hero-desc {
+        font-size: 15px;
+        margin-bottom: 25px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 280px;
+        margin-bottom: 30px;
+      }
+
+      .stat-box {
+        min-width: unset;
+        width: 100%;
+        padding: 12px;
+      }
+
+      .btn-start {
+        width: 100%;
+        max-width: 320px;
+        padding: 14px 18px;
+        font-size: 16px;
+      }
+
+      /* Course View on Mobile */
+      #course-view {
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 65px);
+        overflow: visible;
+      }
+
+      .mobile-view-tabs {
+        display: flex;
+        position: sticky;
+        top: 55px;
+        z-index: 45;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border-color);
+        padding: 6px;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .mobile-tab-btn {
+        flex: 1;
+        background: var(--bg-card);
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+        padding: 8px 4px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.15s;
+      }
+
+      .mobile-tab-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .workspace {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+      }
+
+      .sidebar {
+        width: 100% !important;
+        min-width: 100% !important;
+        border-left: none;
+        height: auto;
+        max-height: calc(100vh - 110px);
+      }
+
+      .theory-panel {
+        width: 100% !important;
+        padding: 16px;
+        border-left: none;
+        height: auto;
+        overflow: visible;
+      }
+
+      .mobile-go-editor-wrap {
+        display: block;
+      }
+
+      .editor-panel {
+        width: 100% !important;
+        border-left: none;
+        height: auto;
+        min-height: 520px;
+        overflow: visible;
+      }
+
+      .code-container {
+        height: 250px;
+      }
+
+      .code-textarea {
+        font-size: 15px; /* Prevents auto zoom in iOS */
+        padding: 12px;
+      }
+
+      .terminal-panel {
+        height: 200px;
+      }
+
+      /* Mobile tab visibility logic */
+      #course-view[data-mobile-tab="theory"] .sidebar { display: none !important; }
+      #course-view[data-mobile-tab="theory"] .editor-panel { display: none !important; }
+      #course-view[data-mobile-tab="theory"] .theory-panel { display: flex !important; }
+
+      #course-view[data-mobile-tab="editor"] .sidebar { display: none !important; }
+      #course-view[data-mobile-tab="editor"] .theory-panel { display: none !important; }
+      #course-view[data-mobile-tab="editor"] .editor-panel { display: flex !important; }
+
+      #course-view[data-mobile-tab="sidebar"] .workspace { display: none !important; }
+      #course-view[data-mobile-tab="sidebar"] .sidebar { display: flex !important; }
+    }
+
+    @media (max-width: 500px) {
+      .progress-text {
+        display: none;
+      }
+      .brand span:last-child {
+        font-size: 16px;
+      }
+      .nav-btn {
+        padding: 5px 8px;
+        font-size: 11.5px;
+      }
+      .roadmap-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+

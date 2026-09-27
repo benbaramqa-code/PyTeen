@@ -1,6 +1,20 @@
-const CACHE_NAME = 'pyteen-v1';
+const CACHE_NAME = 'pyteen-v2';
 
-const PRECACHE_ASSETS = ['/', '/index.html'];
+const PRECACHE_ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/static/css/theme.css',
+  '/static/css/layout.css',
+  '/static/css/components.css',
+  '/static/js/state.js',
+  '/static/js/lessons.js',
+  '/static/js/editor.js',
+  '/static/js/modals.js',
+  '/static/js/app.js',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png'
+];
 
 const OFFLINE_HTML = `<!DOCTYPE html>
 <html lang="he" dir="rtl">
