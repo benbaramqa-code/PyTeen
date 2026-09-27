@@ -76,7 +76,9 @@ LESSONS = [
         tip="💡 כל מחרוזת חייבת להיפתח ולהיסגר באותם מירכאות!",
         default_code="print(\"שלום פייתון!\")",
         expected_output="שלום פייתון!",
-        hint="השתמש בפקודת print ורשום בתוכה את המחרוזת הרצויה במירכאות.",
+        hint="""1. פקודת ההדפסה בפייתון נכתבת באותיות קטנות: print()
+2. בתוך הסוגריים פותחים מירכאות (" או ') וכותבים בדיוק: "שלום פייתון!"
+3. שים לב לסימן הקריאה בסוף המחרוזת ולסגירת הסוגריים.""",
         success_message="מעולה! הדפסת את המחרוזת הראשונה שלך בהצלחה!"
     ),
     Lesson(
@@ -90,7 +92,9 @@ LESSONS = [
         tip="💡 מירכאות מגדירות טקסט. ללא מירכאות - פייתון מחשבת את התוצאה המספרית.",
         default_code="# חשב והדפס את התוצאה של 25 כפול 4\nprint(25 * 4)",
         expected_output="100",
-        hint="השתמש בכוכבית (*) עבור כפל, למשל: print(25 * 4)",
+        hint="""1. בפייתון פעולת כפל נכתבת בעזרת כוכבית (*).
+2. אין לשים מירכאות סביב תרגיל חשבון – ללא מירכאות פייתון מחשבת את התוצאה במקום להדפיס טקסט.
+3. כתוב: print(25 * 4) כדי לקבל את התוצאה 100.""",
         success_message="בול! פייתון היא מחשבון רב עוצמה."
     ),
     Lesson(
@@ -104,7 +108,9 @@ LESSONS = [
         tip="💡 פסיק בין איברים מאפשר לשלב טקסט ומספרים בקלות.",
         default_code="print(\"הגיל שלי הוא:\", 16)",
         expected_output="הגיל שלי הוא: 16",
-        hint="הפרד בין הטקסט לבין המספר באמצעות פסיק.",
+        hint="""1. פקודת print יכולה לקבל מספר ערכים שונים המופרדים בפסיק: print(ערך1, ערך2).
+2. פייתון תוסיף רווח בודד בין הערכים באופן אוטומטי.
+3. המבנה המבוקש: print("הגיל שלי הוא:", 16) - שים לב שהטקסט במירכאות והמספר ללא מירכאות.""",
         success_message="כל הכבוד! למדת לשלב איברים שונים בהדפסה אחת."
     ),
 
@@ -120,7 +126,9 @@ LESSONS = [
         tip="💡 שם משתנה חייב להיות באנגלית, ללא רווחים, ולא יכול להתחיל בספרה.",
         default_code="course_name = \"פייתון בקלות\"\nprint(course_name)",
         expected_output="פייתון בקלות",
-        hint="שמור את הטקסט בתוך משתנה והדפס את שם המשתנה ללא מירכאות.",
+        hint="""1. כדי ליצור משתנה נותנים לו שם באנגלית, שמים סימן שווה (=), ואז את הערך.
+2. הגדרת המשתנה: course_name = "פייתון בקלות"
+3. כשמדפיסים משתנה, מעבירים את שמו ל-print ללא מירכאות: print(course_name).""",
         success_message="יופי! עכשיו אתה יודע איך לשמור מידע במשתנה."
     ),
     Lesson(
@@ -134,7 +142,9 @@ LESSONS = [
         tip="💡 האות f חייבת לבוא צמודה למירכאה הפותחת של המחרוזת.",
         default_code="player = \"נועם\"\nlevel = 5\nprint(f\"השחקן {player} הגיע לשלב {level}!\")",
         expected_output="השחקן נועם הגיע לשלב 5!",
-        hint="השתמש ב-f-string עם משתני ה-player וה-level.",
+        hint="""1. מחרוזת f-string מתחילה באות f צמודה לפני המירכאה הפותחת: f"..."
+2. בתוך המחרוזת עוטפים את שמות המשתנים בסוגריים מסולסלים: {player} ו-{level}.
+3. השלד המדויק: print(f"השחקן {player} הגיע לשלב {level}!")""",
         success_message="מצוין! f-string הוא אחד הכלים הכי שימושיים בפייתון."
     ),
     Lesson(
@@ -148,7 +158,10 @@ LESSONS = [
         tip="💡 לא ניתן לחבר טקסט ומספר ישירות עם סימן פלוס ללא המרה!",
         default_code="a_str = \"30\"\nb_str = \"70\"\n# המר אותם למספרים והדפס את סכומם\ntotal = int(a_str) + int(b_str)\nprint(total)",
         expected_output="100",
-        hint="השתמש ב-int(a_str) ו-int(b_str) כדי לחבר מספרים ולא לחבר אותיות.",
+        hint="""1. המשתנים a_str ו-b_str הם מחרוזות טקסט כי הם מוקפים במירכאות ("30", "70").
+2. אם נחבר אותם ישירות נקבל "3070" (שרשור טקסט) במקום 100.
+3. הפונקציה int(...) ממירה מחרוזת למספר שלם: total = int(a_str) + int(b_str)
+4. לבסוף הדפס את התוצאה: print(total).""",
         success_message="אלופים! הבנת את ההבדל בין מחרוזת למספר שלם."
     ),
     Lesson(
@@ -162,7 +175,9 @@ LESSONS = [
         tip="💡 בפייתון כותבים תמיד True ו-False עם אות ראשונה גדולה (Capital letter).",
         default_code="is_game_over = False\nprint(is_game_over)",
         expected_output="False",
-        hint="הגדר את המשתנה עם הערך False והדפס אותו.",
+        hint="""1. ערכים בוליאניים (אמת / שקר) נכתבים עם אות גדולה באנגלית וללא מירכאות: True או False.
+2. הגדר את המשתנה: is_game_over = False (אות F גדולה, ללא גרשיים!).
+3. הדפס אותו: print(is_game_over).""",
         success_message="מדויק! משתנים בוליאניים הם הבסיס לכל קבלת החלטות במחשב."
     ),
 
@@ -178,7 +193,12 @@ LESSONS = [
         tip="💡 אל תשכח נקודתיים (:) בסוף שורת ה-if והזחה (4 רווחים) בשורה הבאה!",
         default_code="age = 17\nif age >= 16:\n    print(\"מותר להוציא רישיון נהיגה לטרקטורון!\")",
         expected_output="מותר להוציא רישיון נהיגה לטרקטורון!",
-        hint="ודא שהתנאי בודק אם age >= 16.",
+        hint="""1. מבנה תנאי if:
+   if תנאי:
+       פקודות לביצוע (בהזחה של 4 רווחים פנימה)
+2. הסימן לבדיקת "גדול או שווה" הוא >=
+3. נסח את התנאי: if age >= 16:
+4. שים לב לנקודתיים (:) בסוף שורת ה-if ולהזחה של פקודת ה-print.""",
         success_message="יופי! למדת איך המחשב מקבל החלטה ראשונה."
     ),
     Lesson(
@@ -192,7 +212,14 @@ LESSONS = [
         tip="💡 ל-else אין תנאי משלו, וגם אחריו חובה לשים נקודתיים (:).",
         default_code="has_ticket = False\nif has_ticket:\n    print(\"כניסה מאושרת!\")\nelse:\n    print(\"נא לרכוש כרטיס בקופה\")",
         expected_output="נא לרכוש כרטיס בקופה",
-        hint="אם has_ticket הוא False, בלוק ה-else יתבצע.",
+        hint="""1. בלוק if-else בודק תנאי: אם הוא מתקיים מבוצע ה-if, ואם לא – מבוצע ה-else.
+2. מבנה:
+   if has_ticket:
+       print("כניסה מאושרת!")
+   else:
+       print("נא לרכוש כרטיס בקופה")
+3. מכיוון ש-has_ticket מוגדר כ-False, פייתון תדלג על ה-if ותבצע ישירות את ה-else.
+4. אל תשכח נקודתיים (:) אחרי מילת ה-else!""",
         success_message="נהדר! עכשיו הקוד שלך יודע לטפל בשני תרחישים שונים."
     ),
     Lesson(
@@ -206,7 +233,15 @@ LESSONS = [
         tip="💡 פייתון בודקת את התנאים לפי הסדר ועוצרת בראשון שמתקיים.",
         default_code="temperature = 28\nif temperature > 35:\n    print(\"לוהט\")\nelif temperature > 25:\n    print(\"נעים וחמים\")\nelse:\n    print(\"קריר\")",
         expected_output="נעים וחמים",
-        hint="בדוק שהטמפרטורה מתאימה לענף ה-elif הנכון.",
+        hint="""1. מילת המפתח elif (קיצור של else if) מאפשרת לבדוק תנאים נוספים ברצף.
+2. סדר הבדיקה הנדרש:
+   if temperature > 35:
+       print("לוהט")
+   elif temperature > 25:
+       print("נעים וחמים")
+   else:
+       print("קריר")
+3. עבור temperature = 28 התנאי הראשון שקרי והשני אמיתי, ולכן יודפס "נעים וחמים".""",
         success_message="מושלם! שליטה מלאה בתנאים מרובים."
     ),
     Lesson(
@@ -220,7 +255,11 @@ LESSONS = [
         tip="💡 אפשר להשתמש בסוגריים לתנאים מורכבים כדי שהקוד יהיה קריא ומסודר.",
         default_code="battery = 15\nis_plugged_in = False\nif battery < 20 and not is_plugged_in:\n    print(\"נא לחבר את המכשיר למטען!\")",
         expected_output="נא לחבר את המכשיר למטען!",
-        hint="ודא ששני התנאים מתקיימים עם מילת הקישור and.",
+        hint="""1. מילת הקישור and דורשת ששני התנאים יתקיימו בו-זמנית כדי שהבלוק יפעל.
+2. המילה not הופכת ערך בוליאני (אם is_plugged_in הוא False, אז not is_plugged_in הוא True).
+3. נסח את התנאי המשולב:
+   if battery < 20 and not is_plugged_in:
+       print("נא לחבר את המכשיר למטען!")""",
         success_message="וואו! אתה מתכנת לוגיקה ברמה מתקדמת."
     ),
 
@@ -236,7 +275,11 @@ LESSONS = [
         tip="💡 המשתנה i מקבל ערך חדש בכל סיבוב של הלולאה.",
         default_code="# הדפס את המספרים מ-0 עד 4 (סה\"כ 5 מספרים)\nfor i in range(5):\n    print(i)",
         expected_output="0\n1\n2\n3\n4",
-        hint="השתמש ב-range(5) כדי לקבל את המספרים 0 עד 4.",
+        hint="""1. הפונקציה range(5) מייצרת סדרת מספרים של 5 איברים מ-0 עד 4 (0, 1, 2, 3, 4).
+2. מבנה לולאת for:
+   for i in range(5):
+       print(i)
+3. שים לב שמשתנה הלולאה (i) מקבל בכל סיבוב את המספר הבא ומודפס בשורה נפרדת.""",
         success_message="תותח! לולאות חוסכות שורות קוד רבות."
     ),
     Lesson(
@@ -250,7 +293,12 @@ LESSONS = [
         tip="💡 המספר האחרון בטווח אינו נכלל בתוצאה.",
         default_code="# הדפס מספרים זוגיים מ-2 עד 10 בקפיצות של 2\nfor num in range(2, 11, 2):\n    print(num)",
         expected_output="2\n4\n6\n8\n10",
-        hint="range(2, 11, 2) מתחיל מ-2, קופץ ב-2 ועוצר לפני 11.",
+        hint="""1. טווח מותאם מקבל שלושה ערכים: range(start, stop, step) – התחלה, סוף (לא כולל), וגודל קפיצה.
+2. כדי להדפיס מספרים זוגיים מ-2 עד 10:
+   - התחלה: 2
+   - סוף: 11 (כי range עוצר לפני ערך הסוף, ו-11 מבטיח ש-10 ייכלל)
+   - קפיצה: 2
+3. כתוב: for num in range(2, 11, 2): ובפנים: print(num).""",
         success_message="מבריק! שליטה מלאה בטווחי מספרים."
     ),
     Lesson(
@@ -264,7 +312,11 @@ LESSONS = [
         tip="💡 הסימון count += 1 שקול ל-count = count + 1.",
         default_code="count = 3\nwhile count > 0:\n    print(count)\n    count -= 1\nprint(\"השיגור יצא לדרך!\")",
         expected_output="3\n2\n1\nהשיגור יצא לדרך!",
-        hint="הלולאה סופרת מ-3 עד 1, ולאחר היציאה מדפיסה את ההודעה.",
+        hint="""1. לולאת while רצה כל עוד התנאי שלה מתקיים (True).
+2. התחל עם משתנה מונה: count = 3
+3. תנאי הלולאה: while count > 0:
+4. בתוך הלולאה הדפס את count, והפחת ממנו 1 בכל סיבוב: count -= 1
+5. מחוץ ללולאה (ללא הזחה) הדפס: print("השיגור יצא לדרך!").""",
         success_message="ספירה לאחור מושלמת! הבנת את לולאת while."
     ),
     Lesson(
@@ -278,7 +330,10 @@ LESSONS = [
         tip="💡 משתמשים ב-break כשמוצאים את מה שחיפשנו ואין צורך להמשיך להריץ.",
         default_code="for number in range(1, 10):\n    if number == 4:\n        break\n    print(number)",
         expected_output="1\n2\n3",
-        hint="כאשר number מגיע ל-4, הלולאה עוצרת מיד.",
+        hint="""1. פקודת break קוטעת את הלולאה ויוצאת ממנה מיד, בלי להמשיך לאיטרציות הבאות.
+2. רוץ בלולאה על המספרים מ-1 עד 9: for number in range(1, 10):
+3. בדוק בתחילת כל סיבוב: if number == 4: break
+4. הפקודה print(number) צריכה להופיע אחרי בדיקת התנאי, כדי שהמספר 4 לא יודפס.""",
         success_message="מעולה! break הוא כלי שליטה חזק ביותר."
     ),
 
@@ -294,7 +349,12 @@ LESSONS = [
         tip="💡 האיבר הראשון הוא באינדקס 0, השני באינדקס 1 וכן הלאה.",
         default_code="games = [\"Minecraft\", \"Roblox\", \"Fortnite\"]\n# הדפס את המשחק השני ברשימה (אינדקס 1)\nprint(games[1])",
         expected_output="Roblox",
-        hint="פנה לאיבר השני באמצעות games[1].",
+        hint="""1. רשימה מוגדרת בסוגריים מרובעים [].
+2. אינדקסים בפייתון מתחילים תמיד מאפס (0):
+   - games[0] מחזיר את האיבר הראשון ("Minecraft").
+   - games[1] מחזיר את האיבר השני ("Roblox").
+   - games[2] מחזיר את האיבר השלישי ("Fortnite").
+3. להדפסת המשחק השני כתוב: print(games[1]).""",
         success_message="יופי! רשימות הן אחד המבנים הנפוצים ביותר בפייתון."
     ),
     Lesson(
@@ -308,7 +368,9 @@ LESSONS = [
         tip="💡 הפונקציה len עובדת גם על רשימות וגם על מחרוזות טקסט.",
         default_code="inventory = [\"חרב\", \"מגן\"]\ninventory.append(\"שיקוי חיים\")\nprint(\"כמות פריטים:\", len(inventory))",
         expected_output="כמות פריטים: 3",
-        hint="הוסף את הפריט באמצעות append והדפס את האורך עם len.",
+        hint="""1. מתודת append מוסיפה איבר חדש לסוף הרשימה: inventory.append("שיקוי חיים")
+2. פונקציית len מחזירה את כמות האיברים ברשימה: len(inventory)
+3. שלב הכל בהדפסה אחת עם פסיק: print("כמות פריטים:", len(inventory)).""",
         success_message="אלופים! האינוונטר שלכם מתרחב."
     ),
     Lesson(
@@ -322,7 +384,10 @@ LESSONS = [
         tip="💡 אין צורך באינדקסים! פייתון מוציאה כל איבר ישירות לתוך המשתנה a.",
         default_code="langs = [\"Python\", \"JavaScript\", \"HTML\"]\nfor l in langs:\n    print(l)",
         expected_output="Python\nJavaScript\nHTML",
-        hint="השתמש בלולאת for על הרשימה langs והדפס כל שפה.",
+        hint="""1. כדי לעבור על כל איברי הרשימה נשתמש בלולאת for in:
+   for l in langs:
+       print(l)
+2. המשתנה l מקבל בכל סיבוב של הלולאה את המחרוזת הבאה מתוך הרשימה ומדפיס אותה בשורה חדשה.""",
         success_message="עבודה מעולה! סריקת רשימות היא הבסיס לניתוח נתונים."
     ),
 
@@ -338,7 +403,10 @@ LESSONS = [
         tip="💡 מפתח במילון הוא בדרך כלל מחרוזת מזהה ייחודית.",
         default_code="hero = {\"name\": \"ספיידרמן\", \"power\": \"קורי עכביש\"}\nprint(hero[\"name\"], \"יורה\", hero[\"power\"])",
         expected_output="ספיידרמן יורה קורי עכביש",
-        hint="פנה לערכים באמצעות hero['name'] ו-hero['power'].",
+        hint="""1. מילון מכיל זוגות של מפתח וערך {key: value}.
+2. גישה לערך נעשית בעזרת שם המפתח בתוך סוגריים מרובעים: hero["name"] ו-hero["power"].
+3. הדפס את שני הערכים עם מילת הקישור ביניהם:
+   print(hero["name"], "יורה", hero["power"])""",
         success_message="תותח! מילונים הם המבנה המושלם לייצוג ישויות ואובייקטים."
     ),
     Lesson(
@@ -352,7 +420,10 @@ LESSONS = [
         tip="💡 אם המפתח כבר קיים - הערך יתעדכן. אם אינו קיים - הוא יתווסף אוטומטית.",
         default_code="car = {\"brand\": \"Tesla\", \"speed\": 200}\ncar[\"color\"] = \"אדום\"\nprint(f\"{car['brand']} בצבע {car['color']}\")",
         expected_output="Tesla בצבע אדום",
-        hint="הוסף את המפתח color והדפס עם f-string.",
+        hint="""1. כדי להוסיף מפתח חדש למילון, פשוט כותבים את שמו ומציבים ערך: car["color"] = "אדום".
+2. להדפסה מעוצבת עם f-string, שים לב להשתמש בגרש בודד בתוך הסוגריים המרובעים:
+   print(f"{car['brand']} בצבע {car['color']}")
+   (שימוש במירכאות כפולות בפנים ישבור את ה-f-string!).""",
         success_message="מצוין! מילונים דינמיים ונוחים לשינוי בכל רגע."
     ),
 
@@ -368,7 +439,9 @@ LESSONS = [
         tip="💡 הגדרת הפונקציה רק יוצרת אותה; כדי שהיא תרוץ, חייבים לקרוא לה עם סוגריים ().",
         default_code="def cheer():\n    print(\"קדימה פייתון!\")\n\n# קרא לפונקציה cheer כדי להריץ אותה\ncheer()",
         expected_output="קדימה פייתון!",
-        hint="כתוב cheer() בשורה נפרדת כדי להפעיל את הפונקציה.",
+        hint="""1. פונקציה מוגדרת בעזרת מילת המפתח def, שם הפונקציה וסוגריים: def cheer():
+2. הגדרת הפונקציה רק 'מלמדת' את המחשב מה לעשות. היא לא מריצה את הקוד עד שקוראים לה!
+3. כדי להריץ את הפונקציה בפועל, קרא לה בשורה נפרדת מחוץ להזחה: cheer().""",
         success_message="יופי! פונקציות עוזרות לנו לא לחזור על קוד פעמיים."
     ),
     Lesson(
@@ -382,7 +455,11 @@ LESSONS = [
         tip="💡 אפשר להעביר יותר מפרמטר אחד, מופרדים בפסיקים.",
         default_code="def double(num):\n    print(num * 2)\n\ndouble(8)",
         expected_output="16",
-        hint="הפונקציה double מקבלת מספר ומדפיסה את כפולתו.",
+        hint="""1. פרמטר הוא משתנה שמוגדר בסוגריים של הפונקציה ומקבל ערך מבחוץ בעת הקריאה.
+2. הגדר פונקציה שמקבלת num:
+   def double(num):
+       print(num * 2)
+3. קרא לה עם המספר 8: double(8). המחשב יציב 8 במקום num וידפיס 16.""",
         success_message="בול! פונקציות עם פרמטרים הן גמישות ושימושיות."
     ),
     Lesson(
@@ -396,7 +473,12 @@ LESSONS = [
         tip="💡 פקודת return גם מסיימת מיד את פעולת הפונקציה.",
         default_code="def square(x):\n    return x * x\n\nans = square(7)\nprint(f\"הריבוע של 7 הוא: {ans}\")",
         expected_output="הריבוע של 7 הוא: 49",
-        hint="הפונקציה square צריכה להחזיר x * x בעזרת return.",
+        hint="""1. הבדל קריטי: print רק מציג ערך במסך, בעוד return מחזיר את הערך כדי שנוכל להמשיך לעבוד איתו בקוד!
+2. הגדרת הפונקציה:
+   def square(x):
+       return x * x
+3. קריאה לפונקציה ושמירת התוצאה במשתנה: ans = square(7)
+4. הדפסה: print(f"הריבוע של 7 הוא: {ans}").""",
         success_message="מצוין! return הוא הלב של תכנות פונקציונלי ומודולרי."
     ),
 
@@ -412,7 +494,16 @@ LESSONS = [
         tip="💡 6 % 2 הוא 0 (זוגי), בעוד 7 % 2 הוא 1 (אי זוגי).",
         default_code="def check_even_odd(number):\n    if number % 2 == 0:\n        return \"זוגי\"\n    else:\n        return \"אי זוגי\"\n\nprint(check_even_odd(12))\nprint(check_even_odd(7))",
         expected_output="זוגי\nאי זוגי",
-        hint="בדוק את שארית החלוקה ב-2 והחזר 'זוגי' או 'אי זוגי'.",
+        hint="""1. אופרטור מודולו (%) מחזיר את שארית החלוקה. מספר זוגי מתחלק ב-2 ללא שארית: number % 2 == 0.
+2. מבנה הפונקציה עם תנאי:
+   def check_even_odd(number):
+       if number % 2 == 0:
+           return "זוגי"
+       else:
+           return "אי זוגי"
+3. קרא לפונקציה פעמיים והדפס את התוצאות:
+   print(check_even_odd(12))
+   print(check_even_odd(7))""",
         success_message="וואו! פתרת את אתגר הזוגיות כמו מקצוען."
     ),
     Lesson(
@@ -434,7 +525,13 @@ LESSONS = [
     else:
         print(i)""",
         expected_output="1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
-        hint="בדוק קודם i % 15 == 0, אחר כך i % 3 == 0, אחר כך i % 5 == 0.",
+        hint="""1. כלל הזהב ב-FizzBuzz: קודם כל בודקים חלוקה בשני המספרים יחד (i % 3 == 0 and i % 5 == 0)!
+2. סדר הבדיקות בתוך הלולאה for i in range(1, 16):
+   - if i % 3 == 0 and i % 5 == 0: print("FizzBuzz")
+   - elif i % 3 == 0: print("Fizz")
+   - elif i % 5 == 0: print("Buzz")
+   - else: print(i)
+3. ודא שהטווח הוא range(1, 16) כדי שהמספר 15 ייכלל.""",
         success_message="🏆 אלוף עולם! סיימת את קורס 'פייתון בקלות' והוכחת שליטה מצוינת ביסודות פייתון!"
     ),
 
@@ -456,7 +553,12 @@ print(f"מיקום: X={point[0]}, Y={point[1]}")
 width, height = (1920, 1080)
 print(f"רזולוציה: {width}x{height}")""",
         expected_output="מיקום: X=10, Y=20\nרזולוציה: 1920x1080",
-        hint="הגדר טאפל עם סוגריים עגולים, גש לאיברים באינדקס 0 ו-1, והשתמש בפריקת משתנים.",
+        hint="""1. טאפל (Tuple) הוא אוסף קבוע שאינו ניתן לשינוי לאחר יצירתו, ומוגדר בסוגריים עגולים: point = (10, 20).
+2. שליפה לפי אינדקס: point[0] מחזיר 10, ו-point[1] מחזיר 20.
+3. פריקת טאפל (Unpacking):
+   width, height = (1920, 1080)
+   המשתנה width יקבל 1920, ו-height יקבל 1080.
+4. הדפס: print(f"רזולוציה: {width}x{height}").""",
         success_message="כל הכבוד! הבנת את העוצמה של טאפלים לשמירה על נתונים קבועים ומאובטחים."
     ),
     Lesson(
@@ -477,7 +579,12 @@ print("תגיות ייחודיות:", unique_tags)
 allowed_users = {"נועם", "מאיה", "דניאל"}
 print("האם מאיה מורשית?", "מאיה" in allowed_users)""",
         expected_output="תגיות ייחודיות: ['code', 'learn', 'python']\nהאם מאיה מורשית? True",
-        hint="המר את הרשימה ל-set ואז ל-list ומיין אותה עם sorted(). בדוק שייכות עם מילת המפתח in.",
+        hint="""1. סט (Set) שומר איברים ייחודיים בלבד ומסיר כפילויות אוטומטית.
+2. המרה מרשימה לסט וחזרה לרשימה ממוינת:
+   unique_tags = sorted(list(set(raw_tags)))
+3. בדיקת שייכות מתבצעת בעזרת in (מחזיר True או False):
+   allowed_users = {"נועם", "מאיה", "דניאל"}
+   print("האם מאיה מורשית?", "מאיה" in allowed_users)""",
         success_message="מצוין! סטים הם הכלי האולטימטיבי למניעת כפילויות ולבדיקות שייכות סופר מהירות."
     ),
     Lesson(
@@ -498,7 +605,11 @@ numbers = [12, 7, 9, 14, 22, 5]
 evens = [n for n in numbers if n % 2 == 0]
 print("מספרים זוגיים:", evens)""",
         expected_output="ריבועים: [1, 4, 9, 16, 25]\nמספרים זוגיים: [12, 14, 22]",
-        hint="השתמש בתחביר [x**2 for x in range(1, 6)] וב-[n for n in numbers if n % 2 == 0].",
+        hint="""1. תחביר List Comprehension יוצר רשימה חדשה בשורה אחת: [ביטוי for משתנה in מקור].
+2. רשימת ריבועים מ-1 עד 5: squares = [x ** 2 for x in range(1, 6)]
+3. סינון מספרים זוגיים בעזרת תנאי בסוף הביטוי:
+   evens = [n for n in numbers if n % 2 == 0]
+4. הדפס את שתי הרשימות: print("ריבועים:", squares) ו-print("מספרים זוגיים:", evens).""",
         success_message="אלוף! קוד פייתוני אמיתי – קצר, אלגנטי וחכם."
     ),
 
@@ -521,7 +632,16 @@ for item in user_inputs:
     except ValueError:
         print(f"שגיאה: '{item}' אינו מספר תקין!")""",
         expected_output="גיל תקין: 25\nשגיאה: 'שלום' אינו מספר תקין!\nגיל תקין: 40",
-        hint="עטוף את פעולת ה-int(item) בתוך בלוק try, ותפוס שגיאת ValueError בעזרת except ValueError.",
+        hint="""1. מנגנון try-except מונע מהתוכנית לקרוס כשמתרחשת שגיאה:
+   - בתוך ה-try שמים את הפעולה שעלולה להיכשל: age = int(item)
+   - בתוך ה-except מציינים את סוג השגיאה שרוצים לתפוס: except ValueError:
+2. מבנה הלולאה המלא:
+   for item in user_inputs:
+       try:
+           age = int(item)
+           print(f"גיל תקין: {age}")
+       except ValueError:
+           print(f"שגיאה: '{item}' אינו מספר תקין!")""",
         success_message="נהדר! התוכנית שלך חסינה לקריסות ויודעת להתמודד עם שגיאות כמו מקצוענית."
     ),
     Lesson(
@@ -545,7 +665,16 @@ print(safe_divide(10, 2))
 print(safe_divide(8, 0))
 print(safe_divide(10, "2"))""",
         expected_output="5.0\nשגיאה: לא ניתן לחלק באפס!\nשגיאה: יש לספק מספרים בלבד!",
-        hint="הגדר except עבור ZeroDivisionError ובנפרד עבור TypeError.",
+        hint="""1. ניתן להגדיר מספר בלוקי except שונים כדי לטפל בכל סוג שגיאה באופן מותאם.
+2. הגדרת פונקציית החלוקה הבטוחה:
+   def safe_divide(a, b):
+       try:
+           return a / b
+       except ZeroDivisionError:
+           return "שגיאה: לא ניתן לחלק באפס!"
+       except TypeError:
+           return "שגיאה: יש לספק מספרים בלבד!"
+3. ZeroDivisionError יתפוס חלוקה באפס (8 / 0), ו-TypeError יתפוס ניסיון לחלק במחרוזת (10 / "2").""",
         success_message="מדויק! למדת לטפל במגוון תרחישי כשל שונים באותו קטע קוד."
     ),
     Lesson(
@@ -570,7 +699,17 @@ print(safe_divide(10, "2"))""",
 process_data("50")
 process_data("טקסט")""",
         expected_output="הצלחה! התוצאה היא 100\nסיום בדיקת ערך.\nנכשל בהמרת 'טקסט'\nסיום בדיקת ערך.",
-        hint="השתמש ב-else עבור קוד שרץ רק בהצלחה, וב-finally עבור קוד שחייב לרוץ בסיום תמיד.",
+        hint="""1. בלוק else מתבצע אך ורק אם בלוק ה-try הסתיים בהצלחה מלאה וללא שגיאות.
+2. בלוק finally מתבצע תמיד בסיום – בין אם הייתה שגיאה ובין אם הריצה הצליחה!
+3. מבנה:
+   try:
+       val = int(data)
+   except ValueError:
+       print(f"נכשל בהמרת '{data}'")
+   else:
+       print(f"הצלחה! התוצאה היא {val}")
+   finally:
+       print("סיום בדיקת ערך.")""",
         success_message="מושלם! ארגז כלי הטיפול בשגיאות שלך מושלם ועומד בסטנדרטים של התעשייה."
     ),
 
@@ -591,7 +730,13 @@ print("עיגול כלפי מעלה של 4.2:", math.ceil(4.2))
 print("עיגול כלפי מטה של 4.9:", math.floor(4.9))
 print("חישוב חזקה 2 בחזקת 5:", math.pow(2, 5))""",
         expected_output="שורש של 64: 8.0\nעיגול כלפי מעלה של 4.2: 5\nעיגול כלפי מטה של 4.9: 4\nחישוב חזקה 2 בחזקת 5: 32.0",
-        hint="ייבא את math והפעל את math.sqrt, math.ceil, math.floor ו-math.pow.",
+        hint="""1. יש לייבא תחילה את ספריית המתמטיקה: import math
+2. פונקציות המודול לשימוש:
+   - math.sqrt(64) -> מחזיר שורש ריבועי (8.0)
+   - math.ceil(4.2) -> מעגל כלפי מעלה למספר השלם הקרוב (5)
+   - math.floor(4.9) -> מעגל כלפי מטה למספר השלם הקרוב (4)
+   - math.pow(2, 5) -> מחשב חזקה: 2 בחזקת 5 (32.0)
+3. הדפס כל תוצאה בהתאם למבנה המוצג בהסבר.""",
         success_message="מעולה! נחשפת לספריית המתמטיקה המובנית של פייתון."
     ),
     Lesson(
@@ -619,7 +764,12 @@ cards = [1, 2, 3, 4, 5]
 random.shuffle(cards)
 print(f"קלפים מעורבבים: {cards}")""",
         expected_output="הטלת קובייה: 6\nצבע שנבחר: אדום\nקלפים מעורבבים: [2, 4, 5, 3, 1]",
-        hint="השתמש ב-random.randint, random.choice ו-random.shuffle לפי הדוגמה.",
+        hint="""1. ייבא את מודול האקראיות: import random
+2. כדי שהתוצאות האקראיות יהיו זהות בכל הרצה ויעברו את בדיקת המערכת, קרא קודם: random.seed(42)
+3. פקודות:
+   - מספר אקראי מ-1 עד 6: roll = random.randint(1, 6)
+   - בחירת איבר אקראי: chosen = random.choice(colors)
+   - ערבוב רשימה במקום (in-place): random.shuffle(cards)""",
         success_message="איזה יופי! עכשיו אתה יודע להוסיף אלמנט של הפתעה ואקראיות לכל תוכנית ומשחק."
     ),
     Lesson(
@@ -644,7 +794,12 @@ print("JSON:", json_string)
 parsed = json.loads(json_string)
 print(f"Player: {parsed['name']}, Score: {parsed['score']}")""",
         expected_output="JSON: {\"name\": \"Alex\", \"score\": 1500, \"is_pro\": true}\nPlayer: Alex, Score: 1500",
-        hint="המר עם json.dumps ופענח חזרה עם json.loads.",
+        hint="""1. ייבא את מודול ה-JSON: import json
+2. המרה ממילון פייתון למחרוזת JSON (הצפנה/סריאליזציה):
+   json_string = json.dumps(player_data)
+3. פענוח מחרוזת JSON חזרה לאובייקט פייתון:
+   parsed = json.loads(json_string)
+4. גישה לערכים במילון המפוענח: parsed['name'] ו-parsed['score'].""",
         success_message="מדהים! עכשיו אתה יודע לתקשר עם העולם הגדול באמצעות תקן JSON."
     ),
 
@@ -674,7 +829,19 @@ car2.year = 2020
 print(f"רכב 1: {car1.brand}, שנת ייצור: {car1.year}")
 print(f"רכב 2: {car2.brand}, שנת ייצור: {car2.year}")""",
         expected_output="רכב 1: Toyota, שנת ייצור: 2022\nרכב 2: Mazda, שנת ייצור: 2020",
-        hint="צור שני אובייקטים נפרדים מהמחלקה Car, הגדר לכל אחד מהם brand ו-year והדפס אותם.",
+        hint="""1. מחלקה (class) היא תבנית שמגדירה מבנה של אובייקטים.
+2. הגדרת מחלקה ריקה:
+   class Car:
+       pass
+3. יצירת שני מופעים נפרדים (אובייקטים) והשמת תכונות:
+   car1 = Car()
+   car1.brand = "Toyota"
+   car1.year = 2022
+
+   car2 = Car()
+   car2.brand = "Mazda"
+   car2.year = 2020
+4. הדפס כל אובייקט בעזרת f-string.""",
         success_message="מזל טוב! יצרת את המחלקה והאובייקטים הראשונים שלך בעולם ה-OOP!"
     ),
     Lesson(
@@ -699,7 +866,15 @@ p2 = Player("מאיה", 120, 3)
 print(f"שחקן: {p1.name}, נקודות חיים: {p1.hp}, רמה: {p1.level}")
 print(f"שחקן: {p2.name}, נקודות חיים: {p2.hp}, רמה: {p2.level}")""",
         expected_output="שחקן: נועם, נקודות חיים: 100, רמה: 1\nשחקן: מאיה, נקודות חיים: 120, רמה: 3",
-        hint="הגדר את def __init__(self, name, hp, level=1) ושמור את המשתנים לתוך self.",
+        hint="""1. הפונקציה __init__ היא ה'בנאי' שמופעל אוטומטית בעת יצירת אובייקט חדש.
+2. המשתנה self מייצג את המופע הספציפי שנוצר כרגע.
+3. מבנה המחלקה:
+   class Player:
+       def __init__(self, name, hp, level=1):
+           self.name = name
+           self.hp = hp
+           self.level = level
+4. יצירת השחקנים: p1 = Player("נועם", 100) ו-p2 = Player("מאיה", 120, 3).""",
         success_message="מעולה! הבנאי הוא עמוד השדרה של יצירת אובייקטים בפייתון."
     ),
     Lesson(
@@ -731,7 +906,18 @@ account = BankAccount("דניאל", 500)
 account.deposit(200)
 account.withdraw(150)""",
         expected_output="הופקדו 200 ש\"ח. יתרה חדשה: 700\nנמשכו 150 ש\"ח. יתרה חדשה: 550",
-        hint="הגדר את המתודות deposit ו-withdraw עם self ועדכן את self.balance בהתאם.",
+        hint="""1. מתודה היא פונקציה השייכת למחלקה, והפרמטר הראשון שלה הוא תמיד self.
+2. מתודת deposit (הפקדה):
+   def deposit(self, amount):
+       self.balance += amount
+       print(f"הופקדו {amount} ש"ח. יתרה חדשה: {self.balance}")
+3. מתודת withdraw (משיכה) – יש לבדוק אם יש מספיק כסף בחשבון:
+   def withdraw(self, amount):
+       if amount <= self.balance:
+           self.balance -= amount
+           print(f"נמשכו {amount} ש"ח. יתרה חדשה: {self.balance}")
+       else:
+           print("אין מספיק כסף בחשבון!")""",
         success_message="כל הכבוד! האובייקט שלך חי, פעיל ומנהל את המידע הפנימי שלו בצורה מושלמת."
     ),
 
@@ -767,7 +953,15 @@ print(dog.speak())
 print(cat.speak())
 print("האם רקס הוא Animal?", isinstance(dog, Animal))""",
         expected_output="רקס נובח: הב הב!\nמיצי מיילל: מיאו!\nהאם רקס הוא Animal? True",
-        hint="הגדר את Dog(Animal) ואת Cat(Animal), ודרוס את המתודה speak עבור כל חיה.",
+        hint="""1. הורשה מאפשרת למחלקה לקבל את כל התכונות והמתודות של מחלקת האב: class Dog(Animal):
+2. דריסת מתודה (Override): כותבים במחלקה היורשת מתודה בעלת אותו שם (speak) עם התנהגות מותאמת:
+   class Dog(Animal):
+       def speak(self):
+           return f"{self.name} נובח: הב הב!"
+   class Cat(Animal):
+       def speak(self):
+           return f"{self.name} מיילל: מיאו!"
+3. הפונקציה isinstance(dog, Animal) בודקת האם האובייקט שייך למחלקה (מחזירה True).""",
         success_message="מצוין! הבנת את עקרון הירושה – אחד העקרונות החזקים ביותר בהנדסת תוכנה."
     ),
     Lesson(
@@ -801,7 +995,15 @@ mgr = Manager("רונית", 15000, "פיתוח תוכנה")
 print(emp.get_details())
 print(mgr.get_details())""",
         expected_output="עובד: יוסי, שכר: 8000\nעובד: רונית, שכר: 15000, מחלקה: פיתוח תוכנה",
-        hint="השתמש ב-super().__init__(name, salary) בתוך הבנאי של Manager.",
+        hint="""1. פונקציית super() מאפשרת למחלקה היורשת להפעיל את הבנאי או המתודה של מחלקת האב.
+2. בבנאי של Manager נקרא תחילה לבנאי של Employee בעזרת super:
+   class Manager(Employee):
+       def __init__(self, name, salary, department):
+           super().__init__(name, salary)
+           self.department = department
+3. במתודת get_details נשלב את תוצאת האב עם התוספת של המחלקה:
+       def get_details(self):
+           return f"{super().get_details()}, מחלקה: {self.department}" """,
         success_message="כל הכבוד! שליטה ב-super() מעידה על הבנה עמוקה של תכנות מונחה עצמים מתקדם."
     ),
 
@@ -846,7 +1048,16 @@ calc.multiply(4, 3)
 calc.divide(20, 4)
 calc.show_history()""",
         expected_output="10 + 5 = 15\n4 * 3 = 12\n20 / 4 = 5.0",
-        hint="בנה מחלקת Calculator עם self.history, הוסף פעולות והדפס את היסטוריית הפעולות.",
+        hint="""1. מחלקת Calculator שומרת היסטוריית פעולות ברשימה פנימית: self.history = [].
+2. בכל פעולה חשב את התוצאה, שמור מחרוזת מתאימה ב-history והחזר את התוצאה:
+   def add(self, a, b):
+       res = a + b
+       self.history.append(f"{a} + {b} = {res}")
+       return res
+3. בפעולת החלוקה (divide) בדוק תחילה: if b == 0: return "שגיאה: חלוקה באפס"
+4. במתודת show_history הדפס את כל שורות ההיסטוריה בלולאת for:
+   for entry in self.history:
+       print(entry)""",
         success_message="וואו! בנית מחשבון מונחה עצמים עם היסטוריה והגנה מפני שגיאות – מרשים ביותר!"
     ),
     Lesson(
@@ -880,7 +1091,14 @@ pass2 = generate_password(10, use_symbols=False)
 print(f"סיסמה 1: {pass1}")
 print(f"סיסמה 2: {pass2}")""",
         expected_output="סיסמה 1: drf0rgcy\nסיסמה 2: 89vvdkiv9v",
-        hint="השתמש ב-random.choice מתוך מאגר התווים שסונן, וחבר את התווים בעזרת join.",
+        hint="""1. הגדר מאגרי תווים כמחרוזות (letters, digits, symbols).
+2. בנה את מאגר התווים הזמין (chars) בהתאם לדגלים הבוליאניים:
+   chars = letters
+   if use_digits: chars += digits
+   if use_symbols: chars += symbols
+3. בחר length תווים באקראי בעזרת random.choice מתוך chars, וחבר אותם למחרוזת אחת:
+   return "".join([random.choice(chars) for _ in range(length)])
+4. שים לב ל-random.seed(123) בתחילת הקובץ לקבלת תוצאות תואמות לבדיקה.""",
         success_message="אלוף סייבר! יצרת מחולל סיסמאות דינמי, מתוחכם ומאובטח."
     ),
     Lesson(
@@ -933,7 +1151,15 @@ manager.add_task("לבנות פרויקט עצמאי")
 manager.complete_task(1)
 manager.list_all()""",
         expected_output="[V] #1: ללמוד פייתון ב-PyTeen\n[ ] #2: לבנות פרויקט עצמאי",
-        hint="צור שתי מחלקות – Task ו-TaskManager, הוסף משימות, סמן את המשימה הראשונה כהושלמה והדפס.",
+        hint="""1. מחלקת Task:
+   - בבנאי __init__: הגדר self.task_id = task_id, self.title = title, self.completed = False.
+   - מתודת mark_done(self): קובעת self.completed = True.
+   - מתודת get_status(self): מחזירה "[V] #..." אם completed הוא True, או "[ ] #..." אם False.
+2. מחלקת TaskManager:
+   - מאתחלת self.tasks = [].
+   - מתודת add_task(title): מחשבת new_id = len(self.tasks) + 1, יוצרת אובייקט Task ומוסיפה לרשימה.
+   - מתודת complete_task(task_id): סורקת את self.tasks, וברגע שמזהה משימה עם task.task_id == task_id קוראת לה ל-mark_done().
+   - מתודת list_all(): מדפיסה עבור כל משימה ברשימה את תוצאת print(task.get_status()).""",
         success_message="👑 אלוף אלופים! השלמת בהצלחה יוצאת מן הכלל את כל 42 השלבים של קורס 'פייתון בקלות'! אתה כעת מתכנת פייתון אמיתי עם ארגז כלים מקיף ומקצועי!"
     )
 ]
