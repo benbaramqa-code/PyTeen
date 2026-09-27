@@ -94,6 +94,9 @@ class PyTeenHandler(http.server.BaseHTTPRequestHandler):
         return
 
 def find_free_port():
+    env_port = os.environ.get("PORT")
+    if env_port:
+        return int(env_port)
     import socket
     for port in [8080, 8550, 5000, 8000]:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -102,26 +105,30 @@ def find_free_port():
     return 8080
 
 if __name__ == "__main__":
+    is_cloud = "PORT" in os.environ
     port = find_free_port()
+    host = "0.0.0.0" if is_cloud else "127.0.0.1"
     url = f"http://localhost:{port}"
 
     print("=" * 45)
     print("       Python Bekalut Web Server Running")
+    print(f"       Host: {host} | Port: {port}")
     print(f"       URL: {url}")
     print("=" * 45)
 
-    def open_browser():
-        import time
-        time.sleep(0.5)
-        webbrowser.open(url)
-        os.system(f"start {url}")
+    if not is_cloud:
+        def open_browser():
+            import time
+            time.sleep(0.5)
+            webbrowser.open(url)
+            os.system(f"start {url}")
 
-    threading.Thread(target=open_browser, daemon=True).start()
+        threading.Thread(target=open_browser, daemon=True).start()
 
     class ReusableTCPServer(socketserver.TCPServer):
         allow_reuse_address = True
 
-    with ReusableTCPServer(("127.0.0.1", port), PyTeenHandler) as httpd:
+    with ReusableTCPServer((host, port), PyTeenHandler) as httpd:
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
