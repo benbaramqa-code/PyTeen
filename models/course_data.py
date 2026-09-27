@@ -1561,10 +1561,329 @@ print(f"New sample classification: {int(prediction_new)}")''',
 3. אמן את GaussianNB בעזרת model.fit(X_train, y_train).
 4. חשב את הדיוק בעזרת accuracy_score והצג בפורמט: Training accuracy: 100.0%
 5. בצע חיזוי על new_sample והדפס את התוצאה: New sample classification: 0""",
-        success_message="🎓👑 אלוף עולם! השלמת בהצלחה יוצאת מן הכלל את כל 60 השלבים של מסלול פייתון, מדעי הנתונים ובינה מלאכותית! יש לך כעת בסיס מעשי, יציב ומקצועי ברמה הגבוהה ביותר!",
+        success_message="🎓👑 מעולה! השלמת את צינור למידת המכונה השלם! כעת אתה מוכן לעבור לשלבי השיא: רשתות נוירונים, למידה עמוקה ולמידת חיזוק!",
         common_mistakes="""❌ אי התאמה בין שמות עמודות ה-Features באימון לבין הקלט בחיזוי חדש.
 ❌ הדלפת מידע (Data Leakage) על ידי עיבוד נתונים משותף לפני חלוקת train/test.
 ❌ שכחת בדיקת שגיאות או ערכים חסרים לפני הכנסת הנתונים לצינור האימון."""
+    )
+,
+    Lesson(
+        id=61,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 61: מבנה הנוירון המלאכותי (The Perceptron / Artificial Neuron)",
+        recap="למדנו מודלים קלאסיים של למידת מכונה. כעת נעשה צעד ענק קדימה אל עולם הלמידה העמוקה (Deep Learning) בהשראת המוח האנושי!",
+        why_learn="רשתות נוירונים עומדות מאחורי פריצות הדרך הגדולות של ימינו: ChatGPT, זיהוי פנים, כלי רכב אוטונומיים ורובוטיקה. הכל מתחיל מנוירון בודד (Perceptron).",
+        when_to_use="חישוב החלטה בודדת המבוססת על שקלול מספר נתונים עם חשיבות (משקולות) שונה לכל נתון.",
+        explanation="נוירון מקבל קלטים (inputs), כופל כל קלט במשקולת שלו (weights), מוסיף הטיה (bias) ומחליט האם 'לירות' אות (0 או 1):",
+        tip="💡 הנוסחה המרכזית היא z = np.dot(inputs, weights) + bias. מכפלה סקלרית מכפלת ומחברת את כל האיברים בבת אחת!",
+        default_code='''import numpy as np
+
+# Inputs (Study hours, Practice tests)
+inputs = np.array([3.0, 4.0])
+# Weights (Importance of each input)
+weights = np.array([0.5, 0.4])
+bias = -2.0
+
+# Linear combination: z = (3.0 * 0.5) + (4.0 * 0.4) - 2.0
+z = np.dot(inputs, weights) + bias
+# Step activation function
+output = 1 if z >= 0 else 0
+
+print(f"Weighted sum (z): {round(float(z), 2)}")
+print(f"Neuron fired: {output}")''',
+        expected_output="Weighted sum (z): 1.1\nNeuron fired: 1",
+        hint="""1. חשב את המכפלה הסקלרית z = np.dot(inputs, weights) + bias.
+2. קבע output = 1 if z >= 0 else 0.
+3. הדפס את z מעוגל לספרה אחת ואת output.""",
+        success_message="מדהים! בנית את הנוירון המלאכותי הראשון שלך והבנת איך המוח הממוחשב מקבל החלטות.",
+        common_mistakes="""❌ אי התאמה בין אורך וקטור הקלטים לאורך וקטור המשקולות (חייב להיות בעל אותו אורך כדי לבצע np.dot).
+❌ שכחת ה-bias, שמאפשר לנוירון לכוונן את סף ההחלטה שלו ולא להיות מוגבל לראשית הצירים."""
+    ),
+    Lesson(
+        id=62,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 62: פונקציות שפעול (Activation Functions: Sigmoid & ReLU)",
+        recap="ראינו נוירון עם פונקציית מדרגה פשוטה. כעת נכיר את פונקציות השפעול המקצועיות של עולם הבינה המלאכותית.",
+        why_learn="ללא פונקציות שפעול אי-ליניאריות, רשת נוירונים ענקית של 100 שכבות הייתה שקולה למשוואת קו ישר אחת פשוטה! פונקציות כמו Sigmoid ו-ReLU מעניקות לרשת את היכולת ללמוד צורות ותבניות מורכבות.",
+        when_to_use="Sigmoid משמשת להסתברויות (בין 0 ל-1), ו-ReLU היא הפונקציה הנפוצה והפופולרית ביותר בשכבות חבויות של רשתות עמוקות.",
+        explanation="ממש פונקציית ReLU (שמשאירה מספרים חיוביים ומאפסת שליליים) ופונקציית Sigmoid:",
+        tip="💡 הנוסחה של ReLU היא פשוטה להפליא: max(0, x). הנוסחה של Sigmoid היא 1 / (1 + e^(-x)).",
+        default_code='''import numpy as np
+
+def relu(x):
+    return np.maximum(0, x)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+vals = np.array([-3.0, 0.0, 3.0])
+relu_out = relu(vals)
+sigmoid_out = sigmoid(vals)
+
+print(f"Input: {vals.tolist()}")
+print(f"ReLU: {relu_out.tolist()}")
+print(f"Sigmoid: {[round(float(v), 2) for v in sigmoid_out]}")''',
+        expected_output="Input: [-3.0, 0.0, 3.0]\nReLU: [0.0, 0.0, 3.0]\nSigmoid: [0.05, 0.5, 0.95]",
+        hint="""1. הגדר את relu(x) באמצעות np.maximum(0, x).
+2. הגדר את sigmoid(x) באמצעות 1 / (1 + np.exp(-x)).
+3. החל את הפונקציות על vals והדפס את התוצאות.""",
+        success_message="כל הכבוד! הבנת את תפקידן הקריטי של פונקציות השפעול בבניית רשתות נוירונים.",
+        common_mistakes="""❌ שימוש ב-max הרגיל של פייתון על מערך NumPy במקום np.maximum.
+❌ גלישה נומרית בחישוב exp עבור מספרים שליליים עצומים (פתיר בעזרת clipping)."""
+    ),
+    Lesson(
+        id=63,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 63: רשת נוירונים רב-שכבתית (Multilayer Perceptron - MLP)",
+        recap="חיברנו נוירון בודד ופונקציית שפעול. כעת נחבר עשרות נוירונים יחד לרשת שכבות מלאה.",
+        why_learn="נוירון בודד מסוגל לפתור רק בעיות שניתנות להפרדה בקו ישר. כדי לפתור בעיות מורכבות (כמו בעיית ה-XOR המפורסמת), חייבים שכבה חבויה (Hidden Layer) של נוירונים.",
+        when_to_use="סיווג תמונות, זיהוי קול, עיבוד שפה טבעית וחיזוי מורכב של התנהגות משתמשים.",
+        explanation="צור רשת נוירונים רב-שכבתית בעזרת MLPClassifier עם שכבה חבויה, ואמן אותה על מערך נתונים:",
+        tip="💡 הפרמטר hidden_layer_sizes=(8,) קובע שכבה חבויה אחת עם 8 נוירונים.",
+        default_code='''from sklearn.neural_network import MLPClassifier
+import numpy as np
+
+# Synthetic sensor data: [Feature 1, Feature 2] -> Status [0: Safe, 1: Alert]
+X = np.array([
+    [0.1, 0.2],
+    [0.2, 0.1],
+    [0.8, 0.9],
+    [0.9, 0.8]
+])
+y = np.array([0, 0, 1, 1])
+
+mlp = MLPClassifier(
+    hidden_layer_sizes=(8,),
+    activation="relu",
+    solver="lbfgs",
+    max_iter=200,
+    random_state=42
+)
+mlp.fit(X, y)
+
+new_reading = np.array([[0.85, 0.85]])
+prediction = mlp.predict(new_reading)[0]
+
+print(f"Hidden layers: {mlp.hidden_layer_sizes}")
+print(f"Alert predicted: {prediction == 1}")''',
+        expected_output="Hidden layers: (8,)\nAlert predicted: True",
+        hint="""1. ייבא את MLPClassifier מ-sklearn.neural_network.
+2. הגדר hidden_layer_sizes=(8,), activation="relu", solver="lbfgs", max_iter=200, random_state=42.
+3. אמן את הרשת עם fit(X, y) ובצע חיזוי על new_reading.""",
+        success_message="וואו! אימנת רשת נוירונים רב-שכבתית מלאה והפקת תחזית מדויקת!",
+        common_mistakes="""❌ בחירת מספר קטן מדי של איטרציות (max_iter) לפני שהרשת מספיקה להתכנס.
+❌ אי הגדרת random_state מה שגורם למשקולות ההתחלתיות האקראיות להשתנות בכל הרצה."""
+    ),
+    Lesson(
+        id=64,
+        chapter="פרק 19: רשתות נוירונים ולמידה עמוקה",
+        title="שלב 64: פרויקט זיהוי ספרות בכתב יד (Handwritten Digit Recognition)",
+        recap="הגענו לפרויקט הדגל מפרק 5 בספר: זיהוי ספרות בכתב יד בעזרת ראייה ממוחשבת ובינה מלאכותית!",
+        why_learn="ראייה ממוחשבת (Computer Vision) מאפשרת למחשב 'לראות' תמונות. כל תמונה היא למעשה מטריצה של מספרים (ערכי בהירות של פיקסלים). נלמד את המחשב לזהות ספרות 0 ו-1 מתוך תמונות.",
+        when_to_use="מיון דואר אוטומטי בדואר לפי מיקוד, קריאת צ'קים בבנקים, וזיהוי לוחיות רישוי בכבישים.",
+        explanation="נטען את מאגר התמונות של ספרות בכתב יד (Digits/MNIST), נחלק לאימון ומבחן, ונאמן מודל לזיהוי הספרה:",
+        tip="💡 כל תמונה בגודל 8x8 פיקסלים מיוצגת כווקטור שטוח של 64 ערכים מספריים בין 0 ל-16.",
+        default_code='''from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Load handwritten digits 0 and 1
+digits = load_digits(n_class=2)
+X, y = digits.data, digits.target
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+preds = model.predict(X_test)
+acc = accuracy_score(y_test, preds)
+
+print(f"Total digit images: {len(X)}")
+print(f"Pixels per image: {X.shape[1]}")
+print(f"Recognition accuracy: {acc * 100:.1f}%")
+print(f"First test sample predicted: {int(preds[0])}")''',
+        expected_output="Total digit images: 360\nPixels per image: 64\nRecognition accuracy: 100.0%\nFirst test sample predicted: 1",
+        hint="""1. טען את הנתונים בעזרת load_digits(n_class=2).
+2. חלק בעזרת train_test_split עם test_size=0.25 ו-random_state=42.
+3. אמן את המודל, בצע חיזוי וחשב את אחוזי הדיוק עם accuracy_score.""",
+        success_message="🏆 פרויקט ראייה ממוחשבת מושלם! המחשב שלך למד לקרוא ספרות בכתב יד בדיוק של 100%!",
+        common_mistakes="""❌ ניסיון להעביר תמונה דו-ממדית ישירות למודל מבלי לשטח אותה לווקטור חד-ממדי של פיקסלים.
+❌ שכחת נרמול ערכי פיקסלים בעבודה עם תמונות גדולות בעלות טווח 0–255."""
+    ),
+    Lesson(
+        id=65,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 65: עקרונות למידת חיזוק (Agent, Environment, Reward)",
+        recap="למדנו למידה מונחית עם נתונים מוכנים. כעת נכנס לתחום המתקדם מפרק 6 בספר: למידת חיזוק (Reinforcement Learning) שבו ה-AI לומד מתוך ניסוי וטעייה!",
+        why_learn="כשמחשב לומד לשחק שחמט, לנהוג ברכב או לשלוט ברובוט, אין לו מאגר נתונים עם 'תשובות נכונות'. הוא חייב לנסות פעולות, לקבל תגמולים (Rewards) וללמוד מהטעויות שלו בעצמו.",
+        when_to_use="בוטים למשחקי מחשב (Atari, StarCraft), נהיגה אוטונומית, ואופטימיזציה של מסחר בבורסה.",
+        explanation="נבנה מחלקת סביבה (Environment) שבה סוכן (Agent) נע לאורך מסלול ומקבל תגמול (Reward) חיובי כשהוא מגיע ליעד ושלילי על כל צעד:",
+        tip="💡 מחזור הפעולה הבסיסי בלמידת חיזוק הוא: מצב (State) -> פעולה (Action) -> תגמול (Reward) + מצב חדש (Next State).",
+        default_code='''class GridWorld1D:
+    def __init__(self, size=4):
+        self.size = size
+        self.state = 0
+
+    def step(self, action):
+        # Action 1: Move Right, Action 0: Move Left
+        if action == 1 and self.state < self.size - 1:
+            self.state += 1
+        elif action == 0 and self.state > 0:
+            self.state -= 1
+
+        done = (self.state == self.size - 1)
+        reward = 10 if done else -1
+        return self.state, reward, done
+
+env = GridWorld1D(size=4)
+next_s, rew, done = env.step(action=1)
+
+print(f"Current State: {next_s}")
+print(f"Step Reward: {rew}")
+print(f"Goal Reached: {done}")''',
+        expected_output="Current State: 1\nStep Reward: -1\nGoal Reached: False",
+        hint="""1. צור מופע של הסביבה: env = GridWorld1D(size=4).
+2. קרא למתודת step עם action=1.
+3. הדפס את המצב החדש, את התגמול ואת הסטטוס done.""",
+        success_message="מעולה! הבנת את עמודי התווך של למידת חיזוק: סוכן, סביבה ותגמולים.",
+        common_mistakes="""❌ מתן תגמולים שאינם מעודדים את היעד הרצוי (Reward Hacking).
+❌ אי הגבלת תנועת הסוכן בגבולות הסביבה (יציאה מגבולות המערך)."""
+    ),
+    Lesson(
+        id=66,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 66: טבלת החלטות ועדכון ערכים (Q-Table & Bellman Update)",
+        recap="הגדרנו סביבה ותגמולים. כעת נלמד כיצד הסוכן שומר את הידע שלו בזיכרון ומעדכן אותו.",
+        why_learn="טבלת Q (Q-Table) היא מפת הזיכרון של הסוכן. עבור כל מצב ופעולה, היא שומרת ציון איכות המייצג כמה כדאי לבצע את הפעולה הזו כדי לזכות בתגמול בעתיד.",
+        when_to_use="אלגוריתם Q-Learning הוא הצעד הראשון בבניית סוכנים אוטונומיים למשחקים ולרובוטיקה.",
+        explanation="בצע עדכון של ערך Q בטבלה לפי משוואת בלמן (Bellman Equation) עם קצב למידה (Learning Rate) ומקדם היוון (Gamma):",
+        tip="💡 הנוסחה: Q(s,a) = Q(s,a) + alpha * [reward + gamma * max(Q(s')) - Q(s,a)].",
+        default_code='''import numpy as np
+
+# 4 States, 2 Actions (0: Left, 1: Right)
+q_table = np.zeros((4, 2))
+
+state = 0
+action = 1
+reward = -1
+next_state = 1
+alpha = 0.5   # Learning rate
+gamma = 0.9   # Discount factor
+
+# Bellman Equation Update
+best_next_q = np.max(q_table[next_state])
+q_table[state, action] += alpha * (reward + gamma * best_next_q - q_table[state, action])
+
+print(f"Q-Table shape: {q_table.shape}")
+print(f"Updated Q(state=0, action=1): {round(float(q_table[0, 1]), 2)}")''',
+        expected_output="Q-Table shape: (4, 2)\nUpdated Q(state=0, action=1): -0.5",
+        hint="""1. אתחל q_table במערך אפסים בגודל 4 על 2.
+2. חשב את העדכון לפי משוואת בלמן בעזרת alpha ו-gamma.
+3. הדפס את גודל הטבלה ואת הערך המעודכן ב-q_table[0, 1].""",
+        success_message="כל הכבוד! למדת את משוואת בלמן – הנוסחה המפורסמת ביותר בלמידת חיזוק!",
+        common_mistakes="""❌ בחירת מקדם למידה (alpha) גדול מדי שגורם לתנודתיות יתר וחוסר יציבות בלמידה.
+❌ התעלמות מתגמולים עתידיים (gamma = 0) שהופכת את הסוכן ל'קצר רואי'."""
+    ),
+    Lesson(
+        id=67,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 67: דילמת חקירה מול ניצול (Exploration vs Exploitation)",
+        recap="הסוכן יודע לעדכן את טבלת ה-Q. כעת נפתור את אחת הדילמות הפילוסופיות והמתמטיות המרתקות ביותר בבינה מלאכותית.",
+        why_learn="אם הסוכן יבחר תמיד בפעולה המוכרת והבטוחה (Exploitation), הוא לעולם לא יגלה מסלול קצר וטוב יותר! מנגד, אם תמיד יבחר באקראי (Exploration), הוא יפעל כמו משוגע ולא יגיע למטרה.",
+        when_to_use="מדיניות Epsilon-Greedy משמשת בכל סוכני ה-AI כדי לגלות אפשרויות חדשות בהתחלה ולנצל את הידע בהמשך.",
+        explanation="ממש מדיניות Epsilon-Greedy: בהסתברות של epsilon הסוכן חוקר פעולה אקראית, ובשאר הזמן מנצל את הפעולה בעלת הציון הגבוה ביותר ב-Q-Table:",
+        tip="💡 בתחילת הלמידה מקובל לתת epsilon גבוה (חקירה מרובה), ועם הזמן להקטין אותו (Decay) כדי להתבסס על המסקנות.",
+        default_code='''import numpy as np
+
+# Q-values for 2 actions at current state: [Left: 1.2, Right: 4.5]
+q_values = np.array([1.2, 4.5])
+epsilon = 0.1
+
+def choose_action(q_vals, eps, seed=42):
+    np.random.seed(seed)
+    if np.random.rand() < eps:
+        # Explore: random action
+        return 0
+    else:
+        # Exploit: best action
+        return int(np.argmax(q_vals))
+
+action = choose_action(q_values, epsilon)
+
+print(f"Epsilon: {epsilon}")
+print(f"Best Action in Q-Table: {int(np.argmax(q_values))}")
+print(f"Chosen Action: {action}")''',
+        expected_output="Epsilon: 0.1\nBest Action in Q-Table: 1\nChosen Action: 1",
+        hint="""1. הגדר את הפונקציה choose_action.
+2. בצע בדיקה: אם np.random.rand() < eps בחר באקראי, אחרת בחר np.argmax(q_vals).
+3. קרא לפונקציה והדפס את הפעולה שנבחרה.""",
+        success_message="נהדר! הבנת את עקרון האיזון בין חקירה לניצול שעליו מבוססים מודלי AI מתקדמים.",
+        common_mistakes="""❌ קביעת אפסילון שווה ל-0 (אפס חקירה) מה שגורם לסוכן להיתקע במינימום מקומי.
+❌ אי הקטנת אפסילון לאורך הזמן, מה שגורם לסוכן להמשיך לבצע טעויות אקראיות גם אחרי שלמד לשחק מושלם."""
+    ),
+    Lesson(
+        id=68,
+        chapter="פרק 20: למידת חיזוק וסוכני AI חכמים",
+        title="שלב 68: פרויקט סוכן בינה מלאכותית שלם (Smart Game Agent Bot)",
+        recap="הגענו לשלב השיא החגיגי והמוחלט של כל הקורס המורחב כולו! סוכן AI חכם שמלמד את עצמו לשחק ולנצח!",
+        why_learn="זהו הפרויקט המרכזי מפרק 6 בספר Machine Learning Projects in Python (בניית בוט למשחק בעזרת למידת חיזוק). נחבר את כל מה שלמדנו: סביבה, לולאת אימונים, טבלת Q ומדיניות בחירה, ונראה את הסוכן לומד להגיע למטרה במינימום צעדים!",
+        when_to_use="בניית סוכני בינה מלאכותית עצמאיים למשחקים, רחפנים אוטונומיים, ופתרון בעיות ניווט בעולם האמיתי.",
+        explanation="הרכב את לולאת האימון המלאה של סוכן Q-Learning: במשך 40 פרקים (episodes) הסוכן מתנסה בסביבה, מעדכן את הטבלה ומגיע למדיניות אופטימלית:",
+        tip="💡 שים לב כיצד ללא אף שורת קוד שאומרת לו 'לך ימינה', הסוכן מגלה בעצמו בעזרת התגמולים שהדרך המהירה ביותר לנצח היא לנוע ימינה!",
+        default_code='''import numpy as np
+
+class Environment:
+    def __init__(self, size=4):
+        self.size = size
+        self.state = 0
+
+    def reset(self):
+        self.state = 0
+        return self.state
+
+    def step(self, action):
+        if action == 1 and self.state < self.size - 1:
+            self.state += 1
+        elif action == 0 and self.state > 0:
+            self.state -= 1
+        done = (self.state == self.size - 1)
+        reward = 10 if done else -1
+        return self.state, reward, done
+
+# Training Q-Learning Agent
+np.random.seed(42)
+env = Environment(size=4)
+q_table = np.zeros((4, 2))
+alpha, gamma = 0.5, 0.9
+
+for episode in range(40):
+    s = env.reset()
+    while True:
+        a = 1 if np.random.rand() > 0.1 else np.random.choice([0, 1])
+        next_s, reward, done = env.step(a)
+        q_table[s, a] += alpha * (reward + gamma * np.max(q_table[next_s]) - q_table[s, a])
+        s = next_s
+        if done:
+            break
+
+# Test optimal policy
+policy = [int(np.argmax(q_table[s])) for s in range(3)]
+print(f"Training Episodes: 40")
+print(f"Optimal Actions for states 0, 1, 2: {policy}")
+print(f"Agent Ready: {policy == [1, 1, 1]}")''',
+        expected_output="Training Episodes: 40\nOptimal Actions for states 0, 1, 2: [1, 1, 1]\nAgent Ready: True",
+        hint="""1. הגדר את מחלקת Environment עם reset ו-step.
+2. הרץ לולאת אימון של 40 פרקים ועדכן את q_table בעזרת משוואת בלמן.
+3. חלץ את הפעולות האופטימליות עבור כל מצב בעזרת np.argmax.
+4. הדפס את רשימת הפעולות ובדוק שהסוכן למד לנוע תמיד לכיוון המטרה [1, 1, 1].""",
+        success_message="🏆👑 מזל טוב ענקי! השלמת בהצלחה מזהירה את כל 68 השלבים של מסלול פייתון, מדעי הנתונים, למידה עמוקה ולמידת חיזוק! אתה שולט כעת בכל קשת הטכנולוגיות המודרניות של עולם התוכנה והבינה המלאכותית!",
+        common_mistakes="""❌ שכחת לאפס את הסביבה (env.reset) בתחילת כל פרק אימון חדש.
+❌ עדכון שגוי של מצב הסוכן בתוך לולאת הצעדים (יש לעדכן s = next_s).
+❌ שימוש ביותר מדי איטרציות או לולאה אינסופית במידה והסוכן לא מצליח להגיע ל-done."""
     )
 
 ]
