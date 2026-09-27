@@ -75,6 +75,7 @@ class PyTeenHandler(http.server.BaseHTTPRequestHandler):
                     "expected_output": l.expected_output,
                     "hint": l.hint,
                     "success_message": l.success_message,
+                    "common_mistakes": getattr(l, "common_mistakes", ""),
                     "gemini_prompt": l.get_gemini_prompt()
                 }
                 for l in LESSONS

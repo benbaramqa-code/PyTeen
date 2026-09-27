@@ -299,6 +299,32 @@
       line-height: 1.5;
     }
 
+    .mistakes-card {
+      background: rgba(239, 68, 68, 0.07);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-right: 4px solid #ef4444;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .mistakes-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: #ef4444;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .mistakes-body {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-line;
+    }
+
     .hint-card {
       display: none;
       background: var(--hint-bg);
