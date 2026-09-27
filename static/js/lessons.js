@@ -470,7 +470,8 @@
       const codeEditor = document.getElementById('code-editor');
       if (codeEditor) {
         const savedDraft = getCodeDraft(lesson.id);
-        codeEditor.value = (savedDraft !== null && savedDraft !== undefined) ? savedDraft : lesson.default_code;
+        const codeToShow = (savedDraft !== null && savedDraft !== undefined) ? savedDraft : (lesson.default_code || '');
+        codeEditor.value = fixBidiForDisplay(codeToShow);
       }
 
       // איפוס מסוף

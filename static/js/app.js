@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const codeEditor = document.getElementById('code-editor');
   if (codeEditor) {
-    // Tab and Ctrl+Enter handling
+    // Tab, Ctrl+Enter, and Hebrew quote BiDi stabilization
     codeEditor.addEventListener('keydown', function(e) {
       if (e.key === 'Tab') {
         e.preventDefault();
@@ -149,16 +149,50 @@ document.addEventListener('DOMContentLoaded', function () {
       } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         runCode();
+      } else if (e.key === '"' || e.key === "'") {
+        // When typing a closing quote after Hebrew text or Hebrew punctuation, append \u200E
+        // This keeps quotes, commas, and parentheses in proper visual order
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        const before = this.value.substring(0, start);
+        const lastChar = before.slice(-1);
+        if (/[\u0590-\u05FF:!?.,]/.test(lastChar)) {
+          e.preventDefault();
+          const quote = e.key;
+          this.value = this.value.substring(0, start) + quote + '\u200E' + this.value.substring(end);
+          this.selectionStart = this.selectionEnd = start + 2;
+        }
+      } else if (e.key === 'Backspace') {
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        if (start === end && start > 0) {
+          if (this.value[start - 1] === '\u200E') {
+            e.preventDefault();
+            this.value = this.value.substring(0, start - 2) + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = Math.max(0, start - 2);
+          }
+        }
       }
     });
 
-    // Auto-save code draft on typing
+    // Paste handling - stabilize BiDi on paste
+    codeEditor.addEventListener('paste', function() {
+      setTimeout(() => {
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        this.value = fixBidiForDisplay(this.value);
+        this.selectionStart = start;
+        this.selectionEnd = end;
+      }, 0);
+    });
+
+    // Auto-save code draft on typing (clean bidi control chars from stored draft)
     let autoSaveTimer = null;
     codeEditor.addEventListener('input', function() {
       if (!currentLesson) return;
       clearTimeout(autoSaveTimer);
       autoSaveTimer = setTimeout(() => {
-        saveCodeDraft(currentLesson.id, this.value);
+        saveCodeDraft(currentLesson.id, stripBidi(this.value));
       }, 400);
     });
   }
